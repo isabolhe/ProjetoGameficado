@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- bootstrap ta on com css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+     rel="stylesheet" 
+     integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" 
+     crossorigin="anonymous"
+     >
+     <link rel="stylesheet" href="src/style/cadastramentoR.css">
+</head>
+<body>
+  <!-- Navbar no topo -->
+  <nav class="navbar">
+  <div class="container">
+    <a class="navbar-brand" href="escolhacadastro.html">
+      <!-- Ícone de voltar -->
+      &lsaquo; Voltar para cadastro
+    </a>
+  </div>
+</nav>
+
+  <form action="/cadastro-responsavel" method="POST">
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card p-4 shadow-sm">
+            <h2 class="text-center mb-4">Cadastro de Responsável</h2>
+  
+            <div class="mb-3">
+              <label for="nomeCompleto" class="form-label">Nome Completo</label>
+              <input type="text" class="form-control" id="nomeCompleto" name="nomeCompleto" required>
+            </div>
+  
+            <div class="mb-3">
+              <label for="email" class="form-label">E-mail</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+  
+            <div class="mb-3">
+              <label for="senha" class="form-label">Senha</label>
+              <input type="password" class="form-control" id="senha" name="senha" required>
+            </div>
+  
+            <div class="mb-3">
+              <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
+              <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha" required>
+            </div>
+  
+            <div class="mb-3">
+              <label for="telefone" class="form-label">Telefone (opcional)</label>
+              <input type="tel" class="form-control" id="telefone" name="telefone">
+            </div>
+  
+            <div class="mb-3">
+              <label for="nomeFilho" class="form-label">Nome do Filho(a)</label>
+              <input type="text" class="form-control" id="nomeFilho" name="nomeFilho" required>
+            </div>
+  
+            <div class="mb-3">
+              <label for="idadeFilho" class="form-label">Idade do Filho(a)</label>
+              <input type="number" class="form-control" id="idadeFilho" name="idadeFilho" required>
+            </div>
+  
+            <div class="mb-3">
+              <label for="instituicaoEnsino" class="form-label">Instituição de Ensino (opcional)</label>
+              <input type="text" class="form-control" id="instituicaoEnsino" name="instituicaoEnsino">
+            </div>
+  
+            <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+      
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" 
+     integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" 
+     crossorigin="anonymous">
+    </script>
+    <script src="src/javascript/cadastramentoR.js"></script>
+</body>
+</html>

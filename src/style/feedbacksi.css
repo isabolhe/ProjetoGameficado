@@ -1,0 +1,79 @@
+/* Fundo geral */
+body {
+    background-color: #ecf0f1;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Título da página */
+  h2 {
+    color: #2c3e50;
+    font-weight: bold;
+  }
+  
+  /* Alerta inicial de aviso */
+  .alert-info {
+    background-color: #d6eaf8;
+    color: #2c3e50;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+  
+  /* Cartão do formulário */
+  .card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Labels */
+  .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  /* Campos de formulário */
+  input.form-control,
+  textarea.form-control,
+  select.form-select {
+    background-color: #f4f6f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    color: #2c3e50;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  input.form-control:focus,
+  textarea.form-control:focus,
+  select.form-select:focus {
+    background-color: #ffffff;
+    border-color: #2980b9;
+    box-shadow: 0 0 8px rgba(41, 128, 185, 0.3);
+  }
+  
+  /* Texto auxiliar */
+  .form-text {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+  
+  /* Botão refinado */
+  .btn-primary {
+    background-color: #2c3e50;
+    border: none;
+    padding: 10px 24px;
+    font-weight: 600;
+    border-radius: 8px;
+    color: #fff;
+    transition: background-color 0.2s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #34495e;
+  }
+  

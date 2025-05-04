@@ -1,0 +1,56 @@
+/* Estilo geral da página */
+body {
+    background-color: #ecf0f1;
+    font-family: 'Arial', sans-serif;
+    color: #2c3e50;
+  }
+  
+  /* Título principal */
+  h2 {
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+  
+  /* Cartões de resumo */
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    background-color: #ffffff;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: translateY(-4px);
+  }
+  
+  /* Texto dos cards */
+  .card-title {
+    font-size: 1.1rem;
+    color: #34495e;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    color: #2c3e50;
+    font-weight: bold;
+  }
+  
+  /* Gráfico */
+  #graficoPontuacao {
+    width: 100%;
+    max-height: 300px;
+  }
+  
+  /* Título da seção do gráfico */
+  .card-title {
+    margin-bottom: 20px;
+  }
+  
+  /* Container do gráfico */
+  .card-body canvas {
+    display: block;
+    margin: auto;
+  }
+  

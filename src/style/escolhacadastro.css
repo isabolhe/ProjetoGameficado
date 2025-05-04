@@ -1,0 +1,74 @@
+/* escolhacadastro.css */
+
+/* Cor de fundo geral */
+body {
+    background-color: #ecf0f1; /* Fundo suave */
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilo da navbar */
+.navbar {
+    background-color: #2c3e50; /* Azul escuro */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 10px 0; /* Espaçamento vertical */
+}
+
+/* Estilo do link dentro da navbar */
+.navbar a {
+    color: #ffffff; /* Texto branco */
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 16px;
+    padding-left: 15px;
+}
+
+/* Efeito ao passar o mouse no link da navbar */
+.navbar a:hover {
+    color: #ecf0f1; /* Tom mais claro */
+}
+
+/* Estilo do card de escolha */
+.card {
+    background-color: #ffffff; /* Fundo branco */
+    border: 1px solid #ddd; /* Borda discreta */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 30px; /* Espaçamento interno */
+    border-radius: 8px; /* Cantos arredondados */
+}
+
+/* Título do card */
+.card h2 {
+    color: #2c3e50; /* Azul escuro */
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Estilo dos botões */
+a.btn-primary, 
+a.btn-secondary {
+    font-weight: bold;
+    padding: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Botão "Sou Responsável" */
+a.btn-primary {
+    background-color: #2c3e50;
+    border: none;
+}
+
+a.btn-primary:hover {
+    background-color: #34495e; /* Azul ainda mais escuro no hover */
+    color: #fff;
+}
+
+/* Botão "Sou Filho" */
+a.btn-secondary {
+    background-color: #95a5a6; /* Cinza médio para diferenciar */
+    border: none;
+}
+
+a.btn-secondary:hover {
+    background-color: #7f8c8d; /* Cinza mais escuro no hover */
+    color: #fff;
+}

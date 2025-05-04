@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+     rel="stylesheet" 
+     integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" 
+     crossorigin="anonymous">
+
+    <!-- Seu CSS personalizado -->
+    <link href="src/style/osfilhos.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container my-5">
+    <h2 class="mb-4">Meus Filhos</h2>
+
+    <!-- Caso nenhum filho esteja cadastrado -->
+    <div id="lista-filhos" class="mb-4">
+      <!-- Os filhos aparecerão aqui -->
+    </div>
+
+    <div class="alert alert-info text-center">
+      Nenhum filho cadastrado no momento.
+    </div>
+
+    <!-- Formulário para adicionar novo filho -->
+    <div class="card shadow-sm p-4">
+      <h5 class="mb-3">Adicionar Novo Filho</h5>
+      <form>
+        <div class="mb-3">
+          <label for="nomeFilho" class="form-label">Nome do Filho</label>
+          <input type="text" class="form-control" id="nomeFilho" placeholder="Ex: João Pedro">
+        </div>
+
+        <div class="mb-3">
+          <label for="emailFilho" class="form-label">E-mail do Filho</label>
+          <input type="email" class="form-control" id="emailFilho" placeholder="email@exemplo.com">
+          <div class="form-text">Será enviado um convite para este e-mail.</div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-enviarconvite">Enviar Convite</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<!-- Modal para Editar ou Excluir Filho -->
+<div class="modal fade" id="modalEditarExcluir" tabindex="-1" aria-labelledby="modalEditarExcluirLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEditarExcluirLabel">Editar ou Excluir Filho</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="nomeFilhoModal" class="form-label">Nome</label>
+          <input type="text" class="form-control" id="nomeFilhoModal" placeholder="Digite o nome">
+        </div>
+        <div class="mb-3">
+          <label for="emailFilhoModal" class="form-label">E-mail</label>
+          <input type="email" class="form-control" id="emailFilhoModal" placeholder="Digite o e-mail">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancelar" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-editarfilho" id="btnEditarFilho">Editar</button>
+        <button type="button" class="btn btn-excluirfilho" id="btnExcluirFilho">Excluir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+     <!-- JavaScript -->
+      <!-- Carregar jQuery (pode ser local ou CDN) -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script src="src/javascript/osfilhos.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" 
+      integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" 
+      crossorigin="anonymous"></script>
+</body>
+</html>

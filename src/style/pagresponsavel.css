@@ -1,0 +1,149 @@
+/* pagresponsavel.css */
+
+/* Reset e estilo base */
+body {
+    background-color: #ecf0f1;
+    font-family: 'Arial', sans-serif;
+    color: #2c3e50;
+    margin: 0;
+  }
+  
+  .sidebar {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Garante altura total da tela */
+    position: sticky;
+    top: 0;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      position: relative;
+      height: auto;
+    }
+  }
+  
+  
+  .sidebar h4 {
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+  
+  .sidebar .nav-link {
+    color: #ecf0f1;
+    padding: 10px 0;
+    font-size: 0.95rem;
+    border-radius: 5px;
+  }
+  
+  .sidebar .nav-link:hover,
+  .sidebar .nav-link.active {
+    background-color: #34495e;
+    color: white;
+    transition: 0.2s;
+  }
+  
+  /* Cabeçalho do painel */
+  main h2 {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  main .btn-outline-primary {
+    border-color: #2c3e50;
+    color: #2c3e50;
+  }
+  
+  main .btn-outline-primary:hover {
+    background-color: #2c3e50;
+    color: white;
+  }
+  
+  /* Cartões */
+  .card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+  }
+  
+  .card h5 {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .text-muted {
+    color: #7f8c8d !important;
+  }
+  
+  /* Botões */
+  .btn-primary {
+    background-color: #2c3e50;
+    border: none;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #34495e;
+  }
+  
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+  
+  /* Gráficos ou blocos de resumo */
+  .resumo-item {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .resumo-item strong {
+    font-size: 1.5rem;
+    color: #2c3e50;
+  }
+  
+  .resumo-item span {
+    display: block;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+  
+   /* Espaçamentos */
+   .py-4 {
+     padding-top: 2rem !important;
+     padding-bottom: 2rem !important;
+   }
+   
+   .p-4 {
+     padding: 2rem !important;
+   }
+
+   /* Fix for summary chart and layout */
+   #graficoPontos {
+     max-width: 300px;
+     max-height: 300px;
+     margin: 0 auto 1rem auto;
+     display: block;
+   }
+
+   .card > .d-flex.justify-content-around {
+     flex-wrap: nowrap;
+     justify-content: space-around;
+     align-items: center;
+   }
+
+   .card > .d-flex.justify-content-around > div {
+     flex: 1 1 auto;
+     text-align: center;
+   }
+  
+
+  
