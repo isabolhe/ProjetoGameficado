@@ -252,6 +252,25 @@ app.get('/atividades', authenticateToken, (req, res) => {
   });
 });
 
+// Rota para obter a contagem total de atividades concluídas por filho
+app.get('/atividades/concluidas/count', authenticateToken, (req, res) => {
+  const responsavelId = req.user.id;
+  const query = `
+    SELECT f.id as filho_id, f.nome as nome_filho, COUNT(a.id) as total_concluidas
+    FROM criacao_filhos f
+    LEFT JOIN atividades a ON a.filho_id = f.id AND a.concluida = TRUE
+    WHERE f.responsaveis_id = ?
+    GROUP BY f.id, f.nome
+  `;
+  db.query(query, [responsavelId], (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar contagem de atividades concluídas:', err);
+      return res.status(500).json({ error: 'Erro no servidor ao buscar contagem de atividades concluídas.' });
+    }
+    res.json(results);
+  });
+});
+
 // Rota para confirmar conclusão da atividade e atualizar pontos
 app.post('/atividades/:id/confirmar', authenticateToken, (req, res) => {
   const atividadeId = req.params.id;

@@ -6,6 +6,8 @@ body {
   
   h2 {
     font-weight: bold;
+    color: #2196f3;;
+
   }
   
   .btn-atividade {
@@ -20,26 +22,33 @@ body {
   
   .positiva {
     background-color: #e9f7ef;
-    border: 1px solid #28a745;
-    color: #1e7e34;
+    border: 1px solid #2196f3;
+    color: #1976d2;
   }
   
   .positiva:hover {
-    background-color: #d4edda;
+    background-color: #94c2e7;
   }
   
   .negativa {
     background-color: #fdecea;
-    border: 1px solid #dc3545;
-    color: #c82333;
+    border: 1px solid #fb913b;
+    color: #fb913b;
   }
   
   .negativa:hover {
-    background-color: #f8d7da;
+    background-color: #ffddc1;
   }
-  
+
+
+  .spanpositive {
+    background-color: #1976d2 !important;
+  }
+
+
+
   .badge {
     font-size: 0.9rem;
     padding: 0.5em 0.75em;
   }
-  
+

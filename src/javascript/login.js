@@ -3,7 +3,7 @@ document.getElementById('form-login').addEventListener('submit', async function 
 
     const email = document.getElementById('email').value;
     const senha = document.getElementById('senha').value;
-    const tipo_usuario = document.getElementById('tipo_usuario').value;
+    const tipo_usuario = "responsavel";
 
     try {
         const resposta = await fetch('http://localhost:3000/login', {
@@ -24,12 +24,8 @@ document.getElementById('form-login').addEventListener('submit', async function 
                 localStorage.setItem('token', dados.token);
             }
 
-            // Redireciona conforme o tipo de usuário
-            if (tipo_usuario === 'responsavel') {
-                window.location.href = 'pagresponsavel.html';
-            } else {
-                window.location.href = 'dashboard_filho.html';
-            }
+            // Redireciona para a página do responsável
+            window.location.href = 'pagresponsavel.html';
         } else {
             alert(dados.mensagem);
         }

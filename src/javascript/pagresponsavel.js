@@ -64,12 +64,37 @@ async function carregarResumoFilhos() {
 document.addEventListener('DOMContentLoaded', () => {
   carregarResumoFilhos();
   carregarAtividadesRecentes();
+  carregarContagemAtividadesConcluidas(); // New function to load total completed activities count
+
   // Listen for activity confirmation event to update points summary and chart
   window.addEventListener('atividadeConfirmada', () => {
     carregarResumoFilhos();
     carregarAtividadesRecentes();
+    carregarContagemAtividadesConcluidas();
   });
 });
+
+async function carregarContagemAtividadesConcluidas() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE}/atividades/concluidas/count`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const contagem = await response.json();
+
+    // Sum total completed activities for all children
+    const totalConcluidas = contagem.reduce((acc, item) => acc + item.total_concluidas, 0);
+
+    const atividadesConcluidasElem = document.getElementById('atividadesConcluidas');
+    if (atividadesConcluidasElem) {
+      atividadesConcluidasElem.textContent = totalConcluidas;
+    }
+  } catch (error) {
+    console.error('Erro ao carregar contagem de atividades concluídas:', error);
+  }
+}
 
 let chart = null;
 
@@ -95,7 +120,7 @@ function atualizarGrafico(concluidas, pendentes) {
 
   const labels = ["Concluídas", "Pendentes"];
   const data = [concluidas.length, pendentes.length];
-  const backgroundColors = ["#4caf50", "#f44336"];
+  const backgroundColors = ["#2196f3", "#fb913b"];
 
   if (chart) {
     chart.destroy();

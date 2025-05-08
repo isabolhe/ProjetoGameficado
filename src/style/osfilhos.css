@@ -13,7 +13,7 @@ body {
 
 /* Título da página */
 h2 {
-  color: #2c3e50;
+  color: #558b2f;
   font-weight: bold;
   font-size: 1.9rem;
   margin-bottom: 30px;
@@ -59,7 +59,7 @@ input.form-control:focus {
 
 /* Alerta */
 .alert-info {
-  background-color: #d6eaf8;
+  background-color: #ccd4c2;
   color: #2c3e50;
   border: none;
   border-radius: 10px;
@@ -71,7 +71,7 @@ input.form-control:focus {
 
 /* Botão: Enviar Convite */
 .btn-enviarconvite {
-  background-color: #2c3e50;
+  background-color: #558b2f;
   border: none;
   font-weight: bold;
   padding: 12px 28px;
@@ -82,14 +82,14 @@ input.form-control:focus {
 }
 
 .btn-enviarconvite:hover {
-  background-color: #34495e;
+  background-color: #689f38;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(44, 62, 80, 0.3);
+  box-shadow: 0 8px 20px rgba(209, 209, 209, 0.3);
 }
 
 /* Botão Editar - Azul médio */
 .btn-editarfilho {
-  background-color: #2c3e50;
+  background-color: #689f38;
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -101,7 +101,7 @@ input.form-control:focus {
 }
 
 .btn-editarfilho:hover {
-  background-color: #34495e;
+  background-color: #558b2f;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(44, 62, 80, 0.3);
 }
@@ -140,7 +140,7 @@ input.form-control:focus {
 
 /* Modal */
 .modal-header {
-  background-color: #2c3e50;
+  background-color: #558b2f;
   color: #fff;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -158,7 +158,7 @@ input.form-control:focus {
 }
 
 .d-flex button.btn-warning {
-  background-color: #2c3e50;
+  background-color: #558b2f;
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -170,7 +170,7 @@ input.form-control:focus {
 }
 
 .d-flex button.btn-warning:hover {
-  background-color: #34495e;
+  background-color: #689f38;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(44, 62, 80, 0.3);
 }

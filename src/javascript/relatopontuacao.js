@@ -74,11 +74,11 @@ document.addEventListener("DOMContentLoaded", () => {
         atualizarGrafico(concluidas, pendentes);
     }
 
-    function atualizarGrafico(concluidas, pendentes) {
+function atualizarGrafico(concluidas, pendentes) {
         if (!ctx) return;
         const labels = ["Concluídas", "Pendentes"];
         const data = [concluidas.length, pendentes.length];
-        const backgroundColors = ["#4caf50", "#f44336"];
+        const backgroundColors = ["#2196f3", "#fb913b"];
 
         if (chart) {
             chart.destroy();
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function atualizarGraficoDesempenho() {
+function atualizarGraficoDesempenho() {
         if (!ctxDesempenho) return;
 
         const idFilhoSelecionado = selectFilho ? selectFilho.value : "all";
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     label: "Pontos ao longo do tempo",
                     data: pontos,
                     fill: false,
-                    borderColor: "#4caf50",
+                    borderColor: "#2196f3",
                     tension: 0.1
                 }]
             },

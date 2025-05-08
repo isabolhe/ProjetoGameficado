@@ -1,0 +1,28 @@
+/* Left side gradient background for phrases */
+.left-gradient {
+    background-color: #e3f2fd;
+    color: #2196f3;
+    height: 100%;
+    border-radius: 0 0 0 0;
+    padding: 3rem 2rem;
+}
+
+/* Override login button to match gradient color */
+.btn-primary {
+    background-color: #2196f3 !important;
+    border: none !important;
+    font-weight: bold;
+    padding: 12px 28px;
+    border-radius: 10px;
+    color: #fff !important;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 4px 10px rgba(59, 149, 251, 0.4);
+}
+
+.btn-primary:hover {
+    background-color: #1588e6 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 149, 251, 0.4);
+}
+
+
