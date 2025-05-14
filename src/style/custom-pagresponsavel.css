@@ -1,0 +1,27 @@
+.positiva {
+  background-color: #94c2e7;
+  border: 1px solid #1976d2;
+  color: #1976d2;
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.positiva .badge {
+  background-color: #1976d2;
+  color: white;
+}
+
+.negativa {
+  background-color: #ffddc1;
+  border: 1px solid #fb913b;
+  color: #fb913b;
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.negativa .badge {
+  background-color: #fb913b;
+  color: white;
+}

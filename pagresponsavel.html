@@ -25,12 +25,13 @@
         </div>
         <ul class="nav flex-column">
           <li class="nav-item"><a class="nav-link text-white" href="#">🏠 Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="pagatividades.html">📝 Atividades</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="pagpremios.html">📝 Loja de prêmios</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="criarnatividade.html" id="linkCriarSidebar">➕ Criar Nova Atividade</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="validacaoatv.html">📚 Validação de atividades</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="osfilhos.html">👨‍👧 Meus Filhos</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="relatopontuacao.html">📊 Relatórios e Pontuação</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="feedbacksi.html">📊 Feedback com a Instituição</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="gerarqrcode.html">📊 QRcode de atividades</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="confR.html">⚙️ Configurações</a></li>
         </ul>
       </nav>
@@ -41,16 +42,20 @@
           <h2>Painel dos Pais</h2>
           <div>
             <span class="me-3">Larissa</span>
-            <button class="btn btn-outline-primary btn-sm" onclick="logout()">Logout</button>
+            <button class="btn btn-outline-primary btn-sm" onclick="logout()">Sair</button>
           </div>
         </div>
 
-        <!-- Resumo -->
+        
         <div class="row mb-4">
+          <!-- Loja de prêmios -->
           <div class="col-md-6">
             <div class="card p-3">
               <h5>Loja de prêmios</h5>
-          <canvas id="graficoPontos" width="200" height="200"></canvas>
+              <div id="prizesContainer" class="mb-3">
+                <!-- Prêmios cadastrados serão exibidos aqui -->
+              </div>
+          <!-- <canvas id="graficoPontos" width="200" height="200"></canvas> -->
           <div class="d-flex justify-content-around mt-3">
             <div><strong id="atividadesConcluidas">0</strong><br>Atividades Feitas</div>
             <div><strong id="atividadesPendentes">0</strong><br>Atividades Pendentes</div>
@@ -62,7 +67,7 @@
           <!-- Atividades Recentes -->
           <div class="col-md-6">
             <div class="card p-3">
-              <h5>O que você vai fazer hoje?</h5>
+              <h5>Atividades sobre Cyberbullying</h5>
               <div class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>
             </div>
           </div>
@@ -72,8 +77,8 @@
         <div class="row mb-4">
           <div class="col-md-6">
             <div class="card text-center p-4">
-              <h5>Criar Nova Atividade</h5>
-              <a href="criarnatividade.html" class="btn btn-outline-primary my-2" id="btnCriarCard">+ Atividade Personalizada</a>
+              <h5>Vamos falar de Cyberbullying?</h5>
+              <a href="criarnatividade.html" class="btn btn-outline-primary my-2" id="btnCriarCard">+ Criar nova atividade</a>
             </div>
           </div>
 

@@ -328,6 +328,44 @@ app.post('/atividades/:id/confirmar', authenticateToken, (req, res) => {
   });
 });
 
+
+// Rota para criar um novo prêmio (POST)
+app.post('/api/premios', authenticateToken, (req, res) => {
+  const { nome, descricao, pontos_necessarios } = req.body;
+  const responsavelId = req.user.id;
+
+  if (!nome || !descricao || pontos_necessarios === undefined) {
+    return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
+  }
+
+  const query = `
+    INSERT INTO premios (nome, descricao, pontos_necessarios, responsavel_id)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  db.query(query, [nome, descricao, pontos_necessarios, responsavelId], (err, result) => {
+    if (err) {
+      console.error('Erro ao inserir prêmio:', err);
+      return res.status(500).json({ error: 'Erro ao salvar prêmio.' });
+    }
+    res.status(201).json({ message: 'Prêmio criado com sucesso!' });
+  });
+});
+
+// Rota para obter todos os prêmios (GET)
+app.get('/api/premios', authenticateToken, (req, res) => {
+  const responsavelId = req.user.id;
+  const query = 'SELECT * FROM premios WHERE responsavel_id = ? ORDER BY id DESC';
+
+  db.query(query, [responsavelId], (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar prêmios:', err);
+      return res.status(500).json({ error: 'Erro ao buscar prêmios.' });
+    }
+    res.json(results);
+  });
+});
+
 // Iniciar servidor
 const PORT = 3000;
 app.listen(PORT, () => {

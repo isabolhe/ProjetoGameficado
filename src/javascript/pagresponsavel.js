@@ -15,12 +15,10 @@ async function carregarResumoFilhos() {
     });
     const filhos = await response.json();
 
-    console.log('Filhos fetched:', filhos); // Debug log
-
     const divNenhum = document.getElementById('nenhumFilho');
     const divResumo = document.getElementById('filhosResumo');
-    const btnCriarAtividade1 = document.querySelector('a[href="criarnatividade.html"]'); // botão no card
-    const btnCriarAtividade2 = document.querySelector('.nav-link[href="criarnatividade.html"]'); // link da sidebar
+    const btnCriarAtividade1 = document.querySelector('a[href="criarnatividade.html"]');
+    const btnCriarAtividade2 = document.querySelector('.nav-link[href="criarnatividade.html"]');
 
     let temFilhos = Array.isArray(filhos) && filhos.length > 0;
 
@@ -28,7 +26,6 @@ async function carregarResumoFilhos() {
       divNenhum.style.display = 'block';
       divResumo.classList.add('d-none');
 
-      // Impede redirecionamento dos botões
       const bloquear = (e) => {
         e.preventDefault();
         const modal = new bootstrap.Modal(document.getElementById('modalSemFilhos'));
@@ -40,7 +37,6 @@ async function carregarResumoFilhos() {
       return;
     }
 
-    // Se tem filhos, exibe os dados
     divNenhum.style.display = 'none';
     document.getElementById('adicionarFilho').style.display = 'none';
     divResumo.classList.remove('d-none');
@@ -61,42 +57,135 @@ async function carregarResumoFilhos() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  carregarResumoFilhos();
-  carregarAtividadesRecentes();
-  carregarContagemAtividadesConcluidas(); // New function to load total completed activities count
-
-  // Listen for activity confirmation event to update points summary and chart
-  window.addEventListener('atividadeConfirmada', () => {
-    carregarResumoFilhos();
-    carregarAtividadesRecentes();
-    carregarContagemAtividadesConcluidas();
-  });
-});
-
-async function carregarContagemAtividadesConcluidas() {
+async function carregarPremios() {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${API_BASE}/atividades/concluidas/count`, {
+    console.log('Fetching prizes with token:', token);
+    const response = await fetch(`${API_BASE}/api/premios`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
-    const contagem = await response.json();
-
-    // Sum total completed activities for all children
-    const totalConcluidas = contagem.reduce((acc, item) => acc + item.total_concluidas, 0);
-
-    const atividadesConcluidasElem = document.getElementById('atividadesConcluidas');
-    if (atividadesConcluidasElem) {
-      atividadesConcluidasElem.textContent = totalConcluidas;
+    if (!response.ok) {
+      throw new Error('Erro ao buscar prêmios');
     }
+    const premios = await response.json();
+    console.log('Prizes fetched:', premios);
+
+    const prizesContainer = document.getElementById('prizesContainer');
+    prizesContainer.innerHTML = '';
+
+    if (premios.length === 0) {
+      prizesContainer.innerHTML = '<div class="text-muted">Nenhum prêmio cadastrado.</div>';
+      return;
+    }
+
+    premios.forEach(premio => {
+      const div = document.createElement('div');
+      div.className = 'p-2 border rounded mb-2';
+      div.innerHTML = `
+        <strong>${premio.nome}</strong><br>
+        <small>${premio.descricao}</small><br>
+        <small><em>Pontos Necessários: ${premio.pontos_necessarios}</em></small>
+      `;
+      prizesContainer.appendChild(div);
+    });
   } catch (error) {
-    console.error('Erro ao carregar contagem de atividades concluídas:', error);
+    console.error('Erro ao carregar prêmios:', error);
   }
 }
 
-let chart = null;
+async function carregarAtividadesRecentes() {
+  try {
+    const token = localStorage.getItem('token');
+    const responseFilhos = await fetch(`${API_BASE}/filhos`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const filhos = await responseFilhos.json();
+
+    const atividadesCard = document.querySelector('.col-md-6 > .card.p-3 > h5 + div.text-center.py-5.text-muted, .col-md-6 > .card.p-3 > div.text-center.py-5.text-muted');
+
+    if (!filhos || filhos.length === 0) {
+      if (atividadesCard) {
+        atividadesCard.innerHTML = '<div class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>';
+      }
+      atualizarResumo([]);
+      return;
+    }
+
+    const responseAtividades = await fetch(`${API_BASE}/atividades/recentes`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const atividades = await responseAtividades.json();
+
+    if (!atividades || atividades.length === 0) {
+      if (atividadesCard) {
+        atividadesCard.innerHTML = '<div class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>';
+      }
+      atualizarResumo([]);
+      return;
+    }
+
+    if (atividadesCard) {
+      atividadesCard.innerHTML = '';
+      atividades.forEach(atividade => {
+        const div = document.createElement('div');
+        div.className = 'p-3 mb-2 rounded shadow-sm d-flex justify-content-between align-items-center';
+        div.style.backgroundColor = atividade.pontuacao > 0 ? '#e3f2fd' : '#fff3e0'; // fundo bem claro
+        div.style.border = '1px solid ' + (atividade.pontuacao > 0 ? '#64b5f6' : '#ffb74d'); // tom médio
+        div.style.color = atividade.pontuacao > 0 ? '#1976d2' : '#fb8c00'; // texto com tom forte mas não gritante
+        div.style.borderRadius = '0.5rem';
+        div.style.padding = '0.75rem';
+        div.style.marginBottom = '0.5rem';
+        div.innerHTML = `
+          <div class="atividade-info">
+            <strong>${atividade.titulo}</strong><br>
+            <small>${atividade.nome_filho} - ${new Date(atividade.data_limite).toLocaleDateString()}</small>
+          </div>
+          <div>
+            <span class="badge" style="background-color: ${atividade.pontuacao > 0 ? '#1976d2' : '#fb913b'}; color: white;">${atividade.pontuacao > 0 ? '+' : ''}${atividade.pontuacao}</span>
+            ${atividade.concluida ? '<button class="btn btn-secondary btn-sm ms-2" disabled>Confirmado</button>' : `<button class="btn btn-sm ms-2 btn-confirmar" style="background-color: ${atividade.pontuacao > 0 ? '#1976d2' : '#fb913b'}; color: white; border: none;" data-id="${atividade.id}">Confirmar</button>`}
+          </div>
+        `;
+        atividadesCard.appendChild(div);
+      });
+
+      document.querySelectorAll('.btn-confirmar').forEach(button => {
+        button.addEventListener('click', async (e) => {
+          const id = e.target.getAttribute('data-id');
+          try {
+            const confirmResponse = await fetch(`${API_BASE}/atividades/${id}/confirmar`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+            if (confirmResponse.ok) {
+              alert('Atividade confirmada com sucesso!');
+              carregarAtividadesRecentes();
+              window.location.reload();
+            } else {
+              const errorData = await confirmResponse.json();
+              alert('Erro ao confirmar atividade: ' + (errorData.error || 'Erro desconhecido'));
+            }
+          } catch (error) {
+            console.error('Erro ao confirmar atividade:', error);
+            alert('Erro ao confirmar atividade. Tente novamente mais tarde.');
+          }
+        });
+      });
+    }
+
+    atualizarResumo(atividades);
+
+  } catch (error) {
+    console.error('Erro ao carregar atividades recentes:', error);
+  }
+}
 
 function atualizarResumo(atividades) {
   const concluidas = atividades.filter(a => a.concluida === true);
@@ -110,124 +199,10 @@ function atualizarResumo(atividades) {
   if (atividadesConcluidasElem) atividadesConcluidasElem.textContent = concluidas.length;
   if (atividadesPendentesElem) atividadesPendentesElem.textContent = pendentes.length;
   if (totalPontosElem) totalPontosElem.textContent = (totalPontos > 0 ? '+' : '') + totalPontos;
-
-  atualizarGrafico(concluidas, pendentes);
 }
 
-function atualizarGrafico(concluidas, pendentes) {
-  const ctx = document.getElementById("graficoPontos") ? document.getElementById("graficoPontos").getContext("2d") : null;
-  if (!ctx) return;
-
-  const labels = ["Concluídas", "Pendentes"];
-  const data = [concluidas.length, pendentes.length];
-  const backgroundColors = ["#2196f3", "#fb913b"];
-
-  if (chart) {
-    chart.destroy();
-  }
-
-  chart = new Chart(ctx, {
-    type: "doughnut",
-    data: {
-      labels: labels,
-      datasets: [{
-        data: data,
-        backgroundColor: backgroundColors
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "bottom"
-        }
-      }
-    }
-  });
-}
-
-async function carregarAtividadesRecentes() {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3000/filhos', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    const filhos = await response.json();
-
-    const atividadesCard = document.querySelector('.col-md-6:nth-child(2) > .card.p-3 > div.text-center.py-5.text-muted');
-
-    if (!filhos || filhos.length === 0) {
-      atividadesCard.innerHTML = '<div class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>';
-      atualizarResumo([]);
-      return;
-    }
-
-    const responseAtividades = await fetch('http://localhost:3000/atividades/recentes', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    const atividades = await responseAtividades.json();
-
-    if (!atividades || atividades.length === 0) {
-      atividadesCard.innerHTML = '<div class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>';
-      atualizarResumo([]);
-      return;
-    }
-
-    atividadesCard.innerHTML = '';
-    atividades.forEach(atividade => {
-      const div = document.createElement('div');
-      div.className = 'p-3 mb-2 rounded shadow-sm d-flex justify-content-between align-items-center';
-      div.style.backgroundColor = atividade.pontuacao > 0 ? '#d4edda' : '#f8d7da'; // green or red background
-      div.innerHTML = `
-        <div>
-          <strong>${atividade.titulo}</strong><br>
-          <small>${atividade.nome_filho} - ${new Date(atividade.data_limite).toLocaleDateString()}</small>
-        </div>
-        <div>
-          <span class="badge ${atividade.pontuacao > 0 ? 'bg-success' : 'bg-danger'}">${atividade.pontuacao > 0 ? '+' : ''}${atividade.pontuacao}</span>
-          ${atividade.concluida ? '<button class="btn btn-secondary btn-sm ms-2" disabled>Confirmado</button>' : '<button class="btn btn-primary btn-sm ms-2 btn-confirmar" data-id="' + atividade.id + '">Confirmar</button>'}
-        </div>
-      `;
-      atividadesCard.appendChild(div);
-    });
-
-    // Add event listeners for confirm buttons
-    document.querySelectorAll('.btn-confirmar').forEach(button => {
-      button.addEventListener('click', async (e) => {
-        const id = e.target.getAttribute('data-id');
-        try {
-          const confirmResponse = await fetch(`http://localhost:3000/atividades/${id}/confirmar`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          if (confirmResponse.ok) {
-            alert('Atividade confirmada com sucesso!');
-            carregarAtividadesRecentes();
-            // Reload the page to update other views
-            window.location.reload();
-          } else {
-            const errorData = await confirmResponse.json();
-            alert('Erro ao confirmar atividade: ' + (errorData.error || 'Erro desconhecido'));
-          }
-        } catch (error) {
-          console.error('Erro ao confirmar atividade:', error);
-          alert('Erro ao confirmar atividade. Tente novamente mais tarde.');
-        }
-      });
-    });
-
-    atualizarResumo(atividades);
-
-  } catch (error) {
-    console.error('Erro ao carregar atividades recentes:', error);
-  }
-}
-
-// Expose function to refresh children list
-window.refreshFilhos = carregarResumoFilhos;
+document.addEventListener('DOMContentLoaded', () => {
+  carregarResumoFilhos();
+  carregarAtividadesRecentes();
+  carregarPremios();
+});

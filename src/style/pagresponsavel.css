@@ -144,6 +144,10 @@ body {
      flex: 1 1 auto;
      text-align: center;
    }
-  
 
-  
+   /* Smaller width for Criar nova atividade button */
+   #btnCriarCard {
+     width: 200px;
+     margin: 0 auto;
+     display: block;
+   }
