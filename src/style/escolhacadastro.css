@@ -2,16 +2,16 @@
 
 /* Cor de fundo geral */
 body {
-    background-color: #ecf0f1; /* Fundo suave */
+    background-color: #e3f2fd; /* Fundo suave */
     font-family: 'Segoe UI', sans-serif;
 }
 
 /* Estilo da navbar */
 .navbar {
-    background-color: #2c3e50; /* Azul escuro */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    padding: 10px 0; /* Espaçamento vertical */
-}
+    background-color: #2196f3 !important; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave para dar destaque */
+  }
+  
 
 /* Estilo do link dentro da navbar */
 .navbar a {
@@ -38,7 +38,7 @@ body {
 
 /* Título do card */
 .card h2 {
-    color: #2c3e50; /* Azul escuro */
+    color: #fb913b; /* Azul escuro */
     font-weight: bold;
     text-align: center;
 }
@@ -53,12 +53,12 @@ a.btn-secondary {
 
 /* Botão "Sou Responsável" */
 a.btn-primary {
-    background-color: #2c3e50;
+    background-color: #2196f3;
     border: none;
 }
 
 a.btn-primary:hover {
-    background-color: #34495e; /* Azul ainda mais escuro no hover */
+    background-color: #1c72b9;/* Azul ainda mais escuro no hover */
     color: #fff;
 }
 

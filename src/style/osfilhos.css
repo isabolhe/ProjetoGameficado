@@ -13,7 +13,7 @@ body {
 
 /* Título da página */
 h2 {
-  color: #558b2f;
+  color: #fb913b;
   font-weight: bold;
   font-size: 1.9rem;
   margin-bottom: 30px;
@@ -71,7 +71,7 @@ input.form-control:focus {
 
 /* Botão: Enviar Convite */
 .btn-enviarconvite {
-  background-color: #558b2f;
+  background-color:#1c72b9;
   border: none;
   font-weight: bold;
   padding: 12px 28px;
@@ -82,14 +82,14 @@ input.form-control:focus {
 }
 
 .btn-enviarconvite:hover {
-  background-color: #689f38;
+  background-color: #2196f3;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(209, 209, 209, 0.3);
 }
 
 /* Botão Editar - Azul médio */
 .btn-editarfilho {
-  background-color: #689f38;
+  background-color: #1c72b9;
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -101,13 +101,13 @@ input.form-control:focus {
 }
 
 .btn-editarfilho:hover {
-  background-color: #558b2f;
+  background-color: #2196f3;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(44, 62, 80, 0.3);
 }
 
 .btn-excluirfilho {
-  background-color: #9b2b1f;
+  background-color: #fb913b;
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -117,7 +117,7 @@ input.form-control:focus {
 }
 
 .btn-excluirfilho:hover {
-  background-color: #c0392b;
+  background-color: #e67e29;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(231, 76, 60, 0.3);
 }
@@ -140,7 +140,7 @@ input.form-control:focus {
 
 /* Modal */
 .modal-header {
-  background-color: #558b2f;
+  background-color: #1c72b9;
   color: #fff;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -158,7 +158,7 @@ input.form-control:focus {
 }
 
 .d-flex button.btn-warning {
-  background-color: #558b2f;
+  background-color: #1c72b9;
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -170,14 +170,14 @@ input.form-control:focus {
 }
 
 .d-flex button.btn-warning:hover {
-  background-color: #689f38;
+  background-color: #2196f3;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(44, 62, 80, 0.3);
 }
 
 
 .d-flex button.btn-danger {
-  background-color: #9b2b1f;
+  background-color: #fb913b;
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -187,7 +187,7 @@ input.form-control:focus {
 }
 
 .d-flex button.btn-danger:hover {
-  background-color: #c0392b;
+  background-color: #e67e29;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(231, 76, 60, 0.3);
 }

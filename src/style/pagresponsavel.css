@@ -50,7 +50,7 @@ body {
   /* Cabeçalho do painel */
   main h2 {
     font-weight: bold;
-    color: #fb913b
+    color: #fb913b;
   }
   
   main .btn-outline-primary {

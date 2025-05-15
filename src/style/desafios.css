@@ -1,0 +1,10 @@
+.desafio-card {
+    background-color: #f0f8ff; /* tom azul claro */
+    border-left: 4px solid #1976d2;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  }
+  
+  #btnConcluirDesafio {
+    margin-top: 10px;
+  }
+  
