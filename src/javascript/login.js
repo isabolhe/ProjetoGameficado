@@ -17,20 +17,38 @@ document.getElementById('form-login').addEventListener('submit', async function 
         const dados = await resposta.json();
 
         if (resposta.ok) {
-            alert('Login bem-sucedido!');
+            // Notificação de sucesso
+            Swal.fire({
+                icon: 'success',
+                title: 'Login bem-sucedido!',
+                text: 'Você será redirecionado em instantes...',
+                timer: 2000,
+                showConfirmButton: false
+            });
 
-            // Store JWT token in localStorage
+            // Armazena o token
             if (dados.token) {
                 localStorage.setItem('token', dados.token);
             }
 
-            // Redireciona para a página do responsável
-            window.location.href = 'pagresponsavel.html';
+            // Aguarda a animação e redireciona
+            setTimeout(() => {
+                window.location.href = 'pagresponsavel.html';
+            }, 2000);
         } else {
-            alert(dados.mensagem);
+            // Erro de login (ex: senha incorreta)
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: dados.mensagem || 'E-mail ou senha inválidos.'
+            });
         }
     } catch (erro) {
         console.error('Erro ao fazer login:', erro);
-        alert('Erro ao tentar fazer login. Tente novamente mais tarde.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: 'Erro ao tentar fazer login. Tente novamente mais tarde.'
+        });
     }
 });

@@ -4,14 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel dos Responsáveis</title>
-  <link rel="shortcut icon" href="src/images/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../src/images/favicon.ico" type="image/x-icon">
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" 
         rel="stylesheet" 
         integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" 
         crossorigin="anonymous">
-  <link rel="stylesheet" href="src/style/pagresponsavel.css">
+  
+  <!-- AOS CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="../src/style/pagresponsavel.css">
 </head>
 <body>
 
@@ -47,26 +51,24 @@
           </div>
         </div>
 
-        
         <div class="row mb-4">
           <!-- Loja de prêmios -->
-          <div class="col-md-6">
+          <div class="col-md-6" data-aos="fade-up">
             <div class="card p-3">
               <h5>Loja de prêmios</h5>
               <div id="prizesContainer" class="mb-3">
                 <!-- Prêmios cadastrados serão exibidos aqui -->
               </div>
-          <!-- <canvas id="graficoPontos" width="200" height="200"></canvas> -->
-          <div class="d-flex justify-content-around mt-3">
-            <div><strong id="atividadesConcluidas">0</strong><br>Atividades Feitas</div>
-            <div><strong id="atividadesPendentes">0</strong><br>Atividades Pendentes</div>
-            <div><strong id="totalPontos">0</strong><br>Pontos</div>
-          </div>
+              <div class="d-flex justify-content-around mt-3">
+                <div><strong id="atividadesConcluidas">0</strong><br>Atividades Feitas</div>
+                <div><strong id="atividadesPendentes">0</strong><br>Atividades Pendentes</div>
+                <div><strong id="totalPontos">0</strong><br>Pontos</div>
+              </div>
             </div>
           </div>
 
           <!-- Atividades Recentes -->
-          <div class="col-md-6">
+          <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
             <div class="card p-3">
               <h5>Atividades sobre Cyberbullying</h5>
               <div class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>
@@ -76,19 +78,18 @@
 
         <!-- Criar Nova Atividade + Meus Filhos -->
         <div class="row mb-4">
-          <div class="col-md-6">
+          <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
             <div class="card text-center p-4">
               <h5>Vamos falar de Cyberbullying?</h5>
               <a href="criarnatividade.html" class="btn btn-outline-primary my-2" id="btnCriarCard">+ Criar nova atividade</a>
             </div>
           </div>
 
-          <div class="col-md-6" id="meusFilhos">
+          <div class="col-md-6" id="meusFilhos" data-aos="fade-up" data-aos-delay="300">
             <div class="card p-3">
               <h5>Meus Filhos</h5>
               <div class="text-center py-5 text-muted" id="nenhumFilho">Nenhum filho cadastrado.</div>
               <a href="osfilhos.html" class="btn btn-primary btn-sm mt-2" id="adicionarFilho">Adicionar Filho</a>
-              
               <div id="filhosResumo" class="d-none mt-3"></div>
             </div>
           </div>
@@ -120,8 +121,22 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" 
           integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" 
           crossorigin="anonymous"></script>
+  
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="src/javascript/pagresponsavel.js"></script>
+
+  <!-- AOS JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+  </script>
+
+  <!-- Script da página -->
+  <script src="../src/javascript/pagresponsavel.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 </html>
-

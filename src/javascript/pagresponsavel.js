@@ -28,8 +28,18 @@ async function carregarResumoFilhos() {
 
       const bloquear = (e) => {
         e.preventDefault();
-        const modal = new bootstrap.Modal(document.getElementById('modalSemFilhos'));
-        modal.show();
+        Swal.fire({
+          icon: 'warning',
+          title: 'Atenção',
+          text: 'Você precisa cadastrar ao menos um filho antes de criar uma nova atividade.',
+          showCancelButton: true,
+          confirmButtonText: 'Cadastrar Filho',
+          cancelButtonText: 'Fechar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = 'osfilhos.html';
+          }
+        });
       };
 
       btnCriarAtividade1?.addEventListener('click', bloquear);
@@ -54,6 +64,11 @@ async function carregarResumoFilhos() {
 
   } catch (error) {
     console.error('Erro ao carregar filhos:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Erro',
+      text: 'Não foi possível carregar os filhos. Tente novamente mais tarde.'
+    });
   }
 }
 
@@ -92,6 +107,11 @@ async function carregarPremios() {
     });
   } catch (error) {
     console.error('Erro ao carregar prêmios:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Erro',
+      text: 'Não foi possível carregar os prêmios. Tente novamente mais tarde.'
+    });
   }
 }
 
@@ -135,9 +155,9 @@ async function carregarAtividadesRecentes() {
       atividades.forEach(atividade => {
         const div = document.createElement('div');
         div.className = 'p-3 mb-2 rounded shadow-sm d-flex justify-content-between align-items-center';
-        div.style.backgroundColor = atividade.pontuacao > 0 ? '#e3f2fd' : '#fff3e0'; // fundo bem claro
-        div.style.border = '1px solid ' + (atividade.pontuacao > 0 ? '#64b5f6' : '#ffb74d'); // tom médio
-        div.style.color = atividade.pontuacao > 0 ? '#1976d2' : '#fb8c00'; // texto com tom forte mas não gritante
+        div.style.backgroundColor = atividade.pontuacao > 0 ? '#e3f2fd' : '#fff3e0'; // fundo claro
+        div.style.border = '1px solid ' + (atividade.pontuacao > 0 ? '#64b5f6' : '#ffb74d'); // borda
+        div.style.color = atividade.pontuacao > 0 ? '#1976d2' : '#fb8c00'; // texto
         div.style.borderRadius = '0.5rem';
         div.style.padding = '0.75rem';
         div.style.marginBottom = '0.5rem';
@@ -165,16 +185,31 @@ async function carregarAtividadesRecentes() {
               }
             });
             if (confirmResponse.ok) {
-              alert('Atividade confirmada com sucesso!');
+              Swal.fire({
+                icon: 'success',
+                title: 'Sucesso',
+                text: 'Atividade confirmada com sucesso!',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+              });
               carregarAtividadesRecentes();
               window.location.reload();
             } else {
               const errorData = await confirmResponse.json();
-              alert('Erro ao confirmar atividade: ' + (errorData.error || 'Erro desconhecido'));
+              Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: 'Erro ao confirmar atividade: ' + (errorData.error || 'Erro desconhecido'),
+              });
             }
           } catch (error) {
             console.error('Erro ao confirmar atividade:', error);
-            alert('Erro ao confirmar atividade. Tente novamente mais tarde.');
+            Swal.fire({
+              icon: 'error',
+              title: 'Erro',
+              text: 'Erro ao confirmar atividade. Tente novamente mais tarde.'
+            });
           }
         });
       });
@@ -184,6 +219,11 @@ async function carregarAtividadesRecentes() {
 
   } catch (error) {
     console.error('Erro ao carregar atividades recentes:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Erro',
+      text: 'Não foi possível carregar as atividades recentes. Tente novamente mais tarde.'
+    });
   }
 }
 

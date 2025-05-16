@@ -1,153 +1,177 @@
-/* pagresponsavel.css */
-
 /* Reset e estilo base */
 body {
-    background-color: #ecf0f1;
-    font-family: 'Segoe UI', sans-serif;
-    color: #2c3e50;
-    margin: 0;
-  }
-  
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', sans-serif;
+  color: #343a40;
+  margin: 0;
+}
+
+.sidebar {
+  background-color: #0d6efd;
+  color: white;
+  padding: 1.5rem 1rem;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  border-right: 1px solid #dee2e6;
+}
+
+@media (max-width: 768px) {
   .sidebar {
-    background-color: #2196f3;
-    color: white;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Garante altura total da tela */
-    position: sticky;
-    top: 0;
+    position: relative;
+    height: auto;
   }
+}
 
-  @media (max-width: 768px) {
-    .sidebar {
-      position: relative;
-      height: auto;
-    }
-  }
-  
-  
-  .sidebar h4 {
-    color: #fb913b;
-    font-weight: bold;
-    margin-bottom: 2rem;
-  }
-  
-  .sidebar .nav-link {
-    color: #ecf0f1;
-    padding: 10px 0;
-    font-size: 0.95rem;
-    border-radius: 5px;
-  }
-  
-  .sidebar .nav-link:hover,
-  .sidebar .nav-link.active {
-    background-color: #1c72b9;
-    color: white;
-    transition: 0.2s;
-  }
-  
-  /* Cabeçalho do painel */
-  main h2 {
-    font-weight: bold;
-    color: #fb913b;
-  }
-  
-  main .btn-outline-primary {
-    border-color: #2196f3;
-    color: #2c3e50;
-  }
-  
-  main .btn-outline-primary:hover {
-    background-color: #2196f3;
-    color: white;
-  }
-  
-  /* Cartões */
-  .card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    padding: 1.5rem;
-  }
-  
-  .card h5 {
-    color: #2c3e50;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  
-  .text-muted {
-    color: #7f8c8d !important;
-  }
-  
-  /* Botões */
-  .btn-primary {
-    background-color: #2196f3;
-    border: none;
-    font-weight: bold;
-    color: white;
-  }
-  
-  .btn-primary:hover {
-    background-color: #1c72b9;
-  }
-  
-  .btn-sm {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-  }
-  
-  /* Gráficos ou blocos de resumo */
-  .resumo-item {
-    text-align: center;
-    margin-top: 1rem;
-  }
-  
-  .resumo-item strong {
-    font-size: 1.5rem;
-    color: #2c3e50;
-  }
-  
-  .resumo-item span {
-    display: block;
-    font-size: 0.9rem;
-    color: #7f8c8d;
-  }
-  
-   /* Espaçamentos */
-   .py-4 {
-     padding-top: 2rem !important;
-     padding-bottom: 2rem !important;
-   }
-   
-   .p-4 {
-     padding: 2rem !important;
-   }
+.sidebar h4 {
+  font-weight: bold;
+  color: #ffc107;
+  margin-bottom: 2rem;
+  font-size: 1.4rem;
+}
 
-   /* Fix for summary chart and layout */
-   #graficoPontos {
-     max-width: 300px;
-     max-height: 300px;
-     margin: 0 auto 1rem auto;
-     display: block;
-   }
+.sidebar .nav-link {
+  color: #e9ecef;
+  padding: 10px 0;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
 
-   .card > .d-flex.justify-content-around {
-     flex-wrap: nowrap;
-     justify-content: space-around;
-     align-items: center;
-   }
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
 
-   .card > .d-flex.justify-content-around > div {
-     flex: 1 1 auto;
-     text-align: center;
-   }
+main h2 {
+  font-weight: 600;
+  color: #0d6efd;
+  font-size: 1.8rem;
+}
 
-   /* Smaller width for Criar nova atividade button */
-   #btnCriarCard {
-     width: 200px;
-     margin: 0 auto;
-     display: block;
-   }
+main .btn-outline-primary {
+  border-color: #0d6efd;
+  color: #0d6efd;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+main .btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.card {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(13, 110, 253, 0.1);
+  z-index: 10;
+}
+
+.card h5 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 1rem;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.resumo-item {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.resumo-item strong {
+  font-size: 1.5rem;
+  color: #212529;
+}
+
+.resumo-item span {
+  display: block;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.p-4 {
+  padding: 2rem !important;
+}
+
+.py-4 {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+
+#graficoPontos {
+  max-width: 280px;
+  max-height: 280px;
+  margin: 0 auto 1rem auto;
+  display: block;
+}
+
+.card > .d-flex.justify-content-around {
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.card > .d-flex.justify-content-around > div {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+#btnCriarCard {
+  width: 220px;
+  margin: 0 auto;
+  display: block;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+#btnCriarCard:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Modal ajuste */
+.modal-header {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.modal-footer .btn-primary {
+  background-color: #0d6efd;
+  border: none;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #0b5ed7;
+}

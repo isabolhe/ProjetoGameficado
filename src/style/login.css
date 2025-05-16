@@ -1,212 +1,42 @@
-/* Fundo geral da página */
 body {
-    background-color: #e3f2fd;
-    font-family: 'Segoe UI', sans-serif;
-    padding: 0; /* Remover padding */
-    margin-top: 40px;
-  }
-
-
-/* Navbar */
-.navbar {
-  background-color: #2196f3 !important; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave para dar destaque */
+  background: #f0f4f8;
+  font-family: 'Rubik', sans-serif;
+  padding-top: 10px;
 }
 
-.navbar a.navbar-brand {
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: #fd9b4b; /* Cor escura para o nome do site */
+h1, h2, h3 {
+  font-weight: 700;
 }
 
-.navbar-nav .nav-link {
-  color: #ffffff; /* Texto em azul escuro */
-  font-weight: bold;
-  font-size: 1rem;
-  padding-left: 15px;
-  padding-right: 15px;
-  transition: color 0.3s ease;
+.card {
+  border-radius: 16px;
+  background-color: #ffffff;
+  border: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* Efeito de hover nos links */
-.navbar-nav .nav-link:hover {
-  color: #fb913b; /* Cor laranja do seu site no hover */
+.input-group-text {
+  background-color: #e9ecef;
+  border-radius: 0.5rem 0 0 0.5rem;
+  border: 1px solid #ced4da;
 }
 
-
-
-
-/* Navbar no topo fixo */
-.fixed-top {
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1030; /* Garante que a navbar fique no topo */
+input.form-control {
+  border-radius: 0 0.5rem 0.5rem 0;
+  border: 1px solid #ced4da;
 }
 
-  
-  /* Container centralizado */
-  .container {
-    max-width: 750px;
-    margin: 0 auto;
-    
-  }
-  
-  /* Título da página */
-  h2 {
-    color: #fb913b;
-    font-weight: bold;
-    font-size: 2.7rem;
-    margin-bottom: 30px;
-    text-align: left;
-  }
-
-  h3 {
-    font-weight: bold;
-  }
-  
-  /* Cartão do formulário */
-  .card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    padding: 30px;
-    transition: transform 0.3s ease;
-  }
-  
-  .card:hover {
-    transform: translateY(-2px);
-  }
-  
-  /* Inputs */
-  input.form-control {
-    background-color: #f4f6f9;
-    border: 1px solid #ccc;
-    color: #333;
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-size: 1rem;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  input.form-control:focus {
-    background-color: #ffffff;
-    border-color: #2196f3;
-    box-shadow: 0 0 8px rgba(41, 128, 185, 0.5);
-  }
-  
-  /* Botões */
-  .btn-primary {
-    background-color: #2c3e50;
-    border: none;
-    font-weight: bold;
-    padding: 12px 28px;
-    border-radius: 10px;
-    color: #fff;
-    transition: all 0.25s ease-in-out;
-    box-shadow: 0 4px 10px rgba(44, 62, 80, 0.2);
-  }
-  
-  .btn-primary:hover {
-    background-color: #34495e;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(44, 62, 80, 0.3);
-  }
-  
-  /* Texto de ajuda */
-  .form-text {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-  }
-  
-  /* Alerta */
-  .alert-info {
-    background-color: #d6eaf8;
-    color: #2c3e50;
-    border: none;
-    border-radius: 10px;
-    padding: 20px;
-    font-weight: 500;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  /* Botões do modal */
-  button.btn-warning {
-    background-color: #f39c12;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    padding: 10px 20px;
-    color: #fff;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  button.btn-warning:hover {
-    background-color: #e67e22;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(243, 156, 18, 0.3);
-  }
-  
-  button.btn-danger {
-    background-color: #e74c3c;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    padding: 10px 20px;
-    color: #fff;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  button.btn-danger:hover {
-    background-color: #c0392b;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(231, 76, 60, 0.3);
-  }
-  
-  button.btn-secondary {
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-weight: 600;
-    transition: transform 0.2s ease;
-  }
-  
-  button.btn-secondary:hover {
-    transform: translateY(-2px);
-  }
-  
-  /* Modal */
-  .modal-header {
-    background-color: #2c3e50;
-    color: #fff;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-  }
-  
-  .modal-footer {
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-
-  input.form-control,
-textarea.form-control,
-select.form-select {
-  background-color: #ffffff !important;
-  color: #000000;
-  border-color: #ced4da;
-  box-shadow: none;
+.btn-primary {
+  background-color: #1976d2;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: 0.3s;
 }
 
-input.form-control:-webkit-autofill {
-  box-shadow: 0 0 0px 1000px white inset !important;
-  -webkit-text-fill-color: #000 !important;
+.btn-primary:hover {
+  background-color: #1565c0;
 }
 
-
-
-
-
-
-  
-  
+a {
+  color: #1976d2;
+}
