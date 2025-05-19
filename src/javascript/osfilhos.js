@@ -4,12 +4,21 @@ const API_BASE = 'http://localhost:3000';
 async function carregarFilhos() {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE}/filhos`, {
+        // Fetch filhos with pontos
+        const responseFilhos = await fetch(`${API_BASE}/filhos`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
-        const filhos = await response.json();
+        const filhos = await responseFilhos.json();
+
+        // Fetch atividades counts (concluidas and pendentes)
+        const responseAtividades = await fetch(`${API_BASE}/atividades/concluidas/count`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const atividadesCounts = await responseAtividades.json();
 
         const listaFilhos = document.getElementById('lista-filhos');
         const mensagemNenhum = document.querySelector('.alert.alert-info');
@@ -29,11 +38,15 @@ async function carregarFilhos() {
         listaFilhos.appendChild(titulo);
 
         filhos.forEach(filho => {
+            const counts = atividadesCounts.find(ac => ac.filho_id === filho.id) || { total_concluidas: 0, total_pendentes: 0 };
             const filhoDiv = document.createElement('div');
             filhoDiv.className = 'p-3 mb-2 bg-light border rounded';
             filhoDiv.innerHTML = `
                 <strong>${filho.nome}</strong><br>
-                <small>${filho.email}</small>
+                <small>${filho.email}</small><br>
+                <small>Pontos Totais: ${filho.pontos || 0}</small><br>
+                <small>Atividades Concluídas: ${counts.total_concluidas}</small><br>
+                <small>Atividades Pendentes: ${counts.total_pendentes}</small>
                 <div class="d-flex justify-content-end mt-2">
                     <button class="btn btn-sm btn-warning mr-2" onclick="abrirModalEditarExcluir(${filho.id}, '${filho.nome}', '${filho.email}')">Editar</button>
                     <button class="btn btn-sm btn-danger" onclick="abrirModalEditarExcluir(${filho.id}, '${filho.nome}', '${filho.email}')">Excluir</button>

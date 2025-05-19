@@ -115,7 +115,7 @@ app.post('/criar-filho', authenticateToken, (req, res) => {
 app.get('/filhos', authenticateToken, (req, res) => {
   const responsavelId = req.user.id;
   console.log('Fetching filhos for responsavelId:', responsavelId);
-  const query = 'SELECT id, nome, email FROM criacao_filhos WHERE responsaveis_id = ? ORDER BY id DESC';
+  const query = 'SELECT id, nome, email, pontos FROM criacao_filhos WHERE responsaveis_id = ? ORDER BY id DESC';
 
   db.query(query, [responsavelId], (err, results) => {
     if (err) {
@@ -256,16 +256,18 @@ app.get('/atividades', authenticateToken, (req, res) => {
 app.get('/atividades/concluidas/count', authenticateToken, (req, res) => {
   const responsavelId = req.user.id;
   const query = `
-    SELECT f.id as filho_id, f.nome as nome_filho, COUNT(a.id) as total_concluidas
+    SELECT f.id as filho_id, f.nome as nome_filho, 
+      COUNT(CASE WHEN a.concluida = TRUE THEN 1 END) as total_concluidas,
+      COUNT(CASE WHEN a.concluida = FALSE THEN 1 END) as total_pendentes
     FROM criacao_filhos f
-    LEFT JOIN atividades a ON a.filho_id = f.id AND a.concluida = TRUE
+    LEFT JOIN atividades a ON a.filho_id = f.id
     WHERE f.responsaveis_id = ?
     GROUP BY f.id, f.nome
   `;
   db.query(query, [responsavelId], (err, results) => {
     if (err) {
-      console.error('Erro ao buscar contagem de atividades concluídas:', err);
-      return res.status(500).json({ error: 'Erro no servidor ao buscar contagem de atividades concluídas.' });
+      console.error('Erro ao buscar contagem de atividades concluídas e pendentes:', err);
+      return res.status(500).json({ error: 'Erro no servidor ao buscar contagem de atividades concluídas e pendentes.' });
     }
     res.json(results);
   });
@@ -363,6 +365,67 @@ app.get('/api/premios', authenticateToken, (req, res) => {
       return res.status(500).json({ error: 'Erro ao buscar prêmios.' });
     }
     res.json(results);
+  });
+});
+
+// New route to delete a prize by ID (DELETE)
+app.delete('/api/premios/:id', authenticateToken, (req, res) => {
+  const { id } = req.params;
+  const responsavelId = req.user.id;
+
+  // Verify the prize belongs to the authenticated user
+  const queryCheck = 'SELECT * FROM premios WHERE id = ? AND responsavel_id = ?';
+  db.query(queryCheck, [id, responsavelId], (err, results) => {
+    if (err) {
+      console.error('Erro ao verificar prêmio:', err);
+      return res.status(500).json({ error: 'Erro no servidor.' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'Prêmio não encontrado ou não pertence ao usuário.' });
+    }
+
+    // Delete the prize
+    const queryDelete = 'DELETE FROM premios WHERE id = ?';
+    db.query(queryDelete, [id], (err2, result) => {
+      if (err2) {
+        console.error('Erro ao excluir prêmio:', err2);
+        return res.status(500).json({ error: 'Erro ao excluir prêmio.' });
+      }
+      res.json({ message: 'Prêmio excluído com sucesso!' });
+    });
+  });
+});
+
+// New route to update a prize by ID (PUT)
+app.put('/api/premios/:id', authenticateToken, (req, res) => {
+  const { id } = req.params;
+  const { nome, descricao, pontos_necessarios } = req.body;
+  const responsavelId = req.user.id;
+
+  if (!nome || !descricao || pontos_necessarios === undefined) {
+    return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
+  }
+
+  // Verify the prize belongs to the authenticated user
+  const queryCheck = 'SELECT * FROM premios WHERE id = ? AND responsavel_id = ?';
+  db.query(queryCheck, [id, responsavelId], (err, results) => {
+    if (err) {
+      console.error('Erro ao verificar prêmio:', err);
+      return res.status(500).json({ error: 'Erro no servidor.' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'Prêmio não encontrado ou não pertence ao usuário.' });
+    }
+
+    // Update the prize
+    const queryUpdate = 'UPDATE premios SET nome = ?, descricao = ?, pontos_necessarios = ? WHERE id = ?';
+    db.query(queryUpdate, [nome, descricao, pontos_necessarios, id], (err2, result) => {
+      if (err2) {
+        console.error('Erro ao atualizar prêmio:', err2);
+        return res.status(500).json({ error: 'Erro ao atualizar prêmio.' });
+      }
+      res.json({ message: 'Prêmio atualizado com sucesso!' });
+    });
   });
 });
 

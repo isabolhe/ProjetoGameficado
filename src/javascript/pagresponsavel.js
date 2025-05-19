@@ -97,11 +97,10 @@ async function carregarPremios() {
 
     premios.forEach(premio => {
       const div = document.createElement('div');
-      div.className = 'p-2 border rounded mb-2';
+      div.className = 'p-2 border rounded mb-2 d-flex justify-content-between align-items-center';
       div.innerHTML = `
-        <strong>${premio.nome}</strong><br>
-        <small>${premio.descricao}</small><br>
-        <small><em>Pontos Necessários: ${premio.pontos_necessarios}</em></small>
+        <strong>${premio.nome}</strong>
+        <small><em>${premio.pontos_necessarios} pts</em></small>
       `;
       prizesContainer.appendChild(div);
     });

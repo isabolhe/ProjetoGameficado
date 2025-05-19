@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectFilho = document.getElementById("selectFilho");
 
     let filhos = [];
-    let atividades = [];
+    let atividadesCounts = [];
 
     let chart = null;
     let chartDesempenho = null;
@@ -37,13 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    async function fetchAtividades() {
+    async function fetchAtividadesCounts() {
         try {
-            const response = await fetch("http://localhost:3000/atividades", {
+            const response = await fetch("http://localhost:3000/atividades/concluidas/count", {
                 headers: { Authorization: "Bearer " + localStorage.getItem("token") }
             });
-            if (!response.ok) throw new Error("Erro ao buscar atividades");
-            atividades = await response.json();
+            if (!response.ok) throw new Error("Erro ao buscar contagem de atividades");
+            atividadesCounts = await response.json();
             atualizarResumo();
             atualizarGraficoDesempenho();
         } catch (error) {
@@ -51,27 +51,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function filtrarAtividadesPorFilho(idFilho) {
+    function getAtividadesCountByFilho(idFilho) {
         if (idFilho === "all") {
-            return atividades;
+            // Aggregate counts for all filhos
+            const totalConcluidas = atividadesCounts.reduce((acc, cur) => acc + (cur.total_concluidas || 0), 0);
+            const totalPendentes = atividadesCounts.reduce((acc, cur) => acc + (cur.total_pendentes || 0), 0);
+            const totalPontos = filhos.reduce((acc, cur) => acc + (cur.pontos || 0), 0);
+            return { totalConcluidas, totalPendentes, totalPontos };
         }
-        return atividades.filter(a => a.filho_id === parseInt(idFilho));
+        const filhoData = atividadesCounts.find(ac => ac.filho_id === parseInt(idFilho));
+        const filhoPontos = filhos.find(f => f.id === parseInt(idFilho))?.pontos || 0;
+        return {
+            totalConcluidas: filhoData?.total_concluidas || 0,
+            totalPendentes: filhoData?.total_pendentes || 0,
+            totalPontos: filhoPontos
+        };
     }
 
     function atualizarResumo() {
         if (!selectFilho) return;
         const idFilhoSelecionado = selectFilho.value;
-        const atividadesFiltradas = filtrarAtividadesPorFilho(idFilhoSelecionado);
+        const counts = getAtividadesCountByFilho(idFilhoSelecionado);
 
-        const concluidas = atividadesFiltradas.filter(a => a.concluida === true);
-        const pendentes = atividadesFiltradas.filter(a => a.concluida === false);
-        const totalPontos = concluidas.reduce((acc, a) => acc + a.pontuacao, 0);
+        if (atividadesConcluidasElem) atividadesConcluidasElem.textContent = counts.totalConcluidas;
+        if (atividadesPendentesElem) atividadesPendentesElem.textContent = counts.totalPendentes;
+        if (totalPontosElem) totalPontosElem.textContent = (counts.totalPontos > 0 ? '+' : '') + counts.totalPontos;
 
-        if (atividadesConcluidasElem) atividadesConcluidasElem.textContent = concluidas.length;
-        if (atividadesPendentesElem) atividadesPendentesElem.textContent = pendentes.length;
-        if (totalPontosElem) totalPontosElem.textContent = (totalPontos > 0 ? '+' : '') + totalPontos;
-
-        atualizarGrafico(concluidas, pendentes);
+        atualizarGrafico(counts.totalConcluidas, counts.totalPendentes);
     }
 
 function atualizarGrafico(concluidas, pendentes) {
@@ -173,7 +179,7 @@ function atualizarGraficoDesempenho() {
 
     async function init() {
         await fetchFilhos();
-        await fetchAtividades();
+        await fetchAtividadesCounts();
     }
 
     init();
