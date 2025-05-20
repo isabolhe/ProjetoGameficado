@@ -17,18 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
   let editMode = false;
   let premioParaEditar = null;
 
-  // Function to fetch and display prizes
   async function fetchPremios() {
     try {
       const response = await fetch(`${apiBaseUrl}/api/premios`, {
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token') // Assuming token stored in localStorage
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       });
-      if (!response.ok) {
-        throw new Error('Erro ao buscar prêmios');
-      }
+      if (!response.ok) throw new Error('Erro ao buscar prêmios');
+
       const premios = await response.json();
+
       if (premios.length === 0) {
         alertNenhumPremio.style.display = 'block';
         listaPremios.style.display = 'none';
@@ -42,19 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
         btnToggleSelecao.style.display = 'inline-block';
         btnToggleEdicao.style.display = 'inline-block';
         listaPremios.innerHTML = '';
-        premios.forEach(premio => {
+        premios.forEach((premio, index) => {
           const item = document.createElement('div');
           item.className = 'list-group-item d-flex justify-content-between align-items-center';
-          item.dataset.premioId = premio.id; // Assuming premio has an id field
+          item.dataset.premioId = premio.id;
+          item.setAttribute('data-aos', 'fade-up');
+          item.setAttribute('data-aos-delay', Math.min(index * 100, 500));
 
-          let checkboxHtml = '';
-          let radioHtml = '';
-          if (selectionMode) {
-            checkboxHtml = `<input type="checkbox" class="select-premio-checkbox me-3" data-id="${premio.id}">`;
-          }
-          if (editMode) {
-            radioHtml = `<input type="radio" name="select-premio-editar" class="select-premio-radio me-3" data-id="${premio.id}">`;
-          }
+          let checkboxHtml = selectionMode ? `<input type="checkbox" class="select-premio-checkbox me-3" data-id="${premio.id}">` : '';
+          let radioHtml = editMode ? `<input type="radio" name="select-premio-editar" class="select-premio-radio me-3" data-id="${premio.id}">` : '';
 
           item.innerHTML = `
             <div class="d-flex align-items-center">
@@ -75,65 +70,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (selectionMode) {
-          // Add event listeners to checkboxes
           document.querySelectorAll('.select-premio-checkbox').forEach(checkbox => {
             checkbox.addEventListener('change', (e) => {
               const id = e.target.dataset.id;
-              if (e.target.checked) {
-                selectedPremios.add(id);
-              } else {
-                selectedPremios.delete(id);
-              }
+              e.target.checked ? selectedPremios.add(id) : selectedPremios.delete(id);
               btnExcluirPremios.disabled = selectedPremios.size === 0;
             });
           });
-          btnExcluirPremios.disabled = selectedPremios.size === 0;
         }
 
         if (editMode) {
-          // Add event listeners to radio buttons
           document.querySelectorAll('.select-premio-radio').forEach(radio => {
             radio.addEventListener('change', (e) => {
               const id = e.target.dataset.id;
-              premioParaEditar = null;
-              if (e.target.checked) {
-                premioParaEditar = premios.find(p => p.id == id);
-                if (premioParaEditar) {
-                  // Pre-fill modal form with prize data
-                  document.getElementById('nomePremio').value = premioParaEditar.nome;
-                  document.getElementById('descricaoPremio').value = premioParaEditar.descricao;
-                  document.getElementById('pontosNecessarios').value = premioParaEditar.pontos_necessarios;
-                  // Change modal title and button text
-                  document.getElementById('cadastrarPremioModalLabel').textContent = 'Editar Prêmio';
-                  btnSalvarPremio.textContent = 'Salvar Alterações';
-                  // Show modal
-                  modal.show();
-                }
+              premioParaEditar = premios.find(p => p.id == id);
+              if (premioParaEditar) {
+                document.getElementById('nomePremio').value = premioParaEditar.nome;
+                document.getElementById('descricaoPremio').value = premioParaEditar.descricao;
+                document.getElementById('pontosNecessarios').value = premioParaEditar.pontos_necessarios;
+                document.getElementById('cadastrarPremioModalLabel').textContent = 'Editar Prêmio';
+                btnSalvarPremio.textContent = 'Salvar Alterações';
+                modal.show();
               }
             });
           });
         }
+
+        AOS.refresh();
       }
     } catch (error) {
       console.error(error);
-      alert('Erro ao carregar prêmios.');
-      btnExcluirPremios.style.display = 'none';
-      btnToggleSelecao.style.display = 'none';
-      btnToggleEdicao.style.display = 'none';
+      Swal.fire('Erro', 'Erro ao carregar prêmios.', 'error');
     }
   }
 
-  // Function to delete selected prizes
   async function deleteSelectedPremios() {
     if (selectedPremios.size === 0) {
-      alert('Nenhum prêmio selecionado para exclusão.');
-      return;
+      return Swal.fire('Atenção', 'Nenhum prêmio selecionado para exclusão.', 'warning');
     }
-    if (!confirm('Tem certeza que deseja excluir os prêmios selecionados? Esta ação não pode ser desfeita.')) {
-      return;
-    }
+
+    const result = await Swal.fire({
+      title: 'Tem certeza?',
+      text: 'Você deseja excluir os prêmios selecionados? Essa ação não pode ser desfeita.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, excluir',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
-      // Assuming API supports deleting individual prizes by ID
       for (const id of selectedPremios) {
         const response = await fetch(`${apiBaseUrl}/api/premios/${id}`, {
           method: 'DELETE',
@@ -141,22 +128,20 @@ document.addEventListener('DOMContentLoaded', () => {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
         });
-        if (!response.ok) {
-          throw new Error(`Erro ao excluir prêmio com ID ${id}`);
-        }
+        if (!response.ok) throw new Error(`Erro ao excluir prêmio com ID ${id}`);
       }
-      alert('Prêmios excluídos com sucesso!');
+
       selectedPremios.clear();
       selectionMode = false;
       btnToggleSelecao.textContent = 'Selecionar para Excluir';
+      await Swal.fire('Sucesso', 'Prêmios excluídos com sucesso!', 'success');
       fetchPremios();
     } catch (error) {
       console.error(error);
-      alert('Erro ao excluir prêmios.');
+      Swal.fire('Erro', 'Erro ao excluir prêmios.', 'error');
     }
   }
 
-  // Toggle selection mode
   btnToggleSelecao.addEventListener('click', () => {
     selectionMode = !selectionMode;
     selectedPremios.clear();
@@ -165,12 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchPremios();
   });
 
-  // Toggle edit mode
   btnToggleEdicao.addEventListener('click', () => {
     editMode = !editMode;
     premioParaEditar = null;
     btnToggleEdicao.textContent = editMode ? 'Cancelar Edição' : 'Selecionar para Editar';
-    // Reset modal title and button text in case modal was open
     document.getElementById('cadastrarPremioModalLabel').textContent = 'Cadastrar Novo Prêmio';
     btnSalvarPremio.textContent = 'Salvar Prêmio';
     fetchPremios();
@@ -185,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         let response;
         if (editMode && premioParaEditar) {
-          // Update existing prize
           response = await fetch(`${apiBaseUrl}/api/premios/${premioParaEditar.id}`, {
             method: 'PUT',
             headers: {
@@ -199,7 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
           });
         } else {
-          // Create new prize
           response = await fetch(`${apiBaseUrl}/api/premios`, {
             method: 'POST',
             headers: {
@@ -219,24 +200,20 @@ document.addEventListener('DOMContentLoaded', () => {
           throw new Error(errorData.error || 'Erro ao salvar prêmio');
         }
 
-        // Clear form and close modal
         form.reset();
         modal.hide();
 
-        // Reset edit mode if it was active
         if (editMode) {
           editMode = false;
           premioParaEditar = null;
           btnToggleEdicao.textContent = 'Selecionar para Editar';
         }
 
-        // Refresh prize list
+        await Swal.fire('Sucesso', 'Prêmio salvo com sucesso!', 'success');
         fetchPremios();
-
-        alert(editMode ? 'Prêmio atualizado com sucesso!' : 'Prêmio salvo com sucesso!');
       } catch (error) {
         console.error(error);
-        alert('Erro ao salvar prêmio: ' + error.message);
+        Swal.fire('Erro', 'Erro ao salvar prêmio: ' + error.message, 'error');
       }
     } else {
       form.reportValidity();
@@ -245,6 +222,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnExcluirPremios.addEventListener('click', deleteSelectedPremios);
 
-  // Initial fetch of prizes
   fetchPremios();
 });

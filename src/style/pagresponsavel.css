@@ -175,3 +175,7 @@ main .btn-outline-primary:hover {
 .modal-footer .btn-primary:hover {
   background-color: #0b5ed7;
 }
+
+.fa-solid {
+  margin-right: 6px; /* aumenta esse valor se quiser mais espaço */
+}
