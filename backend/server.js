@@ -1,3 +1,8 @@
+require('dotenv').config();
+
+
+
+
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -8,20 +13,38 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-// Conexão com banco
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Oloco01*2',
-  database: 'atravesdajanela01'
-});
+// Definir qual banco usar pela flag no .env
+const useLocal = process.env.USE_LOCAL_DB === 'true';
+
+console.log('USE_LOCAL_DB:', process.env.USE_LOCAL_DB);
+console.log('LOCAL_DB_USER:', process.env.LOCAL_DB_USER);
+console.log('LOCAL_DB_PASSWORD:', process.env.LOCAL_DB_PASSWORD ? '*****' : '(não definido)');
+
+
+const dbConfig = useLocal
+  ? {
+      host: process.env.LOCAL_DB_HOST,
+      port: process.env.LOCAL_DB_PORT,
+      user: process.env.LOCAL_DB_USER,
+      password: process.env.LOCAL_DB_PASSWORD,
+      database: process.env.LOCAL_DB_NAME,
+    }
+  : {
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+    };
+
+const db = mysql.createConnection(dbConfig);
 
 db.connect((err) => {
   if (err) {
     console.error('Erro ao conectar ao banco:', err);
     return;
   }
-  console.log('Conectado ao MySQL');
+  console.log(`Conectado ao MySQL ${useLocal ? '(Local)' : '(Railway)'} com sucesso!`);
 });
 
 // Rota de login
