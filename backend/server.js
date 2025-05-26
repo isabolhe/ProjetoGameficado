@@ -13,6 +13,9 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from the public directory
+app.use(express.static('public'));
+
 // Definir qual banco usar pela flag no .env
 const useLocal = process.env.USE_LOCAL_DB === 'true';
 

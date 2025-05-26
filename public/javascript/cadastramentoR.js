@@ -34,7 +34,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
   
       if (response.ok) {
         alert('Cadastro realizado com sucesso!');
-        window.location.href = 'login.html'; // redireciona para o login
+        window.location.href = '../public/login.html'; // redireciona para o login
       } else {
         alert('Erro: ' + result.mensagem);
       }
