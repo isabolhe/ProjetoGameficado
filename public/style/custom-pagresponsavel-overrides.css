@@ -1,0 +1,48 @@
+/* Make h5.fw-bold text smaller in prize cards */
+#prizesContainer h5.fw-bold {
+  font-size: 1rem;
+}
+
+/* Change badge bg-dark to site blue */
+#prizesContainer .badge.bg-dark {
+  background-color: #0d6efd !important;
+}
+
+/* Style the "Resgatar" button (btn-purple) */
+#prizesContainer .btn-purple {
+  background-color: white;
+  color: #343a40;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+
+/* Add thin border on hover for btn-purple, border color changes to site blue */
+#prizesContainer .btn-purple:hover {
+  border-color: #0d6efd;
+  background-color: white;
+  color: #343a40;
+}
+
+/* Disable forward movement on hover for cards */
+.card:hover {
+  transform: none !important;
+}
+
+/* Disable forward movement on hover for sidebar nav links */
+.sidebar .nav-link:hover {
+  transform: none !important;
+}
+
+/* Add margin to points count below Loja de prêmios heading */
+#totalPontos {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  color: #666;
+  display: inline-block;
+}
+
+/* Reduce max-height of prizes-wrapper to reduce vertical space consumed */
+.prizes-wrapper {
+  max-height: 300px !important;
+}

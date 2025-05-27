@@ -18,6 +18,8 @@
   
 
   <link rel="stylesheet" href="../public/style/pagresponsavel.css">
+  <link rel="stylesheet" href="../public/style/custom-pagresponsavel-overrides.css">
+  <link rel="stylesheet" href="../public/style/custom-pagresponsavel-atividades.css">
 </head>
 <body>
 
@@ -46,7 +48,7 @@
       <!-- Conteúdo principal -->
       <main class="col-md-10 px-4 py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2>Painel dos Responsáveis</h2>
+          <h2>Dashboard Familiar</h2>
           <div>
             <span class="me-3">Larissa</span>
             <button class="btn btn-outline-primary btn-sm" onclick="logout()">Sair</button>
@@ -57,23 +59,26 @@
           <!-- Loja de prêmios -->
           <div class="col-md-6" data-aos="fade-up">
             <div class="card p-3">
-              <h5>Loja de prêmios</h5>
-              <div id="prizesContainer" class="mb-3">
+               <h5>🏆 Loja de prêmios</h5>
+              <div class="text-muted"><small>Seus pontos disponíveis: <strong id="totalPontos">0</strong></small></div>
+              <div class="prizes-wrapper">
+               <div id="prizesContainer" class="prizes-scroll d-flex flex-wrap gap-3">
                 <!-- Prêmios cadastrados serão exibidos aqui -->
-              </div>
-              <div class="d-flex justify-content-around mt-3">
-                <div><strong id="atividadesConcluidas">0</strong><br>Atividades Feitas</div>
-                <div><strong id="atividadesPendentes">0</strong><br>Atividades Pendentes</div>
-                <div><strong id="totalPontos">0</strong><br>Pontos</div>
+               </div>
               </div>
             </div>
           </div>
 
           <!-- Atividades Recentes -->
           <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="card p-3">
+<div class="card p-3 atividades-card" style="height: 420px; overflow-y: auto;">
               <h5>Atividades sobre Cyberbullying</h5>
-              <div class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>
+              <div id="atividadesPlaceholder" class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>
+<div id="atividadesContainer" class="prizes-wrapper atividades-wrapper" style="display: none;">
+               <div id="atividadesList" class="prizes-scroll atividades-scroll d-flex flex-column gap-3">
+                    <!-- Atividades cadastradas serão exibidos aqui -->
+               </div>
+              </div>
             </div>
           </div>
         </div>

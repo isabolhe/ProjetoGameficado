@@ -54,6 +54,23 @@
               <label for="pontosNecessarios" class="form-label">Pontos Necessários</label>
               <input type="number" class="form-control" id="pontosNecessarios" min="0" required>
             </div>
+            <div class="mb-3">
+              <label class="form-label">Emoji do Prêmio</label>
+              <div id="emojiPicker" class="d-flex flex-wrap gap-2" style="font-size: 1.5rem; cursor: pointer;">
+                <button type="button" class="btn btn-light emoji-btn" data-emoji="🍕" title="Pizza">🍕</button>
+                <button type="button" class="btn btn-light emoji-btn" data-emoji="🎬" title="Filme">🎬</button>
+                <button type="button" class="btn btn-light emoji-btn" data-emoji="🎮" title="Videogame">🎮</button>
+                <button type="button" class="btn btn-light emoji-btn" data-emoji="📚" title="Livro">📚</button>
+                <button type="button" class="btn btn-light emoji-btn" data-emoji="🏆" title="Trofeu">🏆</button>
+                <button type="button" class="btn btn-light emoji-btn" data-emoji="🎧" title="Fone de Ouvido">🎧</button>
+                <button type="button" class="btn btn-light emoji-btn" data-emoji="🚗" title="Carro">🚗</button>
+                <button type="button" class="btn btn-light emoji-btn" data-emoji="🎲" title="Jogo de Tabuleiro">🎲</button>
+                <button type="button" class="btn btn-light emoji-btn" data-emoji="🍰" title="Bolo">🍰</button>
+                <button type="button" class="btn btn-light emoji-btn" data-emoji="🎤" title="Microfone">🎤</button>
+              </div>
+              <input type="hidden" id="emojiPremio" name="emojiPremio" value="">
+              <div class="form-text">Selecione um emoji para representar o prêmio. Evite emojis de rosto.</div>
+            </div>
           </form>
         </div>
         <div class="modal-footer">

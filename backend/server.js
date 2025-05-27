@@ -359,7 +359,7 @@ app.post('/atividades/:id/confirmar', authenticateToken, (req, res) => {
 
 // Rota para criar um novo prêmio (POST)
 app.post('/api/premios', authenticateToken, (req, res) => {
-  const { nome, descricao, pontos_necessarios } = req.body;
+  const { nome, descricao, pontos_necessarios, emoji } = req.body;
   const responsavelId = req.user.id;
 
   if (!nome || !descricao || pontos_necessarios === undefined) {
@@ -367,11 +367,11 @@ app.post('/api/premios', authenticateToken, (req, res) => {
   }
 
   const query = `
-    INSERT INTO premios (nome, descricao, pontos_necessarios, responsavel_id)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO premios (nome, descricao, pontos_necessarios, emoji, responsavel_id)
+    VALUES (?, ?, ?, ?, ?)
   `;
 
-  db.query(query, [nome, descricao, pontos_necessarios, responsavelId], (err, result) => {
+  db.query(query, [nome, descricao, pontos_necessarios, emoji, responsavelId], (err, result) => {
     if (err) {
       console.error('Erro ao inserir prêmio:', err);
       return res.status(500).json({ error: 'Erro ao salvar prêmio.' });
@@ -383,7 +383,7 @@ app.post('/api/premios', authenticateToken, (req, res) => {
 // Rota para obter todos os prêmios (GET)
 app.get('/api/premios', authenticateToken, (req, res) => {
   const responsavelId = req.user.id;
-  const query = 'SELECT * FROM premios WHERE responsavel_id = ? ORDER BY id DESC';
+  const query = 'SELECT id, nome, descricao, pontos_necessarios, emoji FROM premios WHERE responsavel_id = ? ORDER BY id DESC';
 
   db.query(query, [responsavelId], (err, results) => {
     if (err) {
@@ -425,7 +425,7 @@ app.delete('/api/premios/:id', authenticateToken, (req, res) => {
 // New route to update a prize by ID (PUT)
 app.put('/api/premios/:id', authenticateToken, (req, res) => {
   const { id } = req.params;
-  const { nome, descricao, pontos_necessarios } = req.body;
+  const { nome, descricao, pontos_necessarios, emoji } = req.body;
   const responsavelId = req.user.id;
 
   if (!nome || !descricao || pontos_necessarios === undefined) {
@@ -444,8 +444,8 @@ app.put('/api/premios/:id', authenticateToken, (req, res) => {
     }
 
     // Update the prize
-    const queryUpdate = 'UPDATE premios SET nome = ?, descricao = ?, pontos_necessarios = ? WHERE id = ?';
-    db.query(queryUpdate, [nome, descricao, pontos_necessarios, id], (err2, result) => {
+    const queryUpdate = 'UPDATE premios SET nome = ?, descricao = ?, pontos_necessarios = ?, emoji = ? WHERE id = ?';
+    db.query(queryUpdate, [nome, descricao, pontos_necessarios, emoji, id], (err2, result) => {
       if (err2) {
         console.error('Erro ao atualizar prêmio:', err2);
         return res.status(500).json({ error: 'Erro ao atualizar prêmio.' });

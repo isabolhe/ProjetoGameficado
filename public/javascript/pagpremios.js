@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('formCadastrarPremio');
   const alertNenhumPremio = document.getElementById('alertNenhumPremio');
   const listaPremios = document.getElementById('listaPremios');
+  const emojiButtons = document.querySelectorAll('.emoji-btn');
+  const emojiInput = document.getElementById('emojiPremio');
 
   const apiBaseUrl = 'http://localhost:3000';
 
@@ -17,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let editMode = false;
   let premioParaEditar = null;
 
-  async function fetchPremios() {
+async function fetchPremios() {
     try {
       const response = await fetch(`${apiBaseUrl}/api/premios`, {
         headers: {
@@ -27,6 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!response.ok) throw new Error('Erro ao buscar prêmios');
 
       const premios = await response.json();
+
+      console.log('Premios fetched:', premios); // Added for debugging emoji field
 
       if (premios.length === 0) {
         alertNenhumPremio.style.display = 'block';
@@ -48,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
           item.setAttribute('data-aos', 'fade-up');
           item.setAttribute('data-aos-delay', Math.min(index * 100, 500));
 
+          let emojiHtml = premio.emoji ? `<span class="me-2" style="font-size: 1.5rem;">${premio.emoji}</span>` : '';
+
           let checkboxHtml = selectionMode ? `<input type="checkbox" class="select-premio-checkbox me-3" data-id="${premio.id}">` : '';
           let radioHtml = editMode ? `<input type="radio" name="select-premio-editar" class="select-premio-radio me-3" data-id="${premio.id}">` : '';
 
@@ -55,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="d-flex align-items-center">
               ${checkboxHtml}${radioHtml}
               <div>
-                <h5>${premio.nome}</h5>
+                <h5>${emojiHtml}${premio.nome}</h5>
                 <p>${premio.descricao}</p>
               </div>
             </div>
@@ -88,6 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('nomePremio').value = premioParaEditar.nome;
                 document.getElementById('descricaoPremio').value = premioParaEditar.descricao;
                 document.getElementById('pontosNecessarios').value = premioParaEditar.pontos_necessarios;
+                document.getElementById('emojiPremio').value = premioParaEditar.emoji || '';
+                highlightSelectedEmoji(premioParaEditar.emoji || '');
                 document.getElementById('cadastrarPremioModalLabel').textContent = 'Editar Prêmio';
                 btnSalvarPremio.textContent = 'Salvar Alterações';
                 modal.show();
@@ -103,6 +111,25 @@ document.addEventListener('DOMContentLoaded', () => {
       Swal.fire('Erro', 'Erro ao carregar prêmios.', 'error');
     }
   }
+
+  function highlightSelectedEmoji(selectedEmoji) {
+    emojiButtons.forEach(btn => {
+      if (btn.dataset.emoji === selectedEmoji) {
+        btn.classList.add('btn-primary');
+        btn.classList.remove('btn-light');
+      } else {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-light');
+      }
+    });
+  }
+
+  emojiButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      emojiInput.value = btn.dataset.emoji;
+      highlightSelectedEmoji(btn.dataset.emoji);
+    });
+  });
 
   async function deleteSelectedPremios() {
     if (selectedPremios.size === 0) {
@@ -164,6 +191,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const nomePremio = document.getElementById('nomePremio').value.trim();
       const descricaoPremio = document.getElementById('descricaoPremio').value.trim();
       const pontosNecessarios = parseInt(document.getElementById('pontosNecessarios').value.trim(), 10);
+      const emojiPremio = document.getElementById('emojiPremio').value.trim();
+
+      if (!emojiPremio) {
+        return Swal.fire('Atenção', 'Por favor, selecione um emoji para o prêmio.', 'warning');
+      }
 
       try {
         let response;
@@ -177,7 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({
               nome: nomePremio,
               descricao: descricaoPremio,
-              pontos_necessarios: pontosNecessarios
+              pontos_necessarios: pontosNecessarios,
+              emoji: emojiPremio
             })
           });
         } else {
@@ -190,7 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({
               nome: nomePremio,
               descricao: descricaoPremio,
-              pontos_necessarios: pontosNecessarios
+              pontos_necessarios: pontosNecessarios,
+              emoji: emojiPremio
             })
           });
         }
@@ -201,6 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         form.reset();
+        emojiInput.value = '';
         modal.hide();
 
         if (editMode) {
