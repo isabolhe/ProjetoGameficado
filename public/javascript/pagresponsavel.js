@@ -179,7 +179,7 @@ async function carregarAtividadesRecentes() {
       atividadesCard.innerHTML = '';
       atividades.forEach(atividade => {
         const div = document.createElement('div');
-        div.className = 'p-3 mb-2 rounded shadow-sm d-flex justify-content-between align-items-center';
+        div.className = 'p-3 mb-2 rounded shadow-sm d-flex flex-column align-items-start';
         div.style.backgroundColor = '#f8f9fa'; // set to page background color
         div.style.border = '1px solid #d3d3d3'; // thin light gray border
         div.style.color = atividade.pontuacao > 0 ? '#1976d2' : '#fb8c00'; // texto
@@ -187,13 +187,30 @@ async function carregarAtividadesRecentes() {
         div.style.padding = '0.75rem';
         div.style.marginBottom = '0.5rem';
         div.innerHTML = `
-          <div class="atividade-info">
-            <strong>${atividade.titulo}</strong><br>
-            <small>${atividade.nome_filho} - ${new Date(atividade.data_limite).toLocaleDateString()}</small>
+          <div class="atividade-info text-muted" style="text-align: left;">
+            <strong>${atividade.titulo}</strong>
           </div>
-          <div>
-            <span class="badge" style="background-color: ${atividade.pontuacao > 0 ? '#1976d2' : '#fb913b'}; color: white;">${atividade.pontuacao > 0 ? '+' : ''}${atividade.pontuacao}</span>
-            ${atividade.concluida ? '<button class="btn btn-secondary btn-sm ms-2" disabled>Confirmado</button>' : `<button class="btn btn-sm ms-2 btn-confirmar" style="background-color: ${atividade.pontuacao > 0 ? '#1976d2' : '#fb913b'}; color: white; border: none;" data-id="${atividade.id}">Confirmar</button>`}
+          <div style="margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 1rem; white-space: nowrap;">
+              <span style="color: ${atividade.pontuacao > 0 ? '#1976d2' : '#fb913b'}; font-weight: 600; white-space: nowrap;">
+                ⭐ ${atividade.pontuacao < 0 ? '-' : ''}${Math.abs(atividade.pontuacao)} pontos
+              </span>
+            </div>
+            <div style="display: flex; gap: 1rem; font-size: 0.9rem; color: #555; white-space: nowrap; align-items: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 0.5rem;">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
+                <path fill-rule="evenodd" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+              </svg>
+              <span>${atividade.nome_filho}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-left: 1rem; margin-right: 0.5rem;">
+                <path d="M8 3.5a.5.5 0 0 1 .5.5v4l3 1.5a.5.5 0 0 1-.5.866L8 8.5V4a.5.5 0 0 1 .5-.5z"/>
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1z"/>
+              </svg>
+              <span>${new Date(atividade.data_limite).toLocaleDateString()}</span>
+            </div>
+            <div>
+              ${atividade.concluida ? '<button class="btn btn-secondary btn-sm" disabled>Concluído</button>' : `<button class="btn btn-sm btn-confirmar" style="background-color: ${atividade.pontuacao > 0 ? '#1976d2' : '#fb913b'}; color: white; border: none;" data-id="${atividade.id}">Concluir</button>`}
+            </div>
           </div>
         `;
         atividadesCard.appendChild(div);
