@@ -1,6 +1,6 @@
 function logout() {
   localStorage.clear();
-  window.location.href = '../public/login.html';
+  window.location.href = 'login.html';
 }
 
 const API_BASE = 'http://localhost:3000';

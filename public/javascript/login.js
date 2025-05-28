@@ -33,7 +33,7 @@ document.getElementById('form-login').addEventListener('submit', async function 
 
             // Aguarda a animação e redireciona
             setTimeout(() => {
-                window.location.href = '../views/pagresponsavel.html';
+                window.location.href = 'pagresponsavel.html';
             }, 2000);
         } else {
             // Erro de login (ex: senha incorreta)
