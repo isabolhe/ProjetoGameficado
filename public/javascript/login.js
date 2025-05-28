@@ -5,8 +5,13 @@ document.getElementById('form-login').addEventListener('submit', async function 
     const senha = document.getElementById('senha').value;
     const tipo_usuario = "responsavel";
 
+    // Define a URL base de forma dinâmica
+    const baseURL = window.location.hostname === 'localhost'
+        ? 'http://localhost:3000'
+        : `https://${window.location.hostname}`; // Usa o domínio atual na produção
+
     try {
-        const resposta = await fetch('http://localhost:3000/login', {
+        const resposta = await fetch(`${baseURL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

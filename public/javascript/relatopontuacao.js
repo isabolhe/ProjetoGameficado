@@ -15,9 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let atividadesCounts = [];
   let todasAtividades = [];
 
+  // Define a URL base de forma dinâmica
+  const baseURL = window.location.hostname === 'localhost'
+      ? 'http://localhost:3000'
+      : `https://${window.location.hostname}`; // Usa o domínio atual na produção
+
   async function fetchFilhos() {
     try {
-      const response = await fetch("http://localhost:3000/filhos", {
+      const response = await fetch(`${baseURL}/filhos`, {
         headers: { Authorization: "Bearer " + localStorage.getItem("token") }
       });
       if (!response.ok) throw new Error("Erro ao buscar filhos");
@@ -41,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchAtividadesCounts() {
     try {
-      const response = await fetch("http://localhost:3000/atividades/concluidas/count", {
+      const response = await fetch(`${baseURL}/atividades/concluidas/count`, {
         headers: { Authorization: "Bearer " + localStorage.getItem("token") }
       });
       if (!response.ok) throw new Error("Erro ao buscar contagem de atividades");
@@ -53,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchTodasAtividades() {
     try {
-      const response = await fetch("http://localhost:3000/atividades", {
+      const response = await fetch(`${baseURL}/atividades`, {
         headers: { Authorization: "Bearer " + localStorage.getItem("token") }
       });
       if (!response.ok) throw new Error("Erro ao buscar atividades");
@@ -141,12 +146,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!ctxColunas) return;
 
     const atividadesFiltradas = filtrarAtividadesPorFilho(idFilho);
-    console.log("Atividades filtradas para gráfico de colunas:", atividadesFiltradas);
 
     const pontosConcluidosPorData = {};
 
     atividadesFiltradas.forEach(a => {
-      console.log("Processando atividade:", a);
       const data = new Date(a.data_limite);
       if (isNaN(data)) {
         console.warn("Data inválida para atividade:", a);
@@ -160,8 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    console.log("Pontos concluídos por data:", pontosConcluidosPorData);
-
     const labelsOrdenadas = Object.keys(pontosConcluidosPorData).sort((a, b) => {
       const [diaA, mesA, anoA] = a.split("/");
       const [diaB, mesB, anoB] = b.split("/");
@@ -170,10 +171,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const dadosConcluidos = labelsOrdenadas.map(label => pontosConcluidosPorData[label] || 0);
 
-    // Update or create the table with points data (only completed points)
+    // Atualiza tabela de pontos
     const tabelaPontos = document.getElementById("tabelaPontos");
     if (tabelaPontos) {
-      // Clear existing rows except header
+      // Remove todas as linhas exceto o cabeçalho
       while (tabelaPontos.rows.length > 1) {
         tabelaPontos.deleteRow(1);
       }
@@ -183,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const cellConcluidos = row.insertCell(1);
         cellData.textContent = label;
         cellConcluidos.textContent = dadosConcluidos[index];
-        // Remove pending points column cells
         const cellPendentes = row.insertCell(2);
         cellPendentes.textContent = "-";
       });
@@ -218,7 +218,6 @@ document.addEventListener("DOMContentLoaded", () => {
           tooltip: {
             callbacks: {
               label: context => {
-                const idx = context.dataIndex;
                 const datasetLabel = context.dataset.label || "";
                 const value = context.parsed.y;
                 return `${datasetLabel}: ${value}`;

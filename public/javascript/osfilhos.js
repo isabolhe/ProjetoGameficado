@@ -1,15 +1,18 @@
-const API_BASE = 'http://localhost:3000';
+// Define a URL base de forma dinâmica
+const baseURL = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : `https://${window.location.hostname}`; // Usa o domínio atual na produção
 
 async function carregarFilhos() {
     try {
         const token = localStorage.getItem('token');
         
-        const responseFilhos = await fetch(`${API_BASE}/filhos`, {
+        const responseFilhos = await fetch(`${baseURL}/filhos`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const filhos = await responseFilhos.json();
 
-        const responseAtividades = await fetch(`${API_BASE}/atividades/concluidas/count`, {
+        const responseAtividades = await fetch(`${baseURL}/atividades/concluidas/count`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const atividadesCounts = await responseAtividades.json();
@@ -82,7 +85,7 @@ function editarFilho(id) {
 
     if (nome && email) {
         const token = localStorage.getItem('token');
-        fetch(`${API_BASE}/editar-filho/${id}`, {
+        fetch(`${baseURL}/editar-filho/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,7 +120,7 @@ function excluirFilho(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             const token = localStorage.getItem('token');
-            fetch(`${API_BASE}/excluir-filho/${id}`, {
+            fetch(`${baseURL}/excluir-filho/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -156,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${API_BASE}/criar-filho`, {
+            const response = await fetch(`${baseURL}/criar-filho`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

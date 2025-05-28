@@ -3,7 +3,13 @@ function logout() {
   window.location.href = 'login.html';
 }
 
-const API_BASE = 'http://localhost:3000';
+// Define a URL base de forma dinâmica para funcionar local e na hospedagem (ex: Railway)
+const baseURL = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : `https://${window.location.hostname}`;
+
+const API_BASE = baseURL;
+
 
 async function carregarResumoFilhos() {
   try {

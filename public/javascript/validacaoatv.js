@@ -5,11 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
 async function carregarAtividades() {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3000/atividades', {
+
+    // Define a URL base de forma dinâmica
+    const baseURL = window.location.hostname === 'localhost'
+      ? 'http://localhost:3000'
+      : `https://${window.location.hostname}`;// Usa domínio atual em produção
+
+    // Faz a requisição para buscar atividades usando baseURL
+    const response = await fetch(`${baseURL}/atividades`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar atividades');
+    }
+
     const atividades = await response.json();
 
     const container = document.querySelector('.row.gy-3');
@@ -43,14 +55,13 @@ async function carregarAtividades() {
             clearTimeout(clickTimeout);
             clickTimeout = null;
             // Double click detected
-              if (confirm('Confirmar que a atividade "' + atividade.titulo + '" foi realizada?')) {
-                const token = localStorage.getItem('token');
-                fetch(`http://localhost:3000/atividades/${atividade.id}/confirmar`, {
-                  method: 'POST',
-                  headers: {
-                    'Authorization': `Bearer ${token}`
-                  }
-                })
+            if (confirm('Confirmar que a atividade "' + atividade.titulo + '" foi realizada?')) {
+              fetch(`${baseURL}/atividades/${atividade.id}/confirmar`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              })
                 .then(response => {
                   if (response.ok) {
                     alert('Atividade confirmada com sucesso!');
@@ -67,7 +78,7 @@ async function carregarAtividades() {
                   console.error('Erro ao confirmar atividade:', error);
                   alert('Erro ao confirmar atividade. Tente novamente mais tarde.');
                 });
-              }
+            }
           } else {
             // Single click detected after delay
             clickTimeout = setTimeout(() => {

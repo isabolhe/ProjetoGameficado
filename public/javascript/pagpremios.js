@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => { 
   const btnSalvarPremio = document.getElementById('btnSalvarPremio');
   const btnExcluirPremios = document.getElementById('btnExcluirPremios');
   const btnToggleSelecao = document.getElementById('btnToggleSelecao');
@@ -11,7 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const emojiButtons = document.querySelectorAll('.emoji-btn');
   const emojiInput = document.getElementById('emojiPremio');
 
-  const apiBaseUrl = 'http://localhost:3000';
+  // Define a URL base de forma dinâmica
+  const baseURL = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : `https://${window.location.hostname}`; // Usa o domínio atual na produção
 
   let selectionMode = false;
   let selectedPremios = new Set();
@@ -19,9 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let editMode = false;
   let premioParaEditar = null;
 
-async function fetchPremios() {
+  async function fetchPremios() {
     try {
-      const response = await fetch(`${apiBaseUrl}/api/premios`, {
+      const response = await fetch(`${baseURL}/api/premios`, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
@@ -30,7 +33,7 @@ async function fetchPremios() {
 
       const premios = await response.json();
 
-      console.log('Premios fetched:', premios); // Added for debugging emoji field
+      console.log('Premios fetched:', premios);
 
       if (premios.length === 0) {
         alertNenhumPremio.style.display = 'block';
@@ -149,7 +152,7 @@ async function fetchPremios() {
 
     try {
       for (const id of selectedPremios) {
-        const response = await fetch(`${apiBaseUrl}/api/premios/${id}`, {
+        const response = await fetch(`${baseURL}/api/premios/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -200,7 +203,7 @@ async function fetchPremios() {
       try {
         let response;
         if (editMode && premioParaEditar) {
-          response = await fetch(`${apiBaseUrl}/api/premios/${premioParaEditar.id}`, {
+          response = await fetch(`${baseURL}/api/premios/${premioParaEditar.id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -214,7 +217,7 @@ async function fetchPremios() {
             })
           });
         } else {
-          response = await fetch(`${apiBaseUrl}/api/premios`, {
+          response = await fetch(`${baseURL}/api/premios`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

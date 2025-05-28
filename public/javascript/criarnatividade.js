@@ -1,10 +1,15 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  // Define a URL base de forma dinâmica
+  const baseURL = window.location.hostname === 'localhost'
+      ? 'http://localhost:3000'
+      : `https://${window.location.hostname}`; // Usa o domínio atual na produção
+
   const token = localStorage.getItem('token');
   const filhosSelect = document.getElementById('filhos');
   const form = document.querySelector('form');
 
   try {
-    const response = await fetch('http://localhost:3000/filhos', {
+    const response = await fetch(`${baseURL}/filhos`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -50,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/atividades', {
+      const response = await fetch(`${baseURL}/atividades`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,5 +77,4 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Erro ao criar atividade. Tente novamente mais tarde.');
     }
   });
-}
-);
+});
