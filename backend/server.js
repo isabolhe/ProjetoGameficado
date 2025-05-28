@@ -4,6 +4,7 @@ require('dotenv').config();
 
 
 const express = require('express');
+const path = require('path');
 const mysql = require('mysql2');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');  // Added for JWT
@@ -14,7 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the public directory
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Definir qual banco usar pela flag no .env
 const useLocal = process.env.USE_LOCAL_DB === 'true';
@@ -488,6 +490,11 @@ app.get('/atividades/porcentagem-positivas', authenticateToken, (req, res) => {
 
     res.json(dadosFormatados);
   });
+});
+
+// Rota padrão para frontend (landing page)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 
