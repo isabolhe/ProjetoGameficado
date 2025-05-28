@@ -492,10 +492,14 @@ app.get('/atividades/porcentagem-positivas', authenticateToken, (req, res) => {
   });
 });
 
-// Rota padrão para frontend (landing page)
+// Servir arquivos estáticos corretamente, já que estamos dentro de /backend
+app.use(express.static(path.join(__dirname, '../public')));
+
+// E também a rota /
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+  res.sendFile(path.join(__dirname, '../public', 'login.html'));
 });
+
 
 
 // Iniciar servidor
