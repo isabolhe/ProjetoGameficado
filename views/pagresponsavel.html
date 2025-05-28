@@ -85,10 +85,92 @@
 
         <!-- Criar Nova Atividade + Meus Filhos -->
         <div class="row mb-4">
-          <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="card text-center p-4">
-              <h5>Vamos falar de Cyberbullying?</h5>
-              <a href="criarnatividade.html" class="btn btn-outline-primary my-2" id="btnCriarCard">+ Criar nova atividade</a>
+  <div class="col-md-6">
+          <div class="card p-4">
+  <h5 class="mb-4 text-start fw-bold">
+    📊 Progresso e Pontuação
+  </h5>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="card bg-success bg-opacity-10 border-0 text-center p-3">
+        <p class="display-6 fw-bold text-success mb-0" id="resumoTotalPontos"></p>
+        <p class="text-success">Pontos Totais</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card bg-primary bg-opacity-10 border-0 text-center p-3">
+        <p class="display-6 fw-bold text-primary mb-0" id="percentualAtividadesPositivas"></p>
+        <p class="text-primary">Media Concluída</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Added charts side by side below the two cards -->
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <canvas id="graficoPontosRelatorio" height="150"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas id="graficoColunas" height="150"></canvas>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+            <!-- Modal for Pontuação -->
+            <div class="modal fade" id="pontuacaoModal" tabindex="-1" aria-labelledby="pontuacaoModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="pontuacaoModalLabel">Relatório de Pontuação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="mb-4">
+                      <label for="selectFilhoModal" class="form-label">Selecione o Filho:</label>
+                      <select id="selectFilhoModal" class="form-select" aria-label="Seleção de filho">
+                        <option value="all" selected>Todos</option>
+                      </select>
+                    </div>
+                    <div class="row mb-4">
+                      <div class="col-md-4">
+                        <div class="card text-center">
+                          <div class="card-body">
+                            <h5 class="card-title">Atividades Feitas</h5>
+                            <p id="atividadesConcluidasModal" class="card-text display-6">0</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="card text-center">
+                          <div class="card-body">
+                            <h5 class="card-title">Atividades Pendentes</h5>
+                            <p id="atividadesPendentesModal" class="card-text display-6">0</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="card text-center">
+                          <div class="card-body">
+                            <h5 class="card-title">Pontos Totais</h5>
+                            <p id="totalPontosModal" class="card-text display-6">0</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Desempenho ao Longo do Tempo</h5>
+                        <canvas id="graficoPontosRelatorioModal" height="200"></canvas>
+                        <canvas id="graficoDesempenhoTempoModal" height="200" class="mt-4"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -143,8 +225,8 @@
 
   <!-- Script da página -->
   <script src="../public/javascript/pagresponsavel.js"></script>
+  <script src="../public/javascript/relatopontuacao.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
-
 </body>
 </html>

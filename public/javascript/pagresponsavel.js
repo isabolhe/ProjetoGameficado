@@ -62,6 +62,46 @@ async function carregarResumoFilhos() {
       divResumo.appendChild(filhoInfo);
     });
 
+    // New code to update resumoTotalPontos and percentualAtividadesPositivas
+    const resumoTotalPontosElem = document.getElementById('resumoTotalPontos');
+    const percentualAtividadesPositivasElem = document.getElementById('percentualAtividadesPositivas');
+
+    // Calculate total points from filhos array
+    const totalPontos = filhos.reduce((acc, filho) => acc + (filho.pontos || 0), 0);
+    if (resumoTotalPontosElem) {
+      resumoTotalPontosElem.textContent = (totalPontos > 0 ? '+' : '') + totalPontos;
+    }
+
+    // Fetch percentage of positive completed activities
+    try {
+      const responsePercentual = await fetch(`${API_BASE}/atividades/porcentagem-positivas`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (responsePercentual.ok) {
+        const percentualData = await responsePercentual.json();
+        // Calculate overall percentage (weighted average or simple average)
+        let totalConcluidas = 0;
+        let totalPositivas = 0;
+        percentualData.forEach(item => {
+          const porcentagem = parseFloat(item.porcentagem_positivas);
+          if (!isNaN(porcentagem)) {
+            totalPositivas += porcentagem;
+            totalConcluidas++;
+          }
+        });
+        const percentualGeral = totalConcluidas > 0 ? Math.round(totalPositivas / totalConcluidas) : 0;
+        if (percentualAtividadesPositivasElem) {
+          percentualAtividadesPositivasElem.textContent = percentualGeral + '%';
+        }
+      } else {
+        console.error('Erro ao buscar porcentagem de atividades positivas');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar porcentagem de atividades positivas:', error);
+    }
+
   } catch (error) {
     console.error('Erro ao carregar filhos:', error);
     Swal.fire({
@@ -296,4 +336,295 @@ document.addEventListener('DOMContentLoaded', () => {
       div.style.marginBottom = '0.25rem';
     });
   }, 1000);
+
+  // Pontuação modal logic
+  const btnCriarCard = document.getElementById("btnCriarCard");
+  const pontuacaoModal = new bootstrap.Modal(document.getElementById("pontuacaoModal"));
+  const selectFilhoModal = document.getElementById("selectFilhoModal");
+  const atividadesConcluidasModal = document.getElementById("atividadesConcluidasModal");
+  const atividadesPendentesModal = document.getElementById("atividadesPendentesModal");
+  const totalPontosModal = document.getElementById("totalPontosModal");
+  const ctxModal = document.getElementById("graficoPontosRelatorioModal") ? document.getElementById("graficoPontosRelatorioModal").getContext("2d") : null;
+  const ctxDesempenhoModal = document.getElementById("graficoDesempenhoTempoModal") ? document.getElementById("graficoDesempenhoTempoModal").getContext("2d") : null;
+
+  const ctxMainPontos = document.getElementById("graficoPontosRelatorio") ? document.getElementById("graficoPontosRelatorio").getContext("2d") : null;
+  const ctxMainColunas = document.getElementById("graficoColunas") ? document.getElementById("graficoColunas").getContext("2d") : null;
+
+let filhos = [];
+let atividadesCounts = [];
+let atividades = []; // store fetched activities globally
+
+let chartModal = null;
+let chartDesempenhoModal = null;
+let chartMainPontos = null;
+let chartMainColunas = null;
+
+  async function fetchFilhos() {
+    try {
+      const response = await fetch("http://localhost:3000/filhos", {
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+      });
+      if (!response.ok) throw new Error("Erro ao buscar filhos");
+      filhos = await response.json();
+      popularSelectFilho();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function popularSelectFilho() {
+    if (!selectFilhoModal) return;
+    // Clear existing options except "Todos"
+    selectFilhoModal.innerHTML = '<option value="all" selected>Todos</option>';
+    filhos.forEach(filho => {
+      const option = document.createElement("option");
+      option.value = filho.id;
+      option.textContent = filho.nome;
+      selectFilhoModal.appendChild(option);
+    });
+  }
+
+  async function fetchAtividadesCounts() {
+    try {
+      const response = await fetch("http://localhost:3000/atividades/concluidas/count", {
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+      });
+      if (!response.ok) throw new Error("Erro ao buscar contagem de atividades");
+      atividadesCounts = await response.json();
+      atualizarResumo();
+      atualizarGraficoDesempenho();
+      atualizarGraficoMain();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function getAtividadesCountByFilho(idFilho) {
+    if (idFilho === "all") {
+      // Aggregate counts for all filhos
+      const totalConcluidas = atividadesCounts.reduce((acc, cur) => acc + (cur.total_concluidas || 0), 0);
+      const totalPendentes = atividadesCounts.reduce((acc, cur) => acc + (cur.total_pendentes || 0), 0);
+      const totalPontos = filhos.reduce((acc, cur) => acc + (cur.pontos || 0), 0);
+      return { totalConcluidas, totalPendentes, totalPontos };
+    }
+    const filhoData = atividadesCounts.find(ac => ac.filho_id === parseInt(idFilho));
+    const filhoPontos = filhos.find(f => f.id === parseInt(idFilho))?.pontos || 0;
+    return {
+      totalConcluidas: filhoData?.total_concluidas || 0,
+      totalPendentes: filhoData?.total_pendentes || 0,
+      totalPontos: filhoPontos
+    };
+  }
+
+  function atualizarResumo() {
+    if (!selectFilhoModal) return;
+    const idFilhoSelecionado = selectFilhoModal.value;
+    const counts = getAtividadesCountByFilho(idFilhoSelecionado);
+
+    if (atividadesConcluidasModal) atividadesConcluidasModal.textContent = counts.totalConcluidas;
+    if (atividadesPendentesModal) atividadesPendentesModal.textContent = counts.totalPendentes;
+    if (totalPontosModal) totalPontosModal.textContent = (counts.totalPontos > 0 ? '+' : '') + counts.totalPontos;
+
+    atualizarGrafico(counts.totalConcluidas, counts.totalPendentes);
+  }
+
+  function atualizarGrafico(concluidas, pendentes) {
+    if (!ctxModal) return;
+    const labels = ["Concluídas", "Pendentes"];
+    const data = [concluidas, pendentes];
+    const backgroundColors = ["#2196f3", "#fb913b"];
+
+    if (chartModal) {
+      chartModal.destroy();
+    }
+
+    chartModal = new Chart(ctxModal, {
+      type: "doughnut",
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: backgroundColors
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "bottom"
+          }
+        }
+      }
+    });
+  }
+
+  function atualizarGraficoDesempenho() {
+    if (!ctxDesempenhoModal) return;
+
+    const idFilhoSelecionado = selectFilhoModal ? selectFilhoModal.value : "all";
+    const atividadesFiltradas = filtrarAtividadesPorFilho(idFilhoSelecionado);
+
+    // Group points by date (data_limite)
+    const pontosPorData = {};
+
+    atividadesFiltradas.forEach(a => {
+      if (a.concluida) {
+        const data = new Date(a.data_limite).toLocaleDateString();
+        if (!pontosPorData[data]) {
+          pontosPorData[data] = 0;
+        }
+        pontosPorData[data] += a.pontuacao;
+      }
+    });
+
+    // Sort dates
+    const datas = Object.keys(pontosPorData).sort((a, b) => new Date(a) - new Date(b));
+    const pontos = datas.map(d => pontosPorData[d]);
+
+    if (chartDesempenhoModal) {
+      chartDesempenhoModal.destroy();
+    }
+
+    chartDesempenhoModal = new Chart(ctxDesempenhoModal, {
+      type: "line",
+      data: {
+        labels: datas,
+        datasets: [{
+          label: "Pontos ao longo do tempo",
+          data: pontos,
+          fill: false,
+          borderColor: "#2196f3",
+          tension: 0.1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: "Data"
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: "Pontos"
+            },
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
+  function atualizarGraficoMain() {
+    if (!ctxMainPontos || !ctxMainColunas) return;
+
+    const idFilhoSelecionado = selectFilhoModal ? selectFilhoModal.value : "all";
+    const counts = getAtividadesCountByFilho(idFilhoSelecionado);
+
+    // Doughnut chart for atividades concluídas vs pendentes (swapped)
+    const dataAtividades = [counts.totalConcluidas, counts.totalPendentes];
+    const backgroundColorsAtividades = ["#2196f3", "#fb913b"];
+
+    if (chartMainPontos) {
+      chartMainPontos.destroy();
+    }
+
+    chartMainPontos = new Chart(ctxMainPontos, {
+      type: "doughnut",
+      data: {
+        labels: ["Concluídas", "Pendentes"],
+        datasets: [{
+          data: dataAtividades,
+          backgroundColor: backgroundColorsAtividades
+        }]
+      },
+      options: {
+        responsive: true,
+        cutout: "70%",
+        plugins: {
+          legend: {
+            position: "bottom"
+          }
+        }
+      }
+    });
+
+    // Bar chart for pontos diários (swapped)
+    // Group points by date (data_limite)
+    const atividadesFiltradas = filtrarAtividadesPorFilho(idFilhoSelecionado);
+
+    const pontosPorData = {};
+
+    atividadesFiltradas.forEach(a => {
+      if (a.concluida) {
+        const data = new Date(a.data_limite).toLocaleDateString();
+        if (!pontosPorData[data]) {
+          pontosPorData[data] = 0;
+        }
+        pontosPorData[data] += a.pontuacao;
+      }
+    });
+
+    const datas = Object.keys(pontosPorData).sort((a, b) => new Date(a) - new Date(b));
+    const pontos = datas.map(d => pontosPorData[d]);
+
+    if (chartMainColunas) {
+      chartMainColunas.destroy();
+    }
+
+    chartMainColunas = new Chart(ctxMainColunas, {
+      type: "bar",
+      data: {
+        labels: datas,
+        datasets: [{
+          label: "Pontos Diários",
+          data: pontos,
+          backgroundColor: "#2196f3"
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            precision: 0
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+  }
+
+function filtrarAtividadesPorFilho(idFilho) {
+  if (idFilho === "all") {
+    return atividades;
+  }
+  return atividades.filter(a => a.filho_id === parseInt(idFilho));
+}
+
+  if (selectFilhoModal) {
+    selectFilhoModal.addEventListener("change", () => {
+      atualizarResumo();
+      atualizarGraficoDesempenho();
+      atualizarGraficoMain();
+    });
+  }
+
+  if (btnCriarCard) {
+    btnCriarCard.addEventListener("click", () => {
+      pontuacaoModal.show();
+      // Initialize data fetch and rendering when modal is shown
+      fetchFilhos().then(() => fetchAtividadesCounts());
+    });
+  }
+
+  // Initial call to update main charts after data is loaded
+  fetchFilhos().then(() => fetchAtividadesCounts());
 });

@@ -455,6 +455,42 @@ app.put('/api/premios/:id', authenticateToken, (req, res) => {
   });
 });
 
+
+
+// Rota para calcular a porcentagem de atividades concluídas com pontuação positiva por filho
+app.get('/atividades/porcentagem-positivas', authenticateToken, (req, res) => {
+  const responsavelId = req.user.id;
+  const query = `
+    SELECT 
+      f.id as filho_id, 
+      f.nome as nome_filho,
+      COUNT(CASE WHEN a.concluida = TRUE AND a.pontuacao > 0 THEN 1 END) as concluidas_positivas,
+      COUNT(CASE WHEN a.concluida = TRUE THEN 1 END) as concluidas_total
+    FROM criacao_filhos f
+    LEFT JOIN atividades a ON a.filho_id = f.id
+    WHERE f.responsaveis_id = ?
+    GROUP BY f.id, f.nome
+  `;
+
+  db.query(query, [responsavelId], (err, results) => {
+    if (err) {
+      console.error('Erro ao calcular porcentagem:', err);
+      return res.status(500).json({ error: 'Erro no servidor ao calcular porcentagem.' });
+    }
+
+    const dadosFormatados = results.map(r => ({
+      filho_id: r.filho_id,
+      nome_filho: r.nome_filho,
+      porcentagem_positivas: r.concluidas_total > 0 
+        ? ((r.concluidas_positivas / r.concluidas_total) * 100).toFixed(2)
+        : '0.00'
+    }));
+
+    res.json(dadosFormatados);
+  });
+});
+
+
 // Iniciar servidor
 const PORT = 3000;
 app.listen(PORT, () => {

@@ -53,4 +53,66 @@ body {
     display: block;
     margin: auto;
   }
+
+/* Gráfico centralizado e ajustado */
+#graficoPizza {
+  max-width: 160px;
+  max-height: 160px;
+}
+
+/* Canvas ocupa 100% da largura da coluna e altura fixa */
+#graficoPontosRelatorio,
+#graficoColunas {
+  width: 100% !important;
+  max-width: 100%;
+  height: 250px !important;  /* altura fixa pra ficar proporcional */
+  max-height: 250px;
+  display: block;
   
+}
+
+
+/* Barra de progresso mais curta e centralizada */
+.custom-progress {
+  height: 20px;
+  border-radius: 30px;
+  background-color: #ecf0f1;
+  overflow: hidden;
+}
+
+.custom-progress .progress-bar {
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: width 0.4s ease-in-out;
+}
+
+/* Título da seção */
+.grafico-status-container h5 {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Texto acima da barra */
+.progresso-label {
+  font-weight: 500;
+  color: #34495e;
+  margin-bottom: 6px;
+}
+
+/* Espaçamento responsivo */
+@media (max-width: 576px) {
+  .grafico-status-container canvas {
+    margin-bottom: 20px;
+  }
+
+  .custom-progress {
+    width: 100% !important;
+  }
+}
+
+.card-body {
+  max-width: 900px;
+  margin: auto;
+}
+
