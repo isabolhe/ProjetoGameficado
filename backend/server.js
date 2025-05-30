@@ -42,15 +42,10 @@ const dbConfig = useLocal
       database: process.env.DB_NAME,
     };
 
-const db = mysql.createConnection(dbConfig);
+const db = mysql.createPool(dbConfig); // Pool gerencia reconexões automaticamente
 
-db.connect((err) => {
-  if (err) {
-    console.error('Erro ao conectar ao banco:', err);
-    return;
-  }
-  console.log(`Conectado ao MySQL ${useLocal ? '(Local)' : '(Railway)'} com sucesso!`);
-});
+console.log(`Conexão pool criada com MySQL ${useLocal ? '(Local)' : '(Railway)'}`);
+
 
 // Rota de login
 app.post('/login', (req, res) => {
