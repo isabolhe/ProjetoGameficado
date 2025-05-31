@@ -116,15 +116,15 @@ function authenticateToken(req, res, next) {
 
 // Rota para criar filho (POST) - protected
 app.post('/criar-filho', authenticateToken, (req, res) => {
-  const { nome, email } = req.body;
+  const { nome, email, emoji, idade } = req.body;
   const responsavelId = req.user.id;
 
   if (!nome || !email) {
     return res.status(400).json({ error: 'Nome e email são obrigatórios.' });
   }
 
-  const query = 'INSERT INTO criacao_filhos (nome, email, responsaveis_id) VALUES (?, ?, ?)';
-  db.query(query, [nome, email, responsavelId], (err, result) => {
+  const query = 'INSERT INTO criacao_filhos (nome, email, emoji, idade, responsaveis_id) VALUES (?, ?, ?, ?, ?)';
+  db.query(query, [nome, email, emoji || null, idade || null, responsavelId], (err, result) => {
     if (err) {
       console.error('Erro ao inserir filho:', err.sqlMessage || err);
       return res.status(500).json({ error: 'Erro no servidor.' });
@@ -138,7 +138,23 @@ app.post('/criar-filho', authenticateToken, (req, res) => {
 app.get('/filhos', authenticateToken, (req, res) => {
   const responsavelId = req.user.id;
   console.log('Fetching filhos for responsavelId:', responsavelId);
-  const query = 'SELECT id, nome, email, pontos FROM criacao_filhos WHERE responsaveis_id = ? ORDER BY id DESC';
+
+  const query = `
+    SELECT 
+      f.id, 
+      f.nome, 
+      f.email, 
+      f.pontos, 
+      f.emoji, 
+      f.idade,
+      COUNT(CASE WHEN a.concluida = TRUE THEN 1 END) AS totalConcluidas,
+      COUNT(CASE WHEN a.concluida = FALSE THEN 1 END) AS totalPendentes
+    FROM criacao_filhos f
+    LEFT JOIN atividades a ON a.filho_id = f.id
+    WHERE f.responsaveis_id = ?
+    GROUP BY f.id, f.nome, f.email, f.pontos, f.emoji, f.idade
+    ORDER BY f.id DESC
+  `;
 
   db.query(query, [responsavelId], (err, results) => {
     if (err) {
@@ -146,26 +162,22 @@ app.get('/filhos', authenticateToken, (req, res) => {
       return res.status(500).json({ error: 'Erro no servidor ao listar filhos.' });
     }
 
-    console.log('Filhos encontrados:', results);
-    if (!Array.isArray(results)) {
-      console.error('Results is not an array:', results);
-      return res.status(500).json({ error: 'Dados inválidos retornados do banco.' });
-    }
     res.json(results);
   });
 });
 
+
 // Rota para editar filho (PUT)
 app.put('/editar-filho/:id', (req, res) => {
   const { id } = req.params;  // Aqui você já está pegando o ID corretamente
-  const { nome, email } = req.body;
+  const { nome, email, emoji, idade } = req.body;
 
   if (!nome || !email) {
     return res.status(400).json({ error: 'Nome e email são obrigatórios.' });
   }
 
-  const query = 'UPDATE criacao_filhos SET nome = ?, email = ? WHERE id = ?';
-  db.query(query, [nome, email, id], (err, result) => {
+  const query = 'UPDATE criacao_filhos SET nome = ?, email = ?, emoji = ?, idade = ? WHERE id = ?';
+  db.query(query, [nome, email, emoji || null, idade || null, id], (err, result) => {
     if (err) {
       console.error('Erro ao editar filho:', err);
       return res.status(500).json({ error: 'Erro no servidor ao editar filho.' });

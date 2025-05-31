@@ -43,6 +43,22 @@
           <div class="form-text">Será enviado um convite para este e-mail.</div>
         </div>
 
+        <div class="mb-3">
+          <label for="emojiFilho" class="form-label">Emoji do Filho</label>
+          <select class="form-select" id="emojiFilho" aria-label="Selecione um emoji para o filho">
+            <option value="" selected>Selecione um emoji</option>
+            <option value="👶">👶 Bebê</option>
+            <option value="🧒">🧒 Criança</option>
+            <option value="👦">👦 Menino</option>
+            <option value="👧">👧 Menina</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="idadeFilho" class="form-label">Idade do Filho</label>
+          <input type="number" class="form-control" id="idadeFilho" placeholder="Ex: 5" min="0" max="18" />
+        </div>
+
         <div class="d-flex justify-content-end">
           <button type="submit" class="btn btn-enviarconvite">Enviar Convite</button>
         </div>

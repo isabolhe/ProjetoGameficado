@@ -45,8 +45,9 @@ async function carregarFilhos() {
             filhoDiv.setAttribute('data-aos', 'fade-up');
 
             filhoDiv.innerHTML = `
-                <strong>${filho.nome}</strong><br>
+                <strong>${filho.emoji ? filho.emoji + ' ' : ''}${filho.nome}</strong><br>
                 <small>${filho.email}</small><br>
+                <small>Idade: ${filho.idade !== null && filho.idade !== undefined ? filho.idade : '-'}</small><br>
                 <small>Pontos Totais: ${filho.pontos || 0}</small><br>
                 <small>Atividades Concluídas: ${counts.total_concluidas}</small><br>
                 <small>Atividades Pendentes: ${counts.total_pendentes}</small>
@@ -151,6 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const nome = document.getElementById('nomeFilho').value.trim();
         const email = document.getElementById('emailFilho').value.trim();
+        const emoji = document.getElementById('emojiFilho').value;
+        const idadeValue = document.getElementById('idadeFilho').value;
+        const idade = idadeValue ? parseInt(idadeValue, 10) : null;
 
         if (!nome || !email) {
             Swal.fire('Campos obrigatórios', 'Preencha todos os campos.', 'warning');
@@ -165,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ nome, email })
+                body: JSON.stringify({ nome, email, emoji, idade })
             });
 
             const data = await response.json();

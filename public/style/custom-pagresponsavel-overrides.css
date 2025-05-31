@@ -1,48 +1,126 @@
-/* Make h5.fw-bold text smaller in prize cards */
-#prizesContainer h5.fw-bold {
-  font-size: 1rem;
+.emoji-circle {
+  width: 50px;
+  height: 45px;
+  background-color: #d1e4e7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  user-select: none;
+  
 }
 
-/* Change badge bg-dark to site blue */
-#prizesContainer .badge.bg-dark {
-  background-color: #0d6efd !important;
+.idade-text {
+  font-weight: 600;
+  color: #333;
+  min-width: 50px;
+  text-align: right;
 }
 
-/* Style the "Resgatar" button (btn-purple) */
-#prizesContainer .btn-purple {
-  background-color: white;
-  color: #343a40;
-  border: 1px solid #ccc;
-  transition: border-color 0.3s ease;
-}
 
-/* Add thin border on hover for btn-purple, border color changes to site blue */
-#prizesContainer .btn-purple:hover {
-  border-color: #0d6efd;
-  background-color: white;
-  color: #343a40;
-}
-
-/* Disable forward movement on hover for cards */
-.card:hover {
-  transform: none !important;
-}
-
-/* Disable forward movement on hover for sidebar nav links */
-.sidebar .nav-link:hover {
-  transform: none !important;
-}
-
-/* Add margin to points count below Loja de prêmios heading */
-#totalPontos {
-  margin-top: 0.5rem;
+.filho-card {
+  position: relative;
+  background: #fdfdfd;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
   margin-bottom: 1rem;
-  font-size: 0.8rem;
+}
+
+.filho-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filho-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #eee;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filho-info {
+  flex-grow: 1;
+}
+
+.filho-nome {
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.filho-label {
+  font-size: 0.9rem;
   color: #666;
+  margin-bottom: 4px;
   display: inline-block;
 }
 
-/* Reduce max-height of prizes-wrapper to reduce vertical space consumed */
-.prizes-wrapper {
-  max-height: 300px !important;
+.barra-container {
+  position: relative;
+}
+
+.barra-texto {
+  position: absolute;
+  top: -22px;
+  right: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.barra-externa {
+  background-color: #ddd;
+  border-radius: 8px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.barra-interna {
+  background-color: #28a745;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.filho-idade {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  
+  color: white;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  font-weight: bold;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+  font-weight: 600;
+  color: #333;
+  min-width: 52px;
+  
+}
+
+#botaoAdicionarAbaixo a {
+  font-weight: 500;
+  padding: 6px 18px;
+  font-size: 0.9rem;
+}
+
+
+#adicionarFilho {
+  display: block;
+  margin: 0 auto; /* centraliza horizontalmente */
+  width: fit-content;
+  min-width: 200px;  /* um pouco maior que o texto */
+  padding: 6px 20px;
+  font-size: 0.9rem;
 }

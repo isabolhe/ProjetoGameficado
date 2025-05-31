@@ -54,19 +54,42 @@ async function carregarResumoFilhos() {
     }
 
     divNenhum.style.display = 'none';
-    document.getElementById('adicionarFilho').style.display = 'none';
+    // document.getElementById('adicionarFilho').style.display = 'none'; // deixa o botão sempre visível
+
     divResumo.classList.remove('d-none');
     divResumo.innerHTML = '';
 
     filhos.forEach(filho => {
-      const filhoInfo = document.createElement('div');
-      filhoInfo.className = 'p-2 border rounded mb-2 bg-light';
-      filhoInfo.innerHTML = `
-        <strong>${filho.nome}</strong><br>
-        <small>${filho.email}</small>
-      `;
-      divResumo.appendChild(filhoInfo);
-    });
+  const atividadesConcluidas = filho.totalConcluidas || 0;
+  const atividadesTotais = atividadesConcluidas + (filho.totalPendentes || 0);
+  const percentual = atividadesTotais > 0 ? Math.round((atividadesConcluidas / atividadesTotais) * 100) : 0;
+  const pontos = filho.pontos || 0;
+
+  const filhoInfo = document.createElement('div');
+  filhoInfo.className = 'filho-card';
+
+  filhoInfo.innerHTML = `
+    <div class="filho-header">
+      <div class="filho-avatar">${filho.emoji || '👶'}</div>
+      <div class="filho-info">
+        <strong class="filho-nome">${filho.nome}</strong>
+        <span class="filho-label">Progresso</span>
+        <div class="barra-container">
+          <div class="barra-texto">${atividadesConcluidas}/${atividadesTotais} atividades</div>
+          <div class="barra-externa">
+            <div class="barra-interna" style="width: ${percentual}%;"></div>
+          </div>
+          <div class="barra-pontos"> ${pontos} pontos</div>
+        </div>
+      </div>
+    </div>
+    <div class="filho-idade">${filho.idade || '?'} anos</div>
+  `;
+
+  divResumo.appendChild(filhoInfo);
+});
+
+
 
     // New code to update resumoTotalPontos and percentualAtividadesPositivas
     const resumoTotalPontosElem = document.getElementById('resumoTotalPontos');
