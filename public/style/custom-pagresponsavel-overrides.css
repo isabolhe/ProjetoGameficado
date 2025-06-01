@@ -124,3 +124,88 @@
   padding: 6px 20px;
   font-size: 0.9rem;
 }
+
+.dashboard-subtitle {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin-top: -0.25rem;
+  margin-bottom: 1rem;
+}
+
+.icone-bloco {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+
+  /* Gradiente fixo: da esquerda (#FB953A) para a direita (#FBBC25) */
+  background-image: 
+    linear-gradient(to right, #FB953A, #FBBC25),  /* fundo */
+    linear-gradient(to right, #FB953A, #FBBC25);  /* borda */
+
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+.icone-bloco svg {
+  width: 26px;
+  height: 26px;
+  stroke: #fff;
+  z-index: 1;
+}
+
+.icone-e-titulo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titulo-icone {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #455463;
+  margin: 0; /* Tira qualquer espaçamento que empurra pra baixo */
+}
+
+#totalPontos {
+  color: #EA580C;
+}
+
+
+.sem-premio {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.badge-pontos {
+  background-color: #fcefd7; /* mesma cor do fundo do card */
+  color: #EA580C; /* cor do texto, pode ajustar se quiser */
+  border: 1px solid #F97F5A; /* opcional */
+  border-radius: 10px;
+}
+
+
+.btn-resgatar {
+  background: linear-gradient(to right, #FB953A, #FBBC25);
+  color: white;
+  border: none;
+  font-weight: 500;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.btn-resgatar:hover {
+  filter: brightness(1.05);
+}
+
+  

@@ -154,12 +154,34 @@ async function carregarPremios() {
       throw new Error('Erro ao buscar prêmios');
     }
 
-    const premios = await response.json();
-    const container = document.getElementById('prizesContainer');
-    container.innerHTML = '';
+   const premios = await response.json();
+const container = document.getElementById('prizesContainer');
+container.innerHTML = '';
 
-    if (premios.length === 0) {
-      container.innerHTML = '<div class="text-muted">Nenhum prêmio cadastrado.</div>';
+if (premios.length === 0) {
+  container.innerHTML = `
+  
+    <p style="text-align: left; color: #6c757d; margin-bottom: 10px;">
+      Nenhum prêmio cadastrado.
+    </p>
+    <button id="btnCriarPremio" class="btn btn-primary" style="display: block; margin: 0 auto; width: 220px;"> 
+     <i class="fa-solid fa-plus"></i> Criar primeiro prêmio
+    </button>
+  
+`;
+
+
+
+
+
+
+
+      const btnCriarPremio = document.getElementById('btnCriarPremio');
+      if (btnCriarPremio) {
+        btnCriarPremio.addEventListener('click', () => {
+          window.location.href = 'pagpremios.html'; // Adjust this URL if the prize creation page has a different path
+        });
+      }
       return;
     }
 
@@ -169,15 +191,43 @@ async function carregarPremios() {
       div.classList.add('card', 'p-3', 'm-2');
 
       div.style.flex = '0 0 calc(33.333% - 1rem)';
+
+      div.style.flex = '0 0 auto';
+div.style.width = '200px';
+div.style.margin = '10px auto';
+
+
       div.style.boxSizing = 'border-box';
-      div.style.border = '1px solid #ccc'; // lighter and less pronounced border
+      
+
 
       // Check if premio.emoji is an emoji (length 2 or less and no dot), else treat as image URL
       const isEmoji = premio.emoji && premio.emoji.length <= 2 && !premio.emoji.includes('.');
 
       let emojiHtml = '';
       if (isEmoji) {
-        emojiHtml = `<div style="background: #f0e6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; min-width: 120px; min-height: 100px; margin-bottom: 10px; user-select: none; width: fit-content; padding: 0 0.5rem; margin-left: auto; margin-right: auto;">${premio.emoji}</div>`;
+        emojiHtml = `
+  <div style="
+    background: linear-gradient(to right,rgba(251, 145, 64, 0.71),rgba(248, 116, 107, 0.71));
+
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    min-width: 110px;
+    min-height: 100px;
+    margin-bottom: 10px;
+    user-select: none;
+    width: fit-content;
+    padding: 0 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+  ">
+    ${premio.emoji}
+  </div>
+`;
+
       } else if (premio.emoji && premio.emoji !== premio.nome) {
         // Only render image if premio.emoji is not the same as premio.nome (to avoid showing name as image)
         emojiHtml = `<img src="${premio.emoji}" alt="${premio.nome}" style="height: 60px; margin-bottom: 10px; align-self: center;">`;
@@ -191,8 +241,11 @@ async function carregarPremios() {
         <h5 class="fw-bold">${premio.nome}</h5>
         <p class="text-muted mb-2" style="font-size: 0.9rem;">${premio.descricao}</p>
         <div class="d-flex justify-content-between align-items-center mt-auto">
-          <span class="badge bg-dark">${premio.pontos_necessarios} pontos</span>
-          <button class="btn btn-sm btn-purple">Resgatar</button>
+          <span class="badge badge-pontos">${premio.pontos_necessarios} pontos</span>
+
+          <button class="btn btn-sm btn-resgatar">Resgatar</button>
+
+
         </div>
       `;
 
@@ -248,40 +301,82 @@ async function carregarAtividadesRecentes() {
       atividadesCard.innerHTML = '';
       atividades.forEach(atividade => {
         const div = document.createElement('div');
-        div.className = 'p-3 mb-2 rounded shadow-sm d-flex flex-column align-items-start';
-        div.style.backgroundColor = '#f8f9fa'; // set to page background color
-        div.style.border = '1px solid #d3d3d3'; // thin light gray border
+        // div.className = 'p-3 mb-2 rounded shadow-sm d-flex flex-column align-items-start';
+        div.className = 'p-3 rounded d-flex flex-column align-items-start';
+
+
+        div.style.backgroundColor = atividade.pontuacao > 0 ? '#f0f8ff' : '#fff4e6';
+        div.style.marginBottom = '0.8rem';
+        
         div.style.color = atividade.pontuacao > 0 ? '#1976d2' : '#fb8c00'; // texto
         div.style.borderRadius = '0.5rem';
-        div.style.padding = '0.75rem';
-        div.style.marginBottom = '0.5rem';
-        div.innerHTML = `
-          <div class="atividade-info text-muted" style="text-align: left;">
-            <strong>${atividade.titulo}</strong>
-          </div>
-          <div style="margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: center; width: 100%;">
-            <div style="display: flex; align-items: center; gap: 1rem; white-space: nowrap;">
-              <span style="color: ${atividade.pontuacao > 0 ? '#1976d2' : '#fb913b'}; font-weight: 600; white-space: nowrap;">
-                ⭐ ${atividade.pontuacao < 0 ? '-' : ''}${Math.abs(atividade.pontuacao)} pontos
-              </span>
-            </div>
-            <div style="display: flex; gap: 1rem; font-size: 0.9rem; color: #555; white-space: nowrap; align-items: center;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 0.5rem;">
-                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
-                <path fill-rule="evenodd" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-              </svg>
-              <span>${atividade.nome_filho}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-left: 1rem; margin-right: 0.5rem;">
-                <path d="M8 3.5a.5.5 0 0 1 .5.5v4l3 1.5a.5.5 0 0 1-.5.866L8 8.5V4a.5.5 0 0 1 .5-.5z"/>
-                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1z"/>
-              </svg>
-              <span>${new Date(atividade.data_limite).toLocaleDateString()}</span>
-            </div>
-            <div>
-              ${atividade.concluida ? '<button class="btn btn-secondary btn-sm" disabled>Concluído</button>' : `<button class="btn btn-sm btn-confirmar" style="background-color: ${atividade.pontuacao > 0 ? '#1976d2' : '#fb913b'}; color: white; border: none;" data-id="${atividade.id}">Concluir</button>`}
-            </div>
-          </div>
-        `;
+        div.style.padding = '1rem'; // teste com padding menor
+        div.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.17)';
+        
+        ;
+
+       div.innerHTML = `
+  <div style="width: 100%; display: flex; justify-content: space-between; align-items: start;">
+    <div class="atividade-info text-muted">
+      <strong>${atividade.titulo}</strong>
+    </div>
+    <div style="
+      display: inline-flex; 
+      align-items: center; 
+      gap: 0.3rem; 
+      font-weight: 600; 
+      border: 1.5px solid ${atividade.pontuacao > 0 ? '#1976d2' : '#fb913b'};
+      border-radius: 9999px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.85rem;
+      color: ${atividade.pontuacao > 0 ? '#1976d2' : '#fb913b'};
+    ">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#FBBF24" stroke="#FBBF24" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" >
+        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+      </svg>
+      <span style="font-size: 0.7rem; color: ${atividade.pontuacao > 0 ? '#0B3D91' : '#EA580C'};">
+        ${atividade.pontuacao < 0 ? '-' : ''}${Math.abs(atividade.pontuacao)} pts
+      </span>
+    </div>
+  </div>
+
+  <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+    <div style="display: flex; align-items: center; gap: 1.0rem; white-space: nowrap; color: #555;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
+        <path fill-rule="evenodd" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+      </svg>
+      <span>${atividade.nome_filho}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8 3.5a.5.5 0 0 1 .5.5v4l3 1.5a.5.5 0 0 1-.5.866L8 8.5V4a.5.5 0 0 1 .5-.5z"/>
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1z"/>
+      </svg>
+      <span>${new Date(atividade.data_limite).toLocaleDateString()}</span>
+    </div>
+
+    <div>
+       ${
+    atividade.concluida
+      ? '<button class="btn btn-secondary btn-sm" disabled>Concluído</button>'
+      : `<button class="btn btn-sm btn-confirmar" 
+           style="
+             background: ${
+               atividade.pontuacao > 0
+                 ? 'linear-gradient(to right, #1565c0, #42a5f5)'
+                 : 'linear-gradient(to right, #FB953A, #FBBC25)'
+             };
+             color: white; 
+             border: none;
+           " 
+           data-id="${atividade.id}">
+           Concluir
+         </button>`
+  }
+    </div>
+  </div>
+`;
+
+
         atividadesCard.appendChild(div);
       });
 

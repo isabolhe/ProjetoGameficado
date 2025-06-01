@@ -47,49 +47,105 @@
 
       <!-- Conteúdo principal -->
       <main class="col-md-10 px-4 py-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2>Dashboard Familiar</h2>
-          <div>
-            <span class="me-3">Larissa</span>
-            <button class="btn btn-outline-primary btn-sm" onclick="logout()">Sair</button>
-          </div>
-        </div>
+        <!-- Header fixo no topo da área principal -->
+<div class="dashboard-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+  <div>
+    <h2 class="mb-1">Dashboard Familiar</h2>
+    <p class="dashboard-subtitle">Acompanhe o progresso e conquistas da família</p>
+  </div>
 
+  <div class="mt-3 mt-md-0 d-flex align-items-center">
+    <span class="me-3">Larissa</span>
+    <button class="btn btn-outline-primary btn-sm" onclick="logout()">Sair</button>
+  </div>
+</div>
+
+
+        
         <div class="row mb-4">
           <!-- Loja de prêmios -->
           <div class="col-md-6" data-aos="fade-up">
-            <div class="card p-3">
-               <h5>🏆 Loja de prêmios</h5>
-              <div class="text-muted"><small>Seus pontos disponíveis: <strong id="totalPontos">0</strong></small></div>
-              <div class="prizes-wrapper">
-               <div id="prizesContainer" class="prizes-scroll d-flex flex-wrap gap-3">
-                <!-- Prêmios cadastrados serão exibidos aqui -->
-               </div>
-              </div>
-            </div>
-          </div>
+  <div class="card p-3">
+    
+    <div class="icone-e-titulo">
+      <div class="icone-bloco">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="icon icon-tabler icons-tabler-outline icon-tabler-gift">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M3 8m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z" />
+          <path d="M12 8l0 13" />
+          <path d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7" />
+          <path d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5" />
+        </svg>
+      </div>
+
+      <h5 class="titulo-icone">Loja de prêmios</h5>
+
+    </div>
+
+    <div class="text-muted mb-2">
+      <small>Seus pontos disponíveis: <strong id="totalPontos">0</strong></small>
+    </div>
+
+    <div class="prizes-wrapper">
+      <div id="prizesContainer" class="prizes-scroll d-flex flex-wrap gap-3">
+        <!-- Prêmios cadastrados serão exibidos aqui -->
+      </div>
+    </div>
+  </div>
+</div>
 
           <!-- Atividades Recentes -->
-          <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-<div class="card p-3 atividades-card" style="height: 420px; overflow-y: auto;">
-              <h5>📚 Atividades sobre Cyberbullying</h5>
-              <div id="atividadesPlaceholder" class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>
-<div id="atividadesContainer" class="prizes-wrapper atividades-wrapper" style="display: none;">
-               <div id="atividadesList" class="prizes-scroll atividades-scroll d-flex flex-column gap-3">
-                    <!-- Atividades cadastradas serão exibidos aqui -->
-               </div>
-              </div>
-            </div>
-          </div>
+<div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+  <div class="card p-3 atividades-card" style="height: 420px; overflow-y: auto;">
+    
+    <div class="icone-e-titulo">
+      <div class="icone-bloco">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="icon icon-tabler icons-tabler-outline icon-tabler-notebook">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />
+          <path d="M13 8l2 0" />
+          <path d="M13 12l2 0" />
+        </svg>
+      </div>
+      <h5 class="titulo-icone">Atividades sobre Cyberbullying</h5>
+    </div>
+
+    <div id="atividadesPlaceholder" class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>
+
+    <div id="atividadesContainer" class="prizes-wrapper atividades-wrapper" style="display: none;">
+      <div id="atividadesList" class="prizes-scroll atividades-scroll d-flex flex-column gap-3">
+        <!-- Atividades cadastradas serão exibidos aqui -->
+      </div>
+    </div>
+  </div>
+</div>
+
         </div>
 
-        <!-- Criar Nova Atividade + Meus Filhos -->
+        <!-- pontuação + Meus Filhos -->
         <div class="row mb-4">
   <div class="col-md-6">
-          <div class="card p-4">
-  <h5 class="mb-4 text-start fw-bold">
-    📊 Progresso e Pontuação
-  </h5>
+         <div class="card p-4">
+  <div class="icone-e-titulo mb-3">
+    <div class="icone-bloco">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+           viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           class="icon icon-tabler icons-tabler-outline icon-tabler-chart-line">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M4 19l16 0" />
+        <path d="M4 15l4 -6l4 2l4 -5l4 4" />
+      </svg>
+    </div>
+    <h5 class="titulo-icone">Progresso e Pontuação</h5>
+  </div>
+
   <div class="row g-3">
     <div class="col-md-6">
       <div class="card bg-success bg-opacity-10 border-0 text-center p-3">
@@ -100,12 +156,11 @@
     <div class="col-md-6">
       <div class="card bg-primary bg-opacity-10 border-0 text-center p-3">
         <p class="display-6 fw-bold text-primary mb-0" id="percentualAtividadesPositivas"></p>
-        <p class="text-primary">Media Concluída</p>
+        <p class="text-primary">Média Concluída</p>
       </div>
     </div>
   </div>
 
-  <!-- Added charts side by side below the two cards -->
   <div class="row mt-4">
     <div class="col-md-6">
       <canvas id="graficoPontosRelatorio" height="150"></canvas>
@@ -115,6 +170,7 @@
     </div>
   </div>
 </div>
+
 
 
 
@@ -175,17 +231,35 @@
           </div>
 
           <div class="col-md-6" id="meusFilhos" data-aos="fade-up" data-aos-delay="300">
-            <div class="card p-3">
-              <h5>👨‍👩‍👧‍👦 Meus Filhos</h5>
-              <div class="text-center py-5 text-muted" id="nenhumFilho">Nenhum filho cadastrado.</div>
-              
-              <div id="filhosResumo" class="d-none mt-3"></div>
-              <a href="osfilhos.html" class="btn btn-primary btn-sm mt-2" id="adicionarFilho">
-  <i class="fa-solid fa-plus"></i> Adicionar Filho
-</a>
+  <div class="card p-3">
+    <div class="icone-e-titulo mb-2">
+      <div class="icone-bloco">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+          <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+        </svg>
+      </div>
+      <h5 class="titulo-icone">Meus Filhos</h5>
+    </div>
 
-            </div>
-          </div>
+    <div class="text-center py-5 text-muted" id="nenhumFilho">
+      Nenhum filho cadastrado.
+    </div>
+
+    <div id="filhosResumo" class="d-none mt-3"></div>
+
+    <a href="osfilhos.html" class="btn btn-primary btn-sm mt-2" id="adicionarFilho">
+      <i class="fa-solid fa-plus"></i> Adicionar Filho
+    </a>
+  </div>
+</div>
+
         </div>
       </main>
     </div>
