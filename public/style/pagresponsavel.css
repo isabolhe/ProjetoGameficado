@@ -25,23 +25,30 @@ body {
 
 .sidebar h4 {
   font-weight: bold;
-  color: #ffc107;
+  color: rgb(251, 145, 64);
   margin-bottom: 2rem;
   font-size: 1.4rem;
 }
 
 .sidebar .nav-link {
   color: #e9ecef;
-  padding: 10px 0;
-  font-size: 0.95rem;
-  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 1.06rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   transition: all 0.3s ease;
+  
 }
 
 .sidebar .nav-link:hover,
 .sidebar .nav-link.active {
-  background-color: rgba(255, 255, 255, 0.15);
+   background-color: rgba(255, 255, 255, 0.1); /* azul claro suave */
   color: #fff;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);     /* sombra leve */
+  border-radius: 10px;
+  transform: scale(1.05); /* ligeiro zoom pra frente */
 }
 
 main h2 {

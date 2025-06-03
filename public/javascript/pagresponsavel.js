@@ -1,3 +1,23 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const nomeCompleto = localStorage.getItem('nomeResponsavel');
+  const nomeSpan = document.getElementById('nomeResponsavel');
+
+  if (nomeCompleto && nomeSpan) {
+    const partes = nomeCompleto.trim().split(' ');
+    const sobrenome = partes.length > 1 ? partes[partes.length - 1] : partes[0];
+    nomeSpan.textContent = `Bem-vindo à família, ${sobrenome}!`;
+  }
+  
+  carregarResumoFilhos();
+  carregarAtividadesRecentes();
+  carregarPremios();
+
+});
+
+
+
+
+
 function logout() {
   localStorage.clear();
   window.location.href = 'login.html';
@@ -317,7 +337,7 @@ async function carregarAtividadesRecentes() {
 
        div.innerHTML = `
   <div style="width: 100%; display: flex; justify-content: space-between; align-items: start;">
-    <div class="atividade-info text-muted">
+    <div class="atividade-info texto-atividade" style="color:rgba(50, 54, 58, 0.73);">
       <strong>${atividade.titulo}</strong>
     </div>
     <div style="
@@ -447,85 +467,39 @@ function atualizarResumo(atividades) {
   if (totalPontosElem) totalPontosElem.textContent = (totalPontos > 0 ? '+' : '') + totalPontos;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  carregarResumoFilhos();
-  carregarAtividadesRecentes();
-  carregarPremios();
+document.addEventListener('DOMContentLoaded', async () => {
+  await carregarResumoFilhos();
+  await carregarAtividadesRecentes();
+  await carregarPremios();
 
-  // Additional script to forcibly override padding and margin of activity divs after load
-  setTimeout(() => {
-    const atividadeDivs = document.querySelectorAll('#atividadesList > div');
-    atividadeDivs.forEach(div => {
-      div.style.padding = '0.5rem 0.75rem';
-      div.style.marginBottom = '0.25rem';
-    });
-  }, 1000);
-
-  // Pontuação modal logic
+  // Inicializa variáveis e DOM do gráfico
   const btnCriarCard = document.getElementById("btnCriarCard");
   const pontuacaoModal = new bootstrap.Modal(document.getElementById("pontuacaoModal"));
   const selectFilhoModal = document.getElementById("selectFilhoModal");
   const atividadesConcluidasModal = document.getElementById("atividadesConcluidasModal");
   const atividadesPendentesModal = document.getElementById("atividadesPendentesModal");
   const totalPontosModal = document.getElementById("totalPontosModal");
-  const ctxModal = document.getElementById("graficoPontosRelatorioModal") ? document.getElementById("graficoPontosRelatorioModal").getContext("2d") : null;
-  const ctxDesempenhoModal = document.getElementById("graficoDesempenhoTempoModal") ? document.getElementById("graficoDesempenhoTempoModal").getContext("2d") : null;
+  const ctxModal = document.getElementById("graficoPontosRelatorioModal")?.getContext("2d");
+  const ctxDesempenhoModal = document.getElementById("graficoDesempenhoTempoModal")?.getContext("2d");
+  const ctxMainPontos = document.getElementById("graficoPontosRelatorio")?.getContext("2d");
+  const ctxMainColunas = document.getElementById("graficoColunas")?.getContext("2d");
 
-  const ctxMainPontos = document.getElementById("graficoPontosRelatorio") ? document.getElementById("graficoPontosRelatorio").getContext("2d") : null;
-  const ctxMainColunas = document.getElementById("graficoColunas") ? document.getElementById("graficoColunas").getContext("2d") : null;
+  let filhos = [];
+  let atividadesCounts = [];
+  let atividades = [];
 
-let filhos = [];
-let atividadesCounts = [];
-let atividades = []; // store fetched activities globally
+  let chartModal = null;
+  let chartDesempenhoModal = null;
+  let chartMainPontos = null;
+  let chartMainColunas = null;
 
-let chartModal = null;
-let chartDesempenhoModal = null;
-let chartMainPontos = null;
-let chartMainColunas = null;
-
-  async function fetchFilhos() {
-    try {
-      const response = await fetch("http://localhost:3000/filhos", {
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") }
-      });
-      if (!response.ok) throw new Error("Erro ao buscar filhos");
-      filhos = await response.json();
-      popularSelectFilho();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  function popularSelectFilho() {
-    if (!selectFilhoModal) return;
-    // Clear existing options except "Todos"
-    selectFilhoModal.innerHTML = '<option value="all" selected>Todos</option>';
-    filhos.forEach(filho => {
-      const option = document.createElement("option");
-      option.value = filho.id;
-      option.textContent = filho.nome;
-      selectFilhoModal.appendChild(option);
-    });
-  }
-
-  async function fetchAtividadesCounts() {
-    try {
-      const response = await fetch("http://localhost:3000/atividades/concluidas/count", {
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") }
-      });
-      if (!response.ok) throw new Error("Erro ao buscar contagem de atividades");
-      atividadesCounts = await response.json();
-      atualizarResumo();
-      atualizarGraficoDesempenho();
-      atualizarGraficoMain();
-    } catch (error) {
-      console.error(error);
-    }
+  function filtrarAtividadesPorFilho(idFilho) {
+    if (idFilho === "all") return atividades;
+    return atividades.filter(a => a.filho_id === parseInt(idFilho));
   }
 
   function getAtividadesCountByFilho(idFilho) {
     if (idFilho === "all") {
-      // Aggregate counts for all filhos
       const totalConcluidas = atividadesCounts.reduce((acc, cur) => acc + (cur.total_concluidas || 0), 0);
       const totalPendentes = atividadesCounts.reduce((acc, cur) => acc + (cur.total_pendentes || 0), 0);
       const totalPontos = filhos.reduce((acc, cur) => acc + (cur.pontos || 0), 0);
@@ -558,185 +532,115 @@ let chartMainColunas = null;
     const data = [concluidas, pendentes];
     const backgroundColors = ["#2196f3", "#fb913b"];
 
-    if (chartModal) {
-      chartModal.destroy();
-    }
+    if (chartModal) chartModal.destroy();
 
     chartModal = new Chart(ctxModal, {
       type: "doughnut",
       data: {
-        labels: labels,
-        datasets: [{
-          data: data,
-          backgroundColor: backgroundColors
-        }]
+        labels,
+        datasets: [{ data, backgroundColor: backgroundColors }]
       },
       options: {
         responsive: true,
         plugins: {
-          legend: {
-            position: "bottom"
-          }
-        }
-      }
-    });
-  }
-
-  function atualizarGraficoDesempenho() {
-    if (!ctxDesempenhoModal) return;
-
-    const idFilhoSelecionado = selectFilhoModal ? selectFilhoModal.value : "all";
-    const atividadesFiltradas = filtrarAtividadesPorFilho(idFilhoSelecionado);
-
-    // Group points by date (data_limite)
-    const pontosPorData = {};
-
-    atividadesFiltradas.forEach(a => {
-      if (a.concluida) {
-        const data = new Date(a.data_limite).toLocaleDateString();
-        if (!pontosPorData[data]) {
-          pontosPorData[data] = 0;
-        }
-        pontosPorData[data] += a.pontuacao;
-      }
-    });
-
-    // Sort dates
-    const datas = Object.keys(pontosPorData).sort((a, b) => new Date(a) - new Date(b));
-    const pontos = datas.map(d => pontosPorData[d]);
-
-    if (chartDesempenhoModal) {
-      chartDesempenhoModal.destroy();
-    }
-
-    chartDesempenhoModal = new Chart(ctxDesempenhoModal, {
-      type: "line",
-      data: {
-        labels: datas,
-        datasets: [{
-          label: "Pontos ao longo do tempo",
-          data: pontos,
-          fill: false,
-          borderColor: "#2196f3",
-          tension: 0.1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: "Data"
-            }
-          },
-          y: {
-            title: {
-              display: true,
-              text: "Pontos"
-            },
-            beginAtZero: true
-          }
+          legend: { position: "bottom" }
         }
       }
     });
   }
 
   function atualizarGraficoMain() {
+    
     if (!ctxMainPontos || !ctxMainColunas) return;
 
     const idFilhoSelecionado = selectFilhoModal ? selectFilhoModal.value : "all";
     const counts = getAtividadesCountByFilho(idFilhoSelecionado);
-
-    // Doughnut chart for atividades concluídas vs pendentes (swapped)
     const dataAtividades = [counts.totalConcluidas, counts.totalPendentes];
-    const backgroundColorsAtividades = ["#2196f3", "#fb913b"];
 
-    if (chartMainPontos) {
-      chartMainPontos.destroy();
-    }
-
+    if (chartMainPontos) chartMainPontos.destroy();
     chartMainPontos = new Chart(ctxMainPontos, {
       type: "doughnut",
       data: {
         labels: ["Concluídas", "Pendentes"],
-        datasets: [{
-          data: dataAtividades,
-          backgroundColor: backgroundColorsAtividades
-        }]
+        datasets: [{ data: dataAtividades, backgroundColor: ["#2196f3", "#fb913b"] }]
       },
       options: {
         responsive: true,
         cutout: "70%",
-        plugins: {
-          legend: {
-            position: "bottom"
-          }
-        }
+        plugins: { legend: { position: "bottom" } }
       }
+
+      
     });
 
-    // Bar chart for pontos diários (swapped)
-    // Group points by date (data_limite)
     const atividadesFiltradas = filtrarAtividadesPorFilho(idFilhoSelecionado);
-
     const pontosPorData = {};
-
     atividadesFiltradas.forEach(a => {
       if (a.concluida) {
         const data = new Date(a.data_limite).toLocaleDateString();
-        if (!pontosPorData[data]) {
-          pontosPorData[data] = 0;
-        }
-        pontosPorData[data] += a.pontuacao;
+        pontosPorData[data] = (pontosPorData[data] || 0) + a.pontuacao;
       }
     });
 
     const datas = Object.keys(pontosPorData).sort((a, b) => new Date(a) - new Date(b));
     const pontos = datas.map(d => pontosPorData[d]);
 
-    if (chartMainColunas) {
-      chartMainColunas.destroy();
-    }
-
+    if (chartMainColunas) chartMainColunas.destroy();
     chartMainColunas = new Chart(ctxMainColunas, {
       type: "bar",
       data: {
         labels: datas,
-        datasets: [{
-          label: "Pontos Diários",
-          data: pontos,
-          backgroundColor: "#2196f3"
-        }]
+        datasets: [{ label: "Pontos Diários", data: pontos, backgroundColor: "#2196f3" }]
       },
       options: {
         responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            precision: 0
-          }
-        },
-        plugins: {
-          legend: {
-            display: false
-          }
-        }
+        scales: { y: { beginAtZero: true, precision: 0 } },
+        plugins: { legend: { display: false } }
       }
     });
   }
 
-function filtrarAtividadesPorFilho(idFilho) {
-  if (idFilho === "all") {
-    return atividades;
+  function popularSelectFilho() {
+    if (!selectFilhoModal) return;
+    selectFilhoModal.innerHTML = '<option value="all" selected>Todos</option>';
+    filhos.forEach(filho => {
+      const option = document.createElement("option");
+      option.value = filho.id;
+      option.textContent = filho.nome;
+      selectFilhoModal.appendChild(option);
+    });
   }
-  return atividades.filter(a => a.filho_id === parseInt(idFilho));
-}
+
+  async function fetchFilhos() {
+    try {
+      const response = await fetch(`${API_BASE}/filhos`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+      if (!response.ok) throw new Error("Erro ao buscar filhos");
+      filhos = await response.json();
+      popularSelectFilho();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function fetchAtividadesCounts() {
+    try {
+      const response = await fetch(`${API_BASE}/atividades/concluidas/count`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+      if (!response.ok) throw new Error("Erro ao buscar contagem de atividades");
+      atividadesCounts = await response.json();
+      atualizarResumo();
+      atualizarGraficoMain();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   if (selectFilhoModal) {
     selectFilhoModal.addEventListener("change", () => {
       atualizarResumo();
-      atualizarGraficoDesempenho();
       atualizarGraficoMain();
     });
   }
@@ -744,11 +648,20 @@ function filtrarAtividadesPorFilho(idFilho) {
   if (btnCriarCard) {
     btnCriarCard.addEventListener("click", () => {
       pontuacaoModal.show();
-      // Initialize data fetch and rendering when modal is shown
       fetchFilhos().then(() => fetchAtividadesCounts());
     });
   }
 
-  // Initial call to update main charts after data is loaded
-  fetchFilhos().then(() => fetchAtividadesCounts());
+  // Ajuste de padding dos cards
+  setTimeout(() => {
+    const atividadeDivs = document.querySelectorAll('#atividadesList > div');
+    atividadeDivs.forEach(div => {
+      div.style.padding = '0.5rem 0.75rem';
+      div.style.marginBottom = '0.25rem';
+    });
+  }, 1000);
+
+  // Dispara gráficos principais ao abrir a página
+  await fetchFilhos();
+  await fetchAtividadesCounts();
 });

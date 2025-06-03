@@ -24,7 +24,8 @@
   background: #fdfdfd;
   padding: 12px 16px;
   border-radius: 12px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #fdfdfd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.17);
   margin-bottom: 1rem;
 }
 
@@ -38,7 +39,7 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: #eee;
+  background: linear-gradient(to right,rgb(251, 145, 64),rgba(248, 116, 107, 0.993));
   font-size: 1.5rem;
   display: flex;
   align-items: center;
@@ -84,7 +85,7 @@
 }
 
 .barra-interna {
-  background-color: #28a745;
+  background: linear-gradient(to right, #1565c0, #42a5f5);
   height: 100%;
   transition: width 0.3s ease;
 }
@@ -208,4 +209,5 @@
   filter: brightness(1.05);
 }
 
-  
+
+

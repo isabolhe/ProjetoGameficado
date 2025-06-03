@@ -36,6 +36,11 @@ document.getElementById('form-login').addEventListener('submit', async function 
                 localStorage.setItem('token', dados.token);
             }
 
+            if (dados.dados && dados.dados.nome) {
+                localStorage.setItem('nomeResponsavel', dados.dados.nome);
+            }
+
+
             // Aguarda a animação e redireciona
             setTimeout(() => {
                 window.location.href = 'pagresponsavel.html';
