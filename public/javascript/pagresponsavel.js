@@ -611,6 +611,44 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  function ajustarLarguraPremios() {
+  const container = document.getElementById('prizesContainer');
+  if (!container) return;
+
+  const isMobile = window.innerWidth < 576;
+  container.querySelectorAll('div').forEach(div => {
+    if (isMobile) {
+      div.style.flex = '1 1 100%';
+      div.style.maxWidth = '100%';
+    } else {
+      div.style.flex = '1 1 calc(33.33% - 20px)';
+      div.style.maxWidth = '250px';
+    }
+  });
+}
+
+function ajustarAtividadesLayout() {
+  const atividadesList = document.getElementById('atividadesList');
+  if (!atividadesList) return;
+
+  atividadesList.querySelectorAll('div').forEach(div => {
+    div.style.width = '100%';
+    div.style.boxSizing = 'border-box';
+    div.style.padding = '0.75rem 1rem';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  ajustarLarguraPremios();
+  ajustarAtividadesLayout();
+});
+
+window.addEventListener('resize', () => {
+  ajustarLarguraPremios();
+  ajustarAtividadesLayout();
+});
+
+
   async function fetchFilhos() {
     try {
       const response = await fetch(`${API_BASE}/filhos`, {

@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+
 /* Reset e estilo base */
 body {
   background-color: #f8f9fa;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: #343a40;
   margin: 0;
+  overflow-x: hidden; /* evita barra de rolagem lateral */
 }
 
 .sidebar {
@@ -20,6 +24,8 @@ body {
   .sidebar {
     position: relative;
     height: auto;
+    width: 100% !important;
+    padding: 1rem !important;
   }
 }
 
@@ -39,16 +45,14 @@ body {
   align-items: center;
   gap: 10px;
   transition: all 0.3s ease;
-  
 }
 
 .sidebar .nav-link:hover,
 .sidebar .nav-link.active {
-   background-color: rgba(255, 255, 255, 0.1); /* azul claro suave */
+  background-color: rgba(255, 255, 255, 0.1);
   color: #fff;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);     /* sombra leve */
-  border-radius: 10px;
-  transform: scale(1.05); /* ligeiro zoom pra frente */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
 }
 
 main h2 {
@@ -74,21 +78,17 @@ main .btn-outline-primary:hover {
   border: none;
   border-radius: 16px;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.06);
-  padding: 1.5rem;
+  padding: 1rem;
   transition: all 0.3s ease-in-out;
   position: relative;
   z-index: 1;
 }
 
-
-
 .card h5 {
   margin: 0;
-  white-space: nowrap; /* Evita quebra de linha */
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #455463;
-  
 }
 
 .text-muted {
@@ -166,7 +166,6 @@ main .btn-outline-primary:hover {
   color: white;
 }
 
-/* Modal ajuste */
 .modal-header {
   background-color: #0d6efd;
   color: white;
@@ -182,35 +181,75 @@ main .btn-outline-primary:hover {
 }
 
 .fa-solid {
-  margin-right: 6px; /* aumenta esse valor se quiser mais espaço */
+  margin-right: 6px;
 }
 
 .prizes-wrapper {
-  max-height: 400px; /* Ajuste como quiser */
+  max-height: 400px;
   overflow-y: auto;
-  padding-right: 10px; /* Espaço para scrollbar */
+  padding-right: 10px;
 }
 
+/* Substituição aqui */
 #prizesContainer {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  
-  
+  flex-wrap: nowrap;        /* nunca quebra linha */
+  gap: 10px;
+  overflow-x: auto;         /* barra horizontal se precisar */
+  overflow-y: hidden;       /* evita barra vertical */
+  width: max-content;       /* cresce conforme cards */
+  padding-bottom: 10px;     /* espaço para barra scroll */
+  -webkit-overflow-scrolling: touch; /* rolagem suave iOS */
 }
 
 #prizesContainer > div {
-  flex: 1 1 calc(33.33% - 20px); /* 3 por linha, com gap */
-  min-width: 200px;
-  max-width: 250px;
+  flex: 0 0 190px;          /* largura fixa */
+  min-width: 190px;
+  max-width: 190px;
+  box-sizing: border-box;   /* padding não aumenta tamanho */
   background: #fcefd7;
   padding: 15px;
   border-radius: 12px;
   border-color: 1px solid #F97F5A !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
 
+/* Garante quebra de texto dentro dos elementos do card */
+#prizesContainer p,
+#prizesContainer span,
+#prizesContainer strong {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Responsividade: Mobile - 1 por linha */
+@media (max-width: 576px) {
+  #prizesContainer {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+  #prizesContainer > div {
+    flex: 1 1 100%;
+    max-width: 100%;
+    min-width: auto;
+  }
+
+  .prizes-wrapper,
+  .atividades-wrapper {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  .card {
+    padding: 1rem !important;
+  }
+
+  .icone-e-titulo h5 {
+    font-size: 1.2rem;
+  }
 }
