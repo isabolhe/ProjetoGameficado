@@ -1,54 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
 body {
-    background-color: #f8f9fa;
-    font-family: 'Segoe UI', sans-serif;
-    color: #2c3e50;
-  }
-  
-  h2 {
-    font-weight: bold;
-    color: #2196f3;;
-
-  }
-  
-  .btn-atividade {
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: transform 0.1s ease-in-out;
-  }
-  
-  .btn-atividade:hover {
-    transform: scale(1.01);
-  }
-  
-  .positiva {
-    background-color: #e9f7ef;
-    border: 1px solid #2196f3;
-    color: #1976d2;
-  }
-  
-  .positiva:hover {
-    background-color: #94c2e7;
-  }
-  
-  .negativa {
-    background-color: #fdecea;
-    border: 1px solid #fb913b;
-    color: #fb913b;
-  }
-  
-  .negativa:hover {
-    background-color: #ffddc1;
-  }
-
-
-  .spanpositive {
-    background-color: #1976d2 !important;
-  }
+  background-color: #f8fafc;
+  font-family: 'Poppins', sans-serif;
+  color: #0f172a;
+}
 
 
 
-  .badge {
-    font-size: 0.9rem;
-    padding: 0.5em 0.75em;
+
+h2 {
+  font-weight: bold;
+  font-size: 2.5rem;
+  
+}
+
+p {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-bottom: 5rem;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.4rem;
+  width: 6px;
+  height: 1.5rem;
+  border-radius: 3px;
+  background-color: #2563eb;
+}
+
+.section:nth-of-type(1) .section-title::before {
+  background-color: #f97316;
+}
+
+/* Card base */
+.card-atividade {
+  border: none;
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  min-height: 90px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  font-size: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  transition: transform 0.2s ease;
+}
+
+.card-atividade:hover {
+  transform: scale(1.01);
+}
+
+/* Pendentes POSITIVOS */
+.card-pendente-positiva {
+  background: linear-gradient(to right, #1565c0, #42a5f5);
+  color: white;
+  font-weight: 500;
+}
+
+.card-pendente-positiva .icone {
+  width: 22px;
+  height: 22px;
+  border: 2px solid white;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+}
+
+/* Pendentes NEGATIVOS */
+.card-pendente-negativa {
+  background: linear-gradient(to right, #FBBC25, #FB953A);
+  color: white;
+  font-weight: 500;
+}
+
+.card-pendente-negativa .icone {
+  width: 22px;
+  height: 22px;
+  border: 2px solid white;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+}
+
+/* Concluídos */
+.card-concluido {
+  background-color: #dbeafe;
+  color: #1e3a8a;
+  font-weight: 500;
+}
+
+.card-concluido .icone {
+  width: 22px;
+  height: 22px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  color: #2563eb;
+  font-size: 14px;
+  border: 2px solid #2563eb;
+}
+
+/* Pontuação */
+.valor-ponto {
+  padding: 0.3rem 0.75rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  background-color: white;
+  color: #16a34a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.valor-ponto.negativo {
+  color: #dc2626;
+}
+
+.valor-ponto.bg-laranja {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Textos */
+.texto-atividade {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  flex-grow: 1;
+}
+
+.descricao-atividade {
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #f1f5f9;
+  border-left: 3px solid #94a3b8;
+  border-radius: 4px;
+  color: #475569;
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+  .card-atividade {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
+
+  .valor-ponto {
+    align-self: flex-end;
+  }
+}
+
+
+.descricao-atividade {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #f1f5f9;
+  border-left: 3px solid #94a3b8;
+  border-radius: 4px;
+  color: #475569;
+
+  /* ocultação suave */
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.4s ease, max-height 0.4s ease, margin-top 0.4s ease;
+  margin-top: 0;
+}
+
+.descricao-atividade.ativa {
+  opacity: 1;
+  max-height: 200px; /* ou mais se precisar */
+  margin-top: 0.75rem;
+}
 
