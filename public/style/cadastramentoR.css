@@ -1,7 +1,10 @@
 /* cadastro.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
 body {
     background-color: #ecf0f1 !important; /* Mesmo fundo suave do site */
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Poppins', sans-serif;
+    color: #343a40;
 }
 
 /* Estilo da navbar */

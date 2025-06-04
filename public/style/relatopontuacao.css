@@ -1,8 +1,10 @@
 /* Estilo geral da página */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
 body {
     background-color: #ecf0f1;
-    font-family: 'Segoe UI', sans-serif;
-    color: #2c3e50;
+    font-family: 'Poppins', sans-serif;
+    color: #343a40;
   }
   
   /* Título principal */

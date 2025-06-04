@@ -1,47 +1,135 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- bootstrap ta on com css -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
-     rel="stylesheet" 
-     integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" 
-     crossorigin="anonymous"
-     >
-     <link rel="stylesheet" href="style/relatorios.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anotações Privadas</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+        crossorigin="anonymous" />
+
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="style/relatorios.css" />
 </head>
 <body>
 
-    <div class="container mt-4" id="form-container">
-        <h2 class="mb-4 text-primary">📝 Anotações Privadas</h2>
-        <form id="formAnotacao" class="mb-5">
-          <div class="mb-3">
-            <label for="titulo" class="form-label">Título da Anotação</label>
-            <input type="text" class="form-control" id="titulo" required />
-          </div>
-          <div class="mb-3">
-            <label for="texto" class="form-label">Texto</label>
-            <textarea class="form-control" id="texto" rows="4" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Salvar Anotação</button>
-        </form>
-      </div>
-    
-      <!-- Painel fixo lateral -->
-      <div class="painel-anotacoes">
-        <h6>📌 Anotações</h6>
-        <div id="listaAnotacoes">
-          <!-- Títulos das anotações salvas vão aparecer aqui -->
-        </div>
-      </div>
-    
+<!-- Botão menu hambúrguer visível apenas no mobile -->
+<button class="btn btn-primary d-md-none m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNotas" aria-controls="offcanvasNotas">
+   Ver Anotações
+</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" 
-          integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" 
-          crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="javascript/relatorios.js"></script>
+<div class="page-layout">
+  <!-- Conteúdo principal -->
+  <main class="main-content">
+    <div id="form-container">
+      <h2 class="mb-4 text-primary d-flex align-items-center gap-2">
+  <span style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #ff9900, #ffcc00); display: flex; align-items: center; justify-content: center;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" />
+    </svg>
+  </span>
+  Anotações Privadas
+</h2>
+
+      <form id="formAnotacao" class="mb-5">
+        <div class="mb-3">
+          <label for="titulo" class="form-label">Título da Anotação</label>
+          <input type="text" class="form-control" id="titulo" required />
+        </div>
+        <div class="mb-3">
+          <label for="filho" class="form-label">Filho</label>
+          <select id="filho" class="form-select" required>
+            <!-- Opções preenchidas via JS -->
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="texto" class="form-label">Texto</label>
+          <textarea class="form-control" id="texto" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar Anotação</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Painel lateral normal (desktop) -->
+  <aside class="painel-anotacoes d-none d-md-block">
+    <h6 class="d-flex align-items-center gap-2">
+      <span style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #ff9900, #ffcc00); display: flex; align-items: center; justify-content: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+          <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+        </svg>
+      </span>
+      Anotações
+    </h6>
+    <div id="listaAnotacoesDesktop" class="overflow-auto">
+      <!-- Anotações serão listadas aqui -->
+      <div class="anotacao-vazia text-center px-3 py-4" id="anotacaoVaziaDesktop" style="color: #64748b;">
+  <div class="mb-3">
+    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-description">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+      <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+      <path d="M9 17h6" />
+      <path d="M9 13h6" />
+    </svg>
+  </div>
+  <p class="fw-semibold mb-1" style="font-size: 0.95rem; color: #475569;">Nenhuma anotação encontrada.</p>
+  <p class="small" style="font-size: 0.8rem; color: #94a3b8;">Crie sua primeira anotação no formulário ao lado.</p>
+</div>
+
+    </div>
+  </aside>
+</div>
+
+<!-- Painel lateral offcanvas (mobile) -->
+<div class="offcanvas offcanvas-end d-md-none" tabindex="-1" id="offcanvasNotas" aria-labelledby="offcanvasNotasLabel">
+  <div class="offcanvas-header">
+    <h6 class="offcanvas-title d-flex align-items-center gap-2" id="offcanvasNotasLabel">
+      <span style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #ff9900, #ffcc00); display: flex; align-items: center; justify-content: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+          <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+        </svg>
+      </span>
+      Anotações
+    </h6>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div id="listaAnotacoesMobile" class="overflow-auto">
+      <div class="anotacao-vazia text-center px-3 py-4" id="anotacaoVaziaMobile" style="color: #64748b;">
+        <div class="mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-description">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+            <path d="M9 17h6" />
+            <path d="M9 13h6" />
+          </svg>
+        </div>
+        <p class="fw-semibold mb-1" style="font-size: 0.95rem; color: #475569;">Nenhuma anotação encontrada.</p>
+        <p class="small" style="font-size: 0.8rem; color: #94a3b8;">Crie sua primeira anotação no formulário.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="javascript/relatorios.js"></script>
 </body>
 </html>

@@ -1,7 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
 body {
   background: #f0f4f8;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Poppins', sans-serif;
   padding-top: 10px;
+  color: #343a40;
+}
+
+.navbar {
+  background-color: #0d6efd !important;
+}
+
+.textnavbar {
+ color: rgb(251, 145, 64);
+}
+.texteduki {
+  color: rgb(251, 145, 64);
 }
 
 h1, h2, h3 {
@@ -27,7 +41,7 @@ input.form-control {
 }
 
 .btn-primary {
-  background-color: #1976d2;
+  background-color: #0d6efd;
   border-radius: 0.5rem;
   font-weight: 600;
   transition: 0.3s;
@@ -38,5 +52,5 @@ input.form-control {
 }
 
 a {
-  color: #1976d2;
+  color:#0d6efd;
 }
