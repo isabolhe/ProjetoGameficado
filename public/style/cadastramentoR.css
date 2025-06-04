@@ -31,8 +31,8 @@ body {
 /* Estilo do card de cadastro */
 .card {
     background-color: #ffffff; /* Fundo branco */
-    border: 1px solid #ddd; /* Borda discreta */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    border: none !important;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.06) !important;
     padding: 30px; /* Espaçamento interno */
     border-radius: 8px; /* Cantos arredondados para suavizar */
     
@@ -44,13 +44,13 @@ body {
     font-weight: bold;
     text-align: center;
     
+    
 }
 
 /* Estilo dos campos de input */
 input.form-control {
     background-color: #f4f6f9; /* Fundo claro */
     color: #333; /* Texto escuro */
-    border: 1px solid #ccc; /* Borda clara */
     border-radius: 4px;
 }
 

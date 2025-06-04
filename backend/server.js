@@ -82,17 +82,15 @@ app.post('/cadastro-responsavel', (req, res) => {
     email,
     senha,
     telefone,
-    nomeFilho,
-    idadeFilho,
     instituicaoEnsino
   } = req.body;
 
   const query = `
-    INSERT INTO responsaveis (nome, email, senha, telefone, nome_filho, idade_filho, instituicao_ensino)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO responsaveis (nome, email, senha, telefone, instituicao_ensino)
+    VALUES (?, ?, ?, ?, ?)
   `;
 
-  db.query(query, [nomeCompleto, email, senha, telefone, nomeFilho, idadeFilho, instituicaoEnsino], (err, result) => {
+  db.query(query, [nomeCompleto, email, senha, telefone, instituicaoEnsino], (err, result) => {
     if (err) {
       console.error('Erro ao cadastrar responsável:', err);
       return res.status(500).json({ mensagem: 'Erro ao cadastrar' });
@@ -100,6 +98,7 @@ app.post('/cadastro-responsavel', (req, res) => {
     res.status(201).json({ mensagem: 'Responsável cadastrado com sucesso!' });
   });
 });
+
 
 // Middleware to verify JWT token
 function authenticateToken(req, res, next) {

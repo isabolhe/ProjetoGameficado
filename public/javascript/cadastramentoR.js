@@ -11,8 +11,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
   const senha = document.getElementById('senha').value;
   const confirmarSenha = document.getElementById('confirmarSenha').value;
   const telefone = document.getElementById('telefone').value;
-  const nomeFilho = document.getElementById('nomeFilho').value;
-  const idadeFilho = document.getElementById('idadeFilho').value;
+  
   const instituicaoEnsino = document.getElementById('instituicaoEnsino').value;
 
   if (senha !== confirmarSenha) {
@@ -29,8 +28,6 @@ document.querySelector('form').addEventListener('submit', async (e) => {
         email,
         senha,
         telefone,
-        nomeFilho,
-        idadeFilho,
         instituicaoEnsino
       })
     });
