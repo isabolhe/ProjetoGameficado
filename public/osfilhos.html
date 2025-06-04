@@ -20,6 +20,25 @@
   <link href="style/osfilhos.css" rel="stylesheet">
 </head>
 <body>
+
+  <!-- Navbar moderna só com a seta -->
+<nav class="navbar navbar-dark bg-dark shadow-sm fixed-top">
+  <div class="container-fluid">
+    <!-- Ícone de voltar sempre visível -->
+    <a class="navbar-brand d-flex align-items-center" href="#" onclick="voltarAtualizando()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icon-tabler-arrow-left">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12h14" />
+        <path d="M5 12l6 6" />
+        <path d="M5 12l6 -6" />
+      </svg>
+    </a>
+  </div>
+</nav>
+
+
   <div class="container py-5">
     <h2 class="mb-4 text-center" data-aos="fade-down">Gerenciamento dos Filhos</h2>
 
@@ -112,6 +131,13 @@
     integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  function voltarAtualizando() {
+    // Força o navegador a recarregar a página e evitar usar cache
+    window.location.href = 'pagresponsavel.html?reload=' + new Date().getTime();
+  }
+</script>
 
 </body>
 </html>

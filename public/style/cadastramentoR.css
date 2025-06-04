@@ -5,13 +5,12 @@ body {
     background-color: #ecf0f1 !important; /* Mesmo fundo suave do site */
     font-family: 'Poppins', sans-serif;
     color: #343a40;
+   padding-top: 70px;
 }
 
 /* Estilo da navbar */
 .navbar {
-    background-color: #2196f3; /* Azul escuro igual ao botão */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    padding: 10px 0; /* Espaçamento vertical */
+  background-color: #0d6efd !important;
 }
 
 /* Estilo do link dentro da navbar */
@@ -36,6 +35,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra leve */
     padding: 30px; /* Espaçamento interno */
     border-radius: 8px; /* Cantos arredondados para suavizar */
+    
 }
 
 /* Título do card */
@@ -43,6 +43,7 @@ body {
     color: #fb913b;/* Azul escuro */
     font-weight: bold;
     text-align: center;
+    
 }
 
 /* Estilo dos campos de input */

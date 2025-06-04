@@ -14,15 +14,27 @@
      <link rel="stylesheet" href="style/cadastramentoR.css">
 </head>
 <body>
-  <!-- Navbar no topo -->
-  <nav class="navbar">
+  
+<!-- Navbar moderna sem hambúrguer -->
+<nav class="navbar navbar-dark bg-dark shadow-sm fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="login.html">
+    <a class="navbar-brand d-flex align-items-center" href="login.html">
       <!-- Ícone de voltar -->
-      &lsaquo; Voltar para Login
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icon-tabler-arrow-left">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12h14" />
+        <path d="M5 12l6 6" />
+        <path d="M5 12l6 -6" />
+      </svg>
     </a>
   </div>
 </nav>
+
+
+  
+
 
   <form action="/cadastro-responsavel" method="POST">
     <div class="container mt-4">

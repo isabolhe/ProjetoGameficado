@@ -4,9 +4,33 @@ body {
   background-color: #f8fafc;
   font-family: 'Poppins', sans-serif;
   color: #343a40;
+  padding-top: 70px;
 }
 
+/* Estilo para a navbar com fundo azul */
+    .navbar {
+      background-color: #0d6efd !important;
+      padding: 0.75rem 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1050;
+    }
 
+    /* Ícone de voltar com estilo limpo */
+.navbar .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffff !important;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* Ajuste para o SVG ficar melhor centralizado visualmente */
+.navbar .navbar-brand svg {
+  margin-right: 4px;
+}
 
 
 h2 {

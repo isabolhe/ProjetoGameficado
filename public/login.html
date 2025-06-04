@@ -18,7 +18,8 @@
   <!-- Navbar moderna -->
   <nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top">
     <div class="container">
-      <a class=" textnavbar navbar-brand fw-bold" href="#">EDUKI</a>
+      <a class="textnavbar navbar-brand fw-bold" href="#" onclick="reloadPreservandoScroll(event)">EDUKI</a>
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -53,7 +54,7 @@
               <label for="email" class="form-label">E-mail</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                <input type="email" id="email" class="form-control" placeholder="exemplo@email.com" required />
+                <input type="email" id="email" class="form-control" placeholder="Digite seu e-mail" required />
               </div>
             </div>
             <div class="mb-3">
@@ -68,7 +69,7 @@
           <div class="text-center mt-3">
             <a href="esqueciasenha.html" class="text-decoration-none">Esqueceu a senha?</a>
           </div>
-          <div class="text-center mt-2">
+          <div class="linkcadastro text-center mt-2">
             <small>Não tem uma conta? <a href="cadastramentoR.html">Cadastre-se aqui</a></small>
           </div>
         </div>
@@ -86,6 +87,23 @@
   </script>
   <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function reloadPreservandoScroll(event) {
+    event.preventDefault(); // Impede o comportamento padrão do link
+    const scrollY = window.scrollY;
+    localStorage.setItem('scrollPosition', scrollY);
+    location.reload(); // Recarrega a página
+  }
+
+  window.addEventListener('load', () => {
+    const savedScroll = localStorage.getItem('scrollPosition');
+    if (savedScroll !== null) {
+      window.scrollTo(0, parseInt(savedScroll));
+      localStorage.removeItem('scrollPosition');
+    }
+  });
+</script>
+
 
 </body>
 </html>
