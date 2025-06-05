@@ -23,97 +23,175 @@ document.addEventListener('DOMContentLoaded', () => {
   let premioParaEditar = null;
 
   async function fetchPremios() {
-    try {
-      const response = await fetch(`${baseURL}/api/premios`, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-      });
-      if (!response.ok) throw new Error('Erro ao buscar prêmios');
-
-      const premios = await response.json();
-
-      console.log('Premios fetched:', premios);
-
-      if (premios.length === 0) {
-        alertNenhumPremio.style.display = 'block';
-        listaPremios.style.display = 'none';
-        btnExcluirPremios.style.display = 'none';
-        btnToggleSelecao.style.display = 'none';
-        btnToggleEdicao.style.display = 'none';
-      } else {
-        alertNenhumPremio.style.display = 'none';
-        listaPremios.style.display = 'block';
-        btnExcluirPremios.style.display = selectionMode ? 'inline-block' : 'none';
-        btnToggleSelecao.style.display = 'inline-block';
-        btnToggleEdicao.style.display = 'inline-block';
-        listaPremios.innerHTML = '';
-        premios.forEach((premio, index) => {
-          const item = document.createElement('div');
-          item.className = 'list-group-item d-flex justify-content-between align-items-center';
-          item.dataset.premioId = premio.id;
-          item.setAttribute('data-aos', 'fade-up');
-          item.setAttribute('data-aos-delay', Math.min(index * 100, 500));
-
-          let emojiHtml = premio.emoji ? `<span class="me-2" style="font-size: 1.5rem;">${premio.emoji}</span>` : '';
-
-          let checkboxHtml = selectionMode ? `<input type="checkbox" class="select-premio-checkbox me-3" data-id="${premio.id}">` : '';
-          let radioHtml = editMode ? `<input type="radio" name="select-premio-editar" class="select-premio-radio me-3" data-id="${premio.id}">` : '';
-
-          item.innerHTML = `
-            <div class="d-flex align-items-center">
-              ${checkboxHtml}${radioHtml}
-              <div>
-                <h5>${emojiHtml}${premio.nome}</h5>
-                <p>${premio.descricao}</p>
-              </div>
-            </div>
-            <div class="points-container d-flex align-items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#f4b942" class="bi bi-star-fill me-2" viewBox="0 0 16 16">
-                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.32-.158-.888.283-.95l4.898-.696 2.184-4.327c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.63.282.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-              </svg>
-              <span class="points-text">${premio.pontos_necessarios} pts</span>
-            </div>
-          `;
-          listaPremios.appendChild(item);
-        });
-
-        if (selectionMode) {
-          document.querySelectorAll('.select-premio-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => {
-              const id = e.target.dataset.id;
-              e.target.checked ? selectedPremios.add(id) : selectedPremios.delete(id);
-              btnExcluirPremios.disabled = selectedPremios.size === 0;
-            });
-          });
-        }
-
-        if (editMode) {
-          document.querySelectorAll('.select-premio-radio').forEach(radio => {
-            radio.addEventListener('change', (e) => {
-              const id = e.target.dataset.id;
-              premioParaEditar = premios.find(p => p.id == id);
-              if (premioParaEditar) {
-                document.getElementById('nomePremio').value = premioParaEditar.nome;
-                document.getElementById('descricaoPremio').value = premioParaEditar.descricao;
-                document.getElementById('pontosNecessarios').value = premioParaEditar.pontos_necessarios;
-                document.getElementById('emojiPremio').value = premioParaEditar.emoji || '';
-                highlightSelectedEmoji(premioParaEditar.emoji || '');
-                document.getElementById('cadastrarPremioModalLabel').textContent = 'Editar Prêmio';
-                btnSalvarPremio.textContent = 'Salvar Alterações';
-                modal.show();
-              }
-            });
-          });
-        }
-
-        AOS.refresh();
+  try {
+    const response = await fetch(`${baseURL}/api/premios`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
-    } catch (error) {
-      console.error(error);
-      Swal.fire('Erro', 'Erro ao carregar prêmios.', 'error');
+    });
+    if (!response.ok) throw new Error('Erro ao buscar prêmios');
+
+    const premios = await response.json();
+
+    console.log('Premios fetched:', premios);
+
+    if (premios.length === 0) {
+      alertNenhumPremio.style.display = 'block';
+      listaPremios.style.display = 'none';
+      btnExcluirPremios.style.display = 'none';
+      btnToggleSelecao.style.display = 'none';
+      btnToggleEdicao.style.display = 'none';
+    } else {
+      alertNenhumPremio.style.display = 'none';
+      listaPremios.style.display = 'block';
+      btnExcluirPremios.style.display = selectionMode ? 'inline-block' : 'none';
+      btnToggleSelecao.style.display = 'inline-block';
+      btnToggleEdicao.style.display = 'inline-block';
+      listaPremios.innerHTML = '';
+
+      premios.forEach((premio, index) => {
+        const item = document.createElement('div');
+        item.className = 'list-group-item d-flex justify-content-between align-items-center';
+        item.dataset.premioId = premio.id;
+        item.setAttribute('data-aos', 'fade-up');
+        item.setAttribute('data-aos-delay', Math.min(index * 100, 500));
+
+        let emojiHtml = premio.emoji
+          ? `<span class="me-2" style="font-size: 1.5rem;">${premio.emoji}</span>` : '';
+
+        let checkboxHtml = selectionMode
+          ? `<input type="checkbox" class="select-premio-checkbox me-3" data-id="${premio.id}">` : '';
+
+        let radioHtml = editMode
+          ? `<input type="radio" name="select-premio-editar" class="select-premio-radio me-3" data-id="${premio.id}">` : '';
+
+        item.innerHTML = `
+          <div class="d-flex align-items-center">
+            ${checkboxHtml}${radioHtml}
+            <div>
+              <h5>${emojiHtml}${premio.nome}</h5>
+              <p>${premio.descricao}</p>
+            </div>
+          </div>
+          <div class="points-container d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#f4b942" class="bi bi-star-fill me-2" viewBox="0 0 16 16">
+              <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.32-.158-.888.283-.95l4.898-.696 2.184-4.327c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.63.282.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+            </svg>
+            <span class="points-text">${premio.pontos_necessarios} pts</span>
+            <button class="btn btn-success btn-sm ms-2 btn-resgatar-premio" data-id="${premio.id}">Resgatar</button>
+          </div>
+        `;
+
+        listaPremios.appendChild(item);
+      });
+
+      if (selectionMode) {
+        document.querySelectorAll('.select-premio-checkbox').forEach(checkbox => {
+          checkbox.addEventListener('change', (e) => {
+            const id = e.target.dataset.id;
+            e.target.checked ? selectedPremios.add(id) : selectedPremios.delete(id);
+            btnExcluirPremios.disabled = selectedPremios.size === 0;
+          });
+        });
+      }
+
+      if (editMode) {
+        document.querySelectorAll('.select-premio-radio').forEach(radio => {
+          radio.addEventListener('change', (e) => {
+            const id = e.target.dataset.id;
+            premioParaEditar = premios.find(p => p.id == id);
+            if (premioParaEditar) {
+              document.getElementById('nomePremio').value = premioParaEditar.nome;
+              document.getElementById('descricaoPremio').value = premioParaEditar.descricao;
+              document.getElementById('pontosNecessarios').value = premioParaEditar.pontos_necessarios;
+              document.getElementById('emojiPremio').value = premioParaEditar.emoji || '';
+              highlightSelectedEmoji(premioParaEditar.emoji || '');
+              document.getElementById('cadastrarPremioModalLabel').textContent = 'Editar Prêmio';
+              btnSalvarPremio.textContent = 'Salvar Alterações';
+              modal.show();
+            }
+          });
+        });
+      }
+
+      AOS.refresh();
+
+      // Botões de resgate
+      document.querySelectorAll('.btn-resgatar-premio').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const premioId = e.target.dataset.id;
+          try {
+            const filhosResponse = await fetch(`${baseURL}/filhos`, {
+              headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+            });
+            const filhos = await filhosResponse.json();
+
+            if (!filhos.length) {
+              return Swal.fire('Erro', 'Você ainda não cadastrou filhos.', 'error');
+            }
+
+            const { value: filhoSelecionadoId } = await Swal.fire({
+              title: 'Escolha o filho para resgatar',
+              input: 'select',
+              inputOptions: filhos.reduce((acc, f) => {
+                acc[f.id] = `${f.nome} (${f.pontos} pts)`;
+                return acc;
+              }, {}),
+              inputPlaceholder: 'Selecione um filho',
+              showCancelButton: true,
+              confirmButtonText: 'Verificar pontos'
+            });
+
+            if (!filhoSelecionadoId) return;
+
+            const filho = filhos.find(f => f.id == filhoSelecionadoId);
+            const premio = premios.find(p => p.id == premioId);
+
+            if (filho.pontos < premio.pontos_necessarios) {
+              return Swal.fire('Sem Pontos 😞', `${filho.nome} não tem pontos suficientes.`, 'warning');
+            }
+
+            const confirmar = await Swal.fire({
+              title: 'Confirmar Resgate?',
+              text: `Deseja realmente resgatar este prêmio para ${filho.nome}?`,
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonText: 'Sim, resgatar',
+              cancelButtonText: 'Cancelar'
+            });
+
+            if (!confirmar.isConfirmed) return;
+
+            const resgatar = await fetch(`${baseURL}/resgatar-premio`, {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                filho_id: parseInt(filhoSelecionadoId),
+                premio_id: parseInt(premioId)
+              })
+            });
+
+            const resData = await resgatar.json();
+            if (!resgatar.ok) throw new Error(resData.error || 'Erro ao resgatar');
+
+            await Swal.fire('Resgatado 🎉', resData.message, 'success');
+            fetchPremios(); // Atualiza lista
+          } catch (err) {
+            console.error(err);
+            Swal.fire('Erro', err.message || 'Erro ao processar resgate.', 'error');
+          }
+        });
+      });
     }
+  } catch (error) {
+    console.error(error);
+    Swal.fire('Erro', 'Erro ao carregar prêmios.', 'error');
   }
+}
+
 
   function highlightSelectedEmoji(selectedEmoji) {
     emojiButtons.forEach(btn => {

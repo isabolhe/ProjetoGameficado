@@ -31,6 +31,7 @@ const baseURL = window.location.hostname === 'localhost'
 const API_BASE = baseURL;
 
 
+// Função para carregar o resumo dos filhos e mostrar os pontos totais
 async function carregarResumoFilhos() {
   try {
     const token = localStorage.getItem('token');
@@ -74,54 +75,58 @@ async function carregarResumoFilhos() {
     }
 
     divNenhum.style.display = 'none';
-    // document.getElementById('adicionarFilho').style.display = 'none'; // deixa o botão sempre visível
-
     divResumo.classList.remove('d-none');
     divResumo.innerHTML = '';
 
     filhos.forEach(filho => {
-  const atividadesConcluidas = filho.totalConcluidas || 0;
-  const atividadesTotais = atividadesConcluidas + (filho.totalPendentes || 0);
-  const percentual = atividadesTotais > 0 ? Math.round((atividadesConcluidas / atividadesTotais) * 100) : 0;
-  const pontos = filho.pontos || 0;
+      const atividadesConcluidas = filho.totalConcluidas || 0;
+      const atividadesTotais = atividadesConcluidas + (filho.totalPendentes || 0);
+      const percentual = atividadesTotais > 0 ? Math.round((atividadesConcluidas / atividadesTotais) * 100) : 0;
+      const pontos = filho.pontos || 0;
 
-  const filhoInfo = document.createElement('div');
-  filhoInfo.className = 'filho-card';
+      const filhoInfo = document.createElement('div');
+      filhoInfo.className = 'filho-card';
 
-  filhoInfo.innerHTML = `
-    <div class="filho-header">
-      <div class="filho-avatar">${filho.emoji || '👶'}</div>
-      <div class="filho-info">
-        <strong class="filho-nome">${filho.nome}</strong>
-        <span class="filho-label">Progresso</span>
-        <div class="barra-container">
-          <div class="barra-texto">${atividadesConcluidas}/${atividadesTotais} atividades</div>
-          <div class="barra-externa">
-            <div class="barra-interna" style="width: ${percentual}%;"></div>
+      filhoInfo.innerHTML = `
+        <div class="filho-header">
+          <div class="filho-avatar">${filho.emoji || '👶'}</div>
+          <div class="filho-info">
+            <strong class="filho-nome">${filho.nome}</strong>
+            <span class="filho-label">Progresso</span>
+            <div class="barra-container">
+              <div class="barra-texto">${atividadesConcluidas}/${atividadesTotais} atividades</div>
+              <div class="barra-externa">
+                <div class="barra-interna" style="width: ${percentual}%;"></div>
+              </div>
+              <div class="barra-pontos"> ${pontos} pontos</div>
+            </div>
           </div>
-          <div class="barra-pontos"> ${pontos} pontos</div>
         </div>
-      </div>
-    </div>
-    <div class="filho-idade">${filho.idade || '?'} anos</div>
-  `;
+        <div class="filho-idade">${filho.idade || '?'} anos</div>
+      `;
 
-  divResumo.appendChild(filhoInfo);
-});
+      divResumo.appendChild(filhoInfo);
+    });
 
-
-
-    // New code to update resumoTotalPontos and percentualAtividadesPositivas
     const resumoTotalPontosElem = document.getElementById('resumoTotalPontos');
     const percentualAtividadesPositivasElem = document.getElementById('percentualAtividadesPositivas');
 
-    // Calculate total points from filhos array
     const totalPontos = filhos.reduce((acc, filho) => acc + (filho.pontos || 0), 0);
+
+    // Atualiza pontos disponíveis na loja de prêmios
+    setTimeout(() => {
+      const totalPontosDisponiveisElem = document.getElementById('totalPontos');
+      if (totalPontosDisponiveisElem) {
+        totalPontosDisponiveisElem.textContent = totalPontos;
+      }
+    }, 0);
+
+    // Atualiza painel de resumo
     if (resumoTotalPontosElem) {
       resumoTotalPontosElem.textContent = (totalPontos > 0 ? '+' : '') + totalPontos;
     }
 
-    // Fetch percentage of positive completed activities
+    // Buscar percentual de atividades positivas
     try {
       const responsePercentual = await fetch(`${API_BASE}/atividades/porcentagem-positivas`, {
         headers: {
@@ -130,7 +135,6 @@ async function carregarResumoFilhos() {
       });
       if (responsePercentual.ok) {
         const percentualData = await responsePercentual.json();
-        // Calculate overall percentage (weighted average or simple average)
         let totalConcluidas = 0;
         let totalPositivas = 0;
         percentualData.forEach(item => {
@@ -184,8 +188,8 @@ if (premios.length === 0) {
     <p style="text-align: left; color: #6c757d; margin-bottom: 10px;">
       Nenhum prêmio cadastrado.
     </p>
-    <button id="btnCriarPremio" class="btn btn-primary" style="display: block; margin: 0 auto; width: 220px;"> 
-     <i class="fa-solid fa-plus"></i> Criar primeiro prêmio
+    <button id="btnCriarPremio" class="btn btn-primary" style="display: block; margin: 0 auto; width: 180px;"> 
+     <i class="fa-solid fa-plus"></i> Criar prêmio
     </button>
   
 `;
@@ -261,7 +265,7 @@ div.style.margin = '10px auto';
         <h5 class="fw-bold">${premio.nome}</h5>
         <p class="text-muted mb-2" style="font-size: 0.9rem;">${premio.descricao}</p>
         <div class="d-flex justify-content-between align-items-center mt-auto">
-          <span class="badge badge-pontos">${premio.pontos_necessarios} pontos</span>
+          <span class="badge badge-pontos">${premio.pontos_necessarios} pts</span>
 
           <button class="btn btn-sm btn-resgatar">Resgatar</button>
 
@@ -270,6 +274,76 @@ div.style.margin = '10px auto';
       `;
 
       container.appendChild(div);
+
+      // Após adicionar cada card de prêmio:
+div.querySelector('.btn-resgatar').addEventListener('click', async () => {
+  try {
+    const filhosResponse = await fetch(`${API_BASE}/filhos`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+    const filhos = await filhosResponse.json();
+
+    if (!filhos.length) {
+      return Swal.fire('Erro', 'Você ainda não cadastrou filhos.', 'error');
+    }
+
+    const { value: filhoSelecionadoId } = await Swal.fire({
+      title: 'Escolha o filho para resgatar',
+      input: 'select',
+      inputOptions: filhos.reduce((acc, f) => {
+        acc[f.id] = `${f.nome} (${f.pontos} pts)`;
+        return acc;
+      }, {}),
+      inputPlaceholder: 'Selecione um filho',
+      showCancelButton: true,
+      confirmButtonText: 'Verificar pontos'
+    });
+
+    if (!filhoSelecionadoId) return;
+
+    const filho = filhos.find(f => f.id == filhoSelecionadoId);
+    if (filho.pontos < premio.pontos_necessarios) {
+      return Swal.fire('Sem Pontos 😞', `${filho.nome} não tem pontos suficientes.`, 'warning');
+    }
+
+    const confirmar = await Swal.fire({
+      title: 'Confirmar Resgate?',
+      text: `Deseja realmente resgatar o prêmio "${premio.nome}" para ${filho.nome}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, resgatar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (!confirmar.isConfirmed) return;
+
+    const resgatar = await fetch(`${API_BASE}/resgatar-premio`, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        filho_id: parseInt(filhoSelecionadoId),
+        premio_id: premio.id
+      })
+    });
+
+    const resData = await resgatar.json();
+    if (!resgatar.ok) throw new Error(resData.error || 'Erro ao resgatar');
+
+    await Swal.fire('Resgatado 🎉', resData.message, 'success');
+
+    // Atualiza a lista
+    carregarPremios();
+    carregarResumoFilhos(); // Atualiza os pontos no painel
+  } catch (err) {
+    console.error(err);
+    Swal.fire('Erro', err.message || 'Erro ao processar resgate.', 'error');
+  }
+});
+
+
     });
   } catch (error) {
     console.error('Erro ao carregar prêmios:', error);

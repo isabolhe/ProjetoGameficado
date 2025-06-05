@@ -498,6 +498,71 @@ app.get('/atividades/porcentagem-positivas', authenticateToken, (req, res) => {
   });
 });
 
+// Rota para resgatar um prêmio para um filho
+app.post('/resgatar-premio', authenticateToken, (req, res) => {
+  const { filho_id, premio_id } = req.body;
+  const responsavelId = req.user.id;
+
+  if (!filho_id || !premio_id) {
+    return res.status(400).json({ error: 'ID do filho e do prêmio são obrigatórios.' });
+  }
+
+  // Verifica se o filho pertence ao responsável
+  const queryFilho = 'SELECT * FROM criacao_filhos WHERE id = ? AND responsaveis_id = ?';
+  db.query(queryFilho, [filho_id, responsavelId], (err, resultsFilho) => {
+    if (err) return res.status(500).json({ error: 'Erro ao buscar filho.' });
+    if (resultsFilho.length === 0) {
+      return res.status(403).json({ error: 'Filho não encontrado ou não pertence ao responsável.' });
+    }
+
+    const filho = resultsFilho[0];
+
+    // Verifica se o prêmio existe
+    const queryPremio = 'SELECT * FROM premios WHERE id = ? AND responsavel_id = ?';
+    db.query(queryPremio, [premio_id, responsavelId], (err2, resultsPremio) => {
+      if (err2) return res.status(500).json({ error: 'Erro ao buscar prêmio.' });
+      if (resultsPremio.length === 0) {
+        return res.status(404).json({ error: 'Prêmio não encontrado ou não pertence ao responsável.' });
+      }
+
+      const premio = resultsPremio[0];
+
+      if (filho.pontos < premio.pontos_necessarios) {
+        return res.status(400).json({ error: `Pontos insuficientes. Você tem ${filho.pontos} e o prêmio requer ${premio.pontos_necessarios}.` });
+      }
+
+      // Descontar pontos
+      const queryDescontarPontos = 'UPDATE criacao_filhos SET pontos = pontos - ? WHERE id = ?';
+      db.query(queryDescontarPontos, [premio.pontos_necessarios, filho_id], (err3) => {
+        if (err3) return res.status(500).json({ error: 'Erro ao descontar pontos do filho.' });
+
+        // Primeiro registrar o resgate
+const queryRegistrarResgate = 'INSERT INTO resgates (filho_id, premio_id) VALUES (?, ?)';
+db.query(queryRegistrarResgate, [filho_id, premio_id], (err4) => {
+  if (err4) return res.status(500).json({ error: 'Erro ao registrar resgate.' });
+
+  // Depois deletar o prêmio
+  const queryDeletePremio = 'DELETE FROM premios WHERE id = ?';
+  db.query(queryDeletePremio, [premio_id], (err5) => {
+    if (err5) {
+      console.error('Erro MySQL ao deletar prêmio:', err5);
+      return res.status(500).json({ error: 'Erro ao remover prêmio do banco.' });
+    }
+
+    res.json({ message: `Resgate realizado com sucesso! O prêmio "${premio.nome}" foi resgatado por ${filho.nome} e removido da lista.` });
+  });
+});
+
+      });
+    });
+  });
+});
+
+
+
+
+
+
 // Servir arquivos estáticos corretamente, já que estamos dentro de /backend
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -545,6 +610,7 @@ app.get('/atividades-publicas/:token', (req, res) => {
     res.json(results);
   });
 });
+
 
 
 
