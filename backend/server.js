@@ -506,6 +506,45 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'login.html'));
 });
 
+const crypto = require('crypto');
+
+app.get('/gerar-token-publico', authenticateToken, (req, res) => {
+  const responsavelId = req.user.id;
+  const tokenPublico = crypto.randomBytes(16).toString('hex');
+
+  const query = 'UPDATE responsaveis SET token_acesso = ? WHERE id = ?';
+  db.query(query, [tokenPublico, responsavelId], (err, result) => {
+    if (err) {
+      console.error('Erro ao gerar token público:', err);
+      return res.status(500).json({ error: 'Erro no servidor' });
+    }
+
+    res.json({ tokenPublico });
+  });
+});
+
+
+app.get('/atividades-publicas/:token', (req, res) => {
+  const tokenPublico = req.params.token;
+
+  const query = `
+    SELECT a.*, f.nome as nome_filho
+    FROM atividades a
+    JOIN criacao_filhos f ON a.filho_id = f.id
+    JOIN responsaveis r ON a.responsavel_id = r.id
+    WHERE r.token_acesso = ?
+    ORDER BY a.created_at DESC
+  `;
+
+  db.query(query, [tokenPublico], (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar atividades públicas:', err);
+      return res.status(500).json({ error: 'Erro no servidor ao buscar atividades públicas.' });
+    }
+
+    res.json(results);
+  });
+});
 
 
 

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Atividades</title>
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- AOS (Animate On Scroll) -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+  <!-- Seu CSS personalizado -->
+  <link rel="stylesheet" href="style/validacaoatv.css" />
+</head>
+<body>
+
+   <!-- Navbar moderna só com a seta -->
+<nav class="navbar navbar-dark bg-dark shadow-sm fixed-top">
+  <div class="container-fluid">
+    <!-- Ícone de voltar sempre visível -->
+    <a class="navbar-brand d-flex align-items-center" href="#" onclick="voltarAtualizando()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icon-tabler-arrow-left">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12h14" />
+        <path d="M5 12l6 6" />
+        <path d="M5 12l6 -6" />
+      </svg>
+    </a>
+  </div>
+</nav>
+
+
+  <div class="container my-5">
+    <h2 class="introducao mb-4 text-center" data-aos="fade-down">Atividades Diárias Cyberbullying</h2>
+    <p class="text-muted text-center" data-aos="fade-up" data-aos-delay="100">
+      Visualize suas Atividades Disponíveis!<br>
+      Clique para ver a descrição.
+    </p>
+
+    <!-- Seção Pendentes -->
+    <div class="section my-4" data-aos="fade-right" data-aos-delay="200">
+      <h4 class="section-title">Tarefas Pendentes</h4>
+      <div id="atividades-pendentes">
+        <!-- As tarefas pendentes vão aparecer aqui -->
+      </div>
+    </div>
+
+    <!-- Seção Concluídas -->
+    <div class="section mt-5" data-aos="fade-left" data-aos-delay="300">
+      <h4 class="section-title">Tarefas Concluídas</h4>
+      <div id="atividades-concluidas">
+        <!-- As tarefas concluídas vão aparecer aqui -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+    });
+  </script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Script custom -->
+  <script src="javascript/validacaoatvview.js"></script>
+
+  <script>
+  function voltarAtualizando() {
+    // Força o navegador a recarregar a página e evitar usar cache
+    window.location.href = 'gerarqrcode.html?reload=' + new Date().getTime();
+  }
+</script>
+</body>
+</html>

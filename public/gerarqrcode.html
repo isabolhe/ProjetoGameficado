@@ -14,7 +14,7 @@
      >
      <link rel="stylesheet" href="style/gerarqrcode.css">
 </head>
-<body class="">
+<body>
 
   <!-- Navbar moderna só com a seta -->
 <nav class="navbar  shadow-sm fixed-top">
@@ -32,6 +32,44 @@
     </a>
   </div>
 </nav>
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+      <h1 class="titulo">Gerar QR Codes </h1>
+      <p class="subtitulo">Gere seus QR Codes de Atividades e Prêmios</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <!-- QR Code 1 -->
+      <div class="col-md-6 col-lg-5">
+        <div class="card qr-card shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-3">QR Code Atividades - Cyberbulliying</h5>
+            <div class="qr-preview mb-3" id="qr-atividades">
+  <div id="qrcode-atividades"></div>
+</div>
+
+            <button class="btn btn-gradient-blue w-100">Gerar QR Code</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- QR Code 2 -->
+      <div class="col-md-6 col-lg-5">
+        <div class="card qr-card shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-3">QR Code Prêmios</h5>
+            <div class="qr-preview mb-3">
+              <img src="imagens/670b0b74-762d-4414-bb1f-5e317a31e62c.png" alt="QR Placeholder" class="img-fluid placeholder-img">
+              <p class="text-muted mt-2">QR Code aparecerá aqui</p>
+            </div>
+            <button class="btn btn-gradient-orange w-100">Gerar QR Code</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
 

@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <!-- bootstrap ta on com css -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
-     rel="stylesheet" 
-     integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" 
-     crossorigin="anonymous"
-     >
-     <link rel="stylesheet" href="style/cadastramentoR.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Responsável</title>
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+  <!-- AOS CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+  <!-- SweetAlert2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style/cadastramentoR.css" />
 </head>
 <body>
-  
-<!-- Navbar moderna sem hambúrguer -->
+
+<!-- Navbar moderna -->
 <nav class="navbar navbar-dark bg-dark shadow-sm fixed-top">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="login.html">
-      <!-- Ícone de voltar -->
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="icon icon-tabler icon-tabler-arrow-left">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-arrow-left">
         <path d="M5 12h14" />
         <path d="M5 12l6 6" />
         <path d="M5 12l6 -6" />
@@ -32,62 +33,121 @@
   </div>
 </nav>
 
+<!-- Formulário -->
+<form id="formResponsavel">
+  <div class="container mt-5 pt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6" data-aos="fade-up">
+        <div class="card p-4 shadow-sm">
+          <h2 class="text-center mb-4">Cadastro de Responsável</h2>
 
-  
-
-
-  <form action="/cadastro-responsavel" method="POST">
-    <div class="container mt-4">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="card p-4 shadow-sm">
-            <h2 class="text-center mb-4">Cadastro de Responsável</h2>
-  
-            <div class="mb-3">
-              <label for="nomeCompleto" class="form-label">Nome Completo</label>
-              <input type="text" class="form-control" id="nomeCompleto" name="nomeCompleto" required>
-            </div>
-  
-            <div class="mb-3">
-              <label for="email" class="form-label">E-mail</label>
-              <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-  
-            <div class="mb-3">
-              <label for="senha" class="form-label">Senha</label>
-              <input type="password" class="form-control" id="senha" name="senha" required>
-            </div>
-  
-            <div class="mb-3">
-              <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
-              <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha" required>
-            </div>
-  
-            <div class="mb-3">
-              <label for="telefone" class="form-label">Telefone (opcional)</label>
-              <input type="tel" class="form-control" id="telefone" name="telefone">
-            </div>
-  
-          
-  
-            <div class="mb-3">
-              <label for="instituicaoEnsino" class="form-label">Instituição de Ensino (opcional)</label>
-              <input type="text" class="form-control" id="instituicaoEnsino" name="instituicaoEnsino">
-            </div>
-  
-            <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+          <div class="mb-3">
+            <label for="nomeCompleto" class="form-label">Nome Completo</label>
+            <input type="text" class="form-control" id="nomeCompleto" name="nomeCompleto" required />
           </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="senha" class="form-label">Senha</label>
+            <input type="password" class="form-control" id="senha" name="senha" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
+            <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="telefone" class="form-label">Telefone (opcional)</label>
+            <input type="tel" class="form-control" id="telefone" name="telefone" />
+          </div>
+
+          <div class="mb-3">
+            <label for="instituicaoEnsino" class="form-label">Instituição de Ensino (opcional)</label>
+            <input type="text" class="form-control" id="instituicaoEnsino" name="instituicaoEnsino" />
+          </div>
+
+          <!-- Botão de envio restaurado -->
+          <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
         </div>
       </div>
     </div>
-  </form>
-  
-      
+  </div>
+</form>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" 
-     integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" 
-     crossorigin="anonymous">
-    </script>
-    <script src="javascript/cadastramentoR.js"></script>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+<!-- AOS JS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Seu JS -->
+<script>
+  const baseURL = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : `https://${window.location.hostname}`;
+
+  document.getElementById('formResponsavel').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const nomeCompleto = document.getElementById('nomeCompleto').value;
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+    const confirmarSenha = document.getElementById('confirmarSenha').value;
+    const telefone = document.getElementById('telefone').value;
+    const instituicaoEnsino = document.getElementById('instituicaoEnsino').value;
+
+    if (senha !== confirmarSenha) {
+      return Swal.fire({
+        icon: 'warning',
+        title: 'Senhas diferentes!',
+        text: 'As senhas não coincidem.'
+      });
+    }
+
+    try {
+      const response = await fetch(`${baseURL}/cadastro-responsavel`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nomeCompleto, email, senha, telefone, instituicaoEnsino })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        await Swal.fire({
+          icon: 'success',
+          title: 'Cadastro realizado!',
+          text: 'Você será redirecionado para o login.'
+        });
+        window.location.href = 'login.html';
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro ao cadastrar',
+          text: result.mensagem || 'Verifique os dados e tente novamente.'
+        });
+      }
+    } catch (error) {
+      console.error('Erro no cadastro:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro de conexão',
+        text: 'Não foi possível conectar com o servidor.'
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
