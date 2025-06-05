@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(res => res.json())
         .then(data => {
-            const linkAtividades = `http://localhost:3000/validacaoatvview.html?token=${data.tokenPublico}`;
+            const linkAtividades = `https://projetogameficado-production.up.railway.app/validacaoatvview.html?token=${data.tokenPublico}`;
              /* mudar pra o link da pagina no site */
 
             qrAtividadesDiv.innerHTML = '';
