@@ -54,16 +54,20 @@
         ? 'http://localhost:3000'
         : `https://${window.location.hostname}`;
 
-      // ✅ Aqui pegamos o token da URL ou localStorage
       const tokenFromUrl = new URLSearchParams(window.location.search).get('token');
-      const token = tokenFromUrl || localStorage.getItem('token');
+      const tokenJWT = localStorage.getItem('token');
+
+      const isPublic = !!tokenFromUrl;
+      const endpoint = isPublic
+        ? `${baseURL}/api/premios-publicos/${tokenFromUrl}`
+        : `${baseURL}/api/premios`;
+
+      const headers = isPublic
+        ? {} // público, sem Authorization
+        : { 'Authorization': 'Bearer ' + tokenJWT };
 
       try {
-        const response = await fetch(`${baseURL}/api/premios`, {
-          headers: {
-            'Authorization': 'Bearer ' + token
-          }
-        });
+        const response = await fetch(endpoint, { headers });
 
         if (!response.ok) throw new Error('Erro ao buscar prêmios');
         const premios = await response.json();

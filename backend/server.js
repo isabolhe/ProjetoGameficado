@@ -630,6 +630,26 @@ app.delete('/responsavel', authenticateToken, (req, res) => {
   });
 });
 
+app.get('/api/premios-publicos/:token', (req, res) => {
+  const tokenPublico = req.params.token;
+
+  const query = `
+    SELECT p.id, p.nome, p.descricao, p.pontos_necessarios, p.emoji
+    FROM premios p
+    JOIN responsaveis r ON p.responsavel_id = r.id
+    WHERE r.token_acesso = ?
+    ORDER BY p.id DESC
+  `;
+
+  db.query(query, [tokenPublico], (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar prêmios públicos:', err);
+      return res.status(500).json({ error: 'Erro no servidor ao buscar prêmios públicos.' });
+    }
+
+    res.json(results);
+  });
+});
 
 
 
