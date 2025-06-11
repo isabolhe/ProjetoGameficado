@@ -5,12 +5,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const btnPremios = document.getElementById('btnQrPremios');
   const qrPremiosDiv = document.getElementById('qrcode-premios');
 
-  // Gera QR Code para Atividades
+  // Botão: Gerar QR Code para Atividades
   btnAtividades.addEventListener('click', function () {
     gerarQRCode('validacaoatvview.html', qrAtividadesDiv);
   });
 
-  // Gera QR Code para Prêmios
+  // Botão: Gerar QR Code para Prêmios
   btnPremios.addEventListener('click', function () {
     gerarQRCode('pagpremiosview.html', qrPremiosDiv);
   });
@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .then(res => res.json())
     .then(data => {
+      if (!data.tokenPublico) {
+        throw new Error('Token público não recebido.');
+      }
+
       const link = `https://projetogameficado-production.up.railway.app/${pagina}?token=${data.tokenPublico}`;
       containerDiv.innerHTML = ''; // Limpa QR anterior, se houver
 
@@ -34,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     })
-    .catch(err => console.error('Erro ao gerar token público:', err));
+    .catch(err => {
+      console.error('Erro ao gerar token público:', err);
+      containerDiv.innerHTML = '<p class="text-danger">Erro ao gerar QR Code</p>';
+    });
   }
 });
