@@ -41,7 +41,7 @@ async function carregarFilhos() {
             };
 
             const filhoDiv = document.createElement('div');
-            filhoDiv.className = 'p-3 mb-2 bg-light border rounded';
+            filhoDiv.className = 'p-3 mb-2 bg-light cardsemlinha rounded';
             filhoDiv.setAttribute('data-aos', 'fade-up');
 
             filhoDiv.innerHTML = `
@@ -52,8 +52,8 @@ async function carregarFilhos() {
                 <small>Atividades Concluídas: ${counts.total_concluidas}</small><br>
                 <small>Atividades Pendentes: ${counts.total_pendentes}</small>
                 <div class="d-flex justify-content-end mt-2">
-                    <button class="btn btn-sm btn-warning me-2" onclick="abrirModalEditarExcluir(${filho.id}, '${filho.nome}', '${filho.email}')">Editar</button>
-                    <button class="btn btn-sm btn-danger" onclick="excluirFilho(${filho.id})">Excluir</button>
+                    <button class="btn  btn-sm btnfilhosedit me-2" onclick="abrirModalEditarExcluir(${filho.id}, '${filho.nome}', '${filho.email}')">Editar</button>
+                    <button class="btn btn-sm btnfilhose" onclick="excluirFilho(${filho.id})">Excluir</button>
                 </div>
             `;
 

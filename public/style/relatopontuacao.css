@@ -42,11 +42,12 @@ body {
   
   /* Cartões de resumo */
   .card {
-    border: 1px solid #ddd;
+    
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     background-color: #ffffff;
     transition: transform 0.2s ease-in-out;
+    border: none !important;
   }
   
   .card:hover {
@@ -81,6 +82,7 @@ body {
   .card-body canvas {
     display: block;
     margin: auto;
+    
   }
 
 /* Gráfico centralizado e ajustado */

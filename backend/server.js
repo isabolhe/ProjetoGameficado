@@ -558,6 +558,78 @@ db.query(queryRegistrarResgate, [filho_id, premio_id], (err4) => {
   });
 });
 
+app.delete('/responsavel', authenticateToken, (req, res) => {
+  const responsavelId = req.user.id;
+  const { senha } = req.body;
+
+  if (!senha) {
+    return res.status(400).json({ error: 'A senha é obrigatória.' });
+  }
+
+  const queryCheck = 'SELECT * FROM responsaveis WHERE id = ? AND senha = ?';
+  db.query(queryCheck, [responsavelId, senha], (err, results) => {
+    if (err) return res.status(500).json({ error: 'Erro no servidor ao verificar senha.' });
+    if (results.length === 0) return res.status(401).json({ error: 'Senha incorreta.' });
+
+    // 1. Buscar todos os filhos do responsável
+    const queryGetFilhos = 'SELECT id FROM criacao_filhos WHERE responsaveis_id = ?';
+    db.query(queryGetFilhos, [responsavelId], (errFilhos, filhos) => {
+      if (errFilhos) {
+        console.error('Erro ao buscar filhos:', errFilhos);
+        return res.status(500).json({ error: 'Erro ao buscar filhos.' });
+      }
+
+      const filhosIds = filhos.map(f => f.id);
+      if (filhosIds.length === 0) {
+        continuarExclusao();
+      } else {
+        // 2. Excluir resgates vinculados a esses filhos
+        const queryDeleteResgates = 'DELETE FROM resgates WHERE filho_id IN (?)';
+        db.query(queryDeleteResgates, [filhosIds], (errResgates) => {
+          if (errResgates) {
+            console.error('Erro ao excluir resgates:', errResgates);
+            return res.status(500).json({ error: 'Erro ao excluir resgates.' });
+          }
+
+          continuarExclusao();
+        });
+      }
+
+      // ⚙️ Função que executa o restante da exclusão
+      function continuarExclusao() {
+        // 3. Excluir atividades
+        const queryDeleteAtividades = 'DELETE FROM atividades WHERE responsavel_id = ?';
+        db.query(queryDeleteAtividades, [responsavelId], (errAtividades) => {
+          if (errAtividades) {
+            console.error('Erro ao excluir atividades:', errAtividades);
+            return res.status(500).json({ error: 'Erro ao excluir atividades.' });
+          }
+
+          // 4. Excluir filhos
+          const queryDeleteFilhos = 'DELETE FROM criacao_filhos WHERE responsaveis_id = ?';
+          db.query(queryDeleteFilhos, [responsavelId], (errFilhos2) => {
+            if (errFilhos2) {
+              console.error('Erro ao excluir filhos:', errFilhos2);
+              return res.status(500).json({ error: 'Erro ao excluir filhos.' });
+            }
+
+            // 5. Excluir o próprio responsável
+            const queryDeleteResponsavel = 'DELETE FROM responsaveis WHERE id = ?';
+            db.query(queryDeleteResponsavel, [responsavelId], (errResp) => {
+              if (errResp) {
+                console.error('Erro ao excluir conta:', errResp);
+                return res.status(500).json({ error: 'Erro ao excluir a conta.' });
+              }
+
+              res.json({ message: 'Conta excluída com sucesso.' });
+            });
+          });
+        });
+      }
+    });
+  });
+});
+
 
 
 

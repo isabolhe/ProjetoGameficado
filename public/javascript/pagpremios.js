@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       premios.forEach((premio, index) => {
         const item = document.createElement('div');
-        item.className = 'list-group-item d-flex justify-content-between align-items-center';
+        item.className = 'list-group-item cardsemlinha d-flex justify-content-between align-items-center';
         item.dataset.premioId = premio.id;
         item.setAttribute('data-aos', 'fade-up');
         item.setAttribute('data-aos-delay', Math.min(index * 100, 500));

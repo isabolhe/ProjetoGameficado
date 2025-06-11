@@ -67,7 +67,7 @@ body {
 
     .list-group-item {
       background: #fff;
-      border: 1px solid #e0e0e0;
+      
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 15px;
@@ -97,4 +97,9 @@ body {
 
     .points-text {
       font-size: 0.95rem;
+    }
+
+    .cardsemlinha {
+      border: none !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.17);
     }

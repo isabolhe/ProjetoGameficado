@@ -50,6 +50,11 @@ body {
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         padding: 30px;
         background-color: #fff;
+        border: none !important;
+      }
+
+      .cardsemlinha {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       }
 
       input.form-control {
@@ -69,16 +74,17 @@ body {
       }
 
       .btn-enviarconvite:hover {
-        background-color: #155a96;
+        background-color: #0d56c4;
+        color: white;
       }
 
       .filho-card {
         background: #ffffff;
-        border: 1px solid #e1e4e8;
+        
         border-radius: 12px;
         padding: 20px;
         margin-bottom: 16px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.17) !important;
       }
 
       .filho-card small {
@@ -109,4 +115,33 @@ body {
         font-weight: 500;
         border-radius: 8px;
         padding: 16px;
+      }
+
+
+      .btnfilhose {
+        background: linear-gradient(to right, #FB953A, #FBBC25);
+        color: white;
+        border: none;
+        transition: background 0.3s ease;
+      }
+
+      .btnfilhose:hover {
+        background: linear-gradient(to right, #FB953A, #FBBC25);
+        color: white;
+        border: none;
+        transition: background 0.3s ease;
+      }
+
+      .btnfilhosedit {
+        background: linear-gradient(to right, #1565c0, #42a5f5);
+        color: white;
+        border: none;
+        transition: background 0.3s ease;
+      }
+
+      .btnfilhosedit:hover {
+        background: linear-gradient(to right, #1565c0, #42a5f5);
+        color: white;
+        border: none;
+        transition: background 0.3s ease;
       }

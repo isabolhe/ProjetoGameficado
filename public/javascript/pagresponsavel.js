@@ -113,20 +113,17 @@ async function carregarResumoFilhos() {
 
     const totalPontos = filhos.reduce((acc, filho) => acc + (filho.pontos || 0), 0);
 
-    // Atualiza pontos disponíveis na loja de prêmios
-    setTimeout(() => {
-      const totalPontosDisponiveisElem = document.getElementById('totalPontos');
-      if (totalPontosDisponiveisElem) {
-        totalPontosDisponiveisElem.textContent = totalPontos;
-      }
-    }, 0);
-
-    // Atualiza painel de resumo
-    if (resumoTotalPontosElem) {
-      resumoTotalPontosElem.textContent = (totalPontos > 0 ? '+' : '') + totalPontos;
+    const totalPontosDisponiveisElem = document.getElementById('totalPontos');
+    if (totalPontosDisponiveisElem) {
+      totalPontosDisponiveisElem.textContent = totalPontos;
+    } else {
+      console.warn('Elemento com id="totalPontos" não encontrado no DOM.');
     }
 
-    // Buscar percentual de atividades positivas
+    if (resumoTotalPontosElem) {
+      resumoTotalPontosElem.textContent = totalPontos;
+    }
+
     try {
       const responsePercentual = await fetch(`${API_BASE}/atividades/porcentagem-positivas`, {
         headers: {
@@ -164,6 +161,7 @@ async function carregarResumoFilhos() {
     });
   }
 }
+
 
 async function carregarPremios() {
   try {
@@ -352,6 +350,21 @@ div.querySelector('.btn-resgatar').addEventListener('click', async () => {
       title: 'Erro',
       text: 'Não foi possível carregar os prêmios. Tente novamente mais tarde.'
     });
+
+    const totalPontos = filhos.reduce((acc, f) => acc + (f.pontos || 0), 0);
+
+// Mostra no elemento do topo
+const totalPontosDisponiveisElem = document.getElementById('totalPontos');
+if (totalPontosDisponiveisElem) {
+  totalPontosDisponiveisElem.textContent = totalPontos;
+}
+
+// Mostra também no box verde, se existir
+const resumoTotalPontosElem = document.getElementById('resumoTotalPontos');
+if (resumoTotalPontosElem) {
+  resumoTotalPontosElem.textContent = (totalPontos > 0 ? '+' : '') + totalPontos;
+}
+
   }
 }
 
@@ -556,7 +569,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const ctxModal = document.getElementById("graficoPontosRelatorioModal")?.getContext("2d");
   const ctxDesempenhoModal = document.getElementById("graficoDesempenhoTempoModal")?.getContext("2d");
   const ctxMainPontos = document.getElementById("graficoPontosRelatorio")?.getContext("2d");
-  const ctxMainColunas = document.getElementById("graficoColunas")?.getContext("2d");
+  const ctxMainColunas = document.getElementById("graficoLinha")?.getContext("2d");
+
 
   let filhos = [];
   let atividadesCounts = [];
@@ -656,22 +670,56 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
-    const datas = Object.keys(pontosPorData).sort((a, b) => new Date(a) - new Date(b));
-    const pontos = datas.map(d => pontosPorData[d]);
+    
+   // const datas = Object.keys(pontosPorData).sort((a, b) => new Date(a) - new Date(b));
+    // const pontos = datas.map(d => pontosPorData[d]);
+    const datas = ["01/06", "02/06", "03/06"]; // dados fake
+    const pontos = [10, 5, 8];
+
+    
 
     if (chartMainColunas) chartMainColunas.destroy();
     chartMainColunas = new Chart(ctxMainColunas, {
-      type: "bar",
-      data: {
-        labels: datas,
-        datasets: [{ label: "Pontos Diários", data: pontos, backgroundColor: "#2196f3" }]
-      },
-      options: {
-        responsive: true,
-        scales: { y: { beginAtZero: true, precision: 0 } },
-        plugins: { legend: { display: false } }
+  type: "line",
+  data: {
+    labels: datas, // Ex: ["01/06", "02/06", ...]
+    datasets: [{
+      label: "Pontos por Dia",
+      data: pontos, // Ex: [10, 5, 8, 12]
+      fill: true,
+      borderColor: "#0d6efd",
+      backgroundColor: "rgba(13, 110, 253, 0.15)",
+      tension: 0.3,
+      pointBackgroundColor: "#0d6efd",
+      pointBorderColor: "#fff",
+      pointRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: "top"
       }
-    });
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          precision: 0
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: "Data"
+        }
+      }
+    }
+  }
+});
+
   }
 
   function popularSelectFilho() {

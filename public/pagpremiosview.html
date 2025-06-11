@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja de Prêmios</title>
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style/pagpremios.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-dark shadow-sm fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="#" onclick="voltarAtualizando()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="icon icon-tabler icon-tabler-arrow-left">
+          <path d="M5 12h14" />
+          <path d="M5 12l6 6" />
+          <path d="M5 12l6 -6" />
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <div class="container py-5 mt-5">
+    <h2 class="mb-4 text-center" data-aos="fade-down">Loja de Prêmios</h2>
+
+    <div id="alertNenhumPremio" class="alert alert-info text-center" data-aos="fade-right">
+      Nenhum prêmio cadastrado no momento.
+    </div>
+
+    <div id="listaPremios" class="list-group mb-4" style="display: none;" data-aos="zoom-in-up"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+
+    function voltarAtualizando() {
+      window.location.href = 'pagresponsavel.html?reload=' + new Date().getTime();
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const alertNenhumPremio = document.getElementById('alertNenhumPremio');
+      const listaPremios = document.getElementById('listaPremios');
+
+      const baseURL = window.location.hostname === 'localhost'
+        ? 'http://localhost:3000'
+        : `https://${window.location.hostname}`;
+
+      try {
+        const response = await fetch(`${baseURL}/api/premios`, {
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+
+        if (!response.ok) throw new Error('Erro ao buscar prêmios');
+        const premios = await response.json();
+
+        if (premios.length === 0) {
+          alertNenhumPremio.style.display = 'block';
+          listaPremios.style.display = 'none';
+        } else {
+          alertNenhumPremio.style.display = 'none';
+          listaPremios.style.display = 'block';
+          listaPremios.innerHTML = '';
+
+          premios.forEach((premio, index) => {
+            const item = document.createElement('div');
+            item.className = 'list-group-item cardsemlinha d-flex justify-content-between align-items-center';
+            item.setAttribute('data-aos', 'fade-up');
+            item.setAttribute('data-aos-delay', Math.min(index * 100, 500));
+
+            let emojiHtml = premio.emoji
+              ? `<span class="me-2" style="font-size: 1.5rem;">${premio.emoji}</span>` : '';
+
+            item.innerHTML = `
+              <div class="d-flex align-items-center">
+                <div>
+                  <h5>${emojiHtml}${premio.nome}</h5>
+                  <p>${premio.descricao}</p>
+                </div>
+              </div>
+              <div class="points-container d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#f4b942"
+                     class="bi bi-star-fill me-2" viewBox="0 0 16 16">
+                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765
+                           c-.329-.32-.158-.888.283-.95l4.898-.696 2.184-4.327
+                           c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.63.282.95
+                           l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8
+                           13.187l-4.389 2.256z"/>
+                </svg>
+                <span class="points-text">${premio.pontos_necessarios} pts</span>
+              </div>
+            `;
+            listaPremios.appendChild(item);
+          });
+
+          AOS.refresh();
+        }
+      } catch (err) {
+        console.error(err);
+        Swal.fire('Erro', 'Erro ao carregar prêmios.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>

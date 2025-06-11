@@ -207,6 +207,7 @@
 
 .btn-resgatar:hover {
   filter: brightness(1.05);
+  color: white;
 }
 
 

@@ -19,7 +19,6 @@
 
   <link rel="stylesheet" href="style/pagresponsavel.css">
   <link rel="stylesheet" href="style/custom-pagresponsavel-overrides.css">
-  <link rel="stylesheet" href="style/custom-pagresponsavel-atividades.css">
 </head>
 <body>
 
@@ -86,7 +85,7 @@
     </div>
 
     <div class="text-muted mb-2">
-      <small>Seus pontos disponíveis: <strong id="totalPontos">0</strong></small>
+      <small>Seus pontos disponíveis: <strong id="totalPontos"></strong></small>
     </div>
 
     <div class="prizes-wrapper">
@@ -162,13 +161,14 @@
   </div>
 
   <div class="row mt-4">
-    <div class="col-md-6">
-      <canvas id="graficoPontosRelatorio" height="150"></canvas>
-    </div>
-    <div class="col-md-6">
-      <canvas id="graficoColunas" height="150"></canvas>
-    </div>
+  <div class="col-md-6">
+    <canvas id="graficoPontosRelatorio" height="200"></canvas>
   </div>
+  <div class="col-md-6">
+    <canvas id="graficoLinha" height="300"></canvas>
+  </div>
+</div>
+
 </div>
 
 

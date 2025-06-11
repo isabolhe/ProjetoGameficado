@@ -49,21 +49,21 @@
     </div>
 
     <div class="card p-4" data-aos="fade-up" data-aos-delay="100">
-      <h5 class="mb-4">Adicionar Novo Filho</h5>
+      <h5 class="mb-4">Adicionar Novo Filho(a)</h5>
       <form>
         <div class="mb-3">
-          <label for="nomeFilho" class="form-label">Nome do Filho</label>
-          <input type="text" class="form-control" id="nomeFilho" placeholder="Ex: João Pedro" />
+          <label for="nomeFilho" class="form-label">Nome do Filho(a)</label>
+          <input type="text" class="form-control" id="nomeFilho" placeholder="Digite o nome do seu filho(a)" />
         </div>
 
         <div class="mb-3">
-          <label for="emailFilho" class="form-label">E-mail do Filho</label>
-          <input type="email" class="form-control" id="emailFilho" placeholder="email@exemplo.com" />
+          <label for="emailFilho" class="form-label">E-mail do Filho(a)</label>
+          <input type="email" class="form-control" id="emailFilho" placeholder="Digite o e-mail do seu filho(a)" />
           <div class="form-text">Será enviado um convite para este e-mail.</div>
         </div>
 
         <div class="mb-3">
-          <label for="emojiFilho" class="form-label">Emoji do Filho</label>
+          <label for="emojiFilho" class="form-label">Emoji do Filho(a)</label>
           <select class="form-select" id="emojiFilho" aria-label="Selecione um emoji para o filho">
             <option value="" selected>Selecione um emoji</option>
             <option value="👶">👶 Bebê</option>
@@ -74,12 +74,12 @@
         </div>
 
         <div class="mb-3">
-          <label for="idadeFilho" class="form-label">Idade do Filho</label>
+          <label for="idadeFilho" class="form-label">Idade do Filho(a)</label>
           <input type="number" class="form-control" id="idadeFilho" placeholder="Ex: 5" min="0" max="18" />
         </div>
 
         <div class="d-flex justify-content-end">
-          <button type="submit" class="btn btn-enviarconvite">Enviar Convite</button>
+          <button type="submit" class="btn btn-enviarconvite">Adicionar</button>
         </div>
       </form>
     </div>
@@ -90,7 +90,7 @@
     <div class="modal-dialog" data-aos="fade-up">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalEditarExcluirLabel">Editar ou Excluir Filho</h5>
+          <h5 class="modal-title" id="modalEditarExcluirLabel">Editar ou Excluir Filho(a)</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">
@@ -105,8 +105,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary" id="btnEditarFilho">Editar</button>
-          <button type="button" class="btn btn-danger" id="btnExcluirFilho">Excluir</button>
+          <button type="button" class="btn btnfilhosedit btn-primary" id="btnEditarFilho">Editar</button>
+          <button type="button" class="btn btnfilhose btn-danger" id="btnExcluirFilho">Excluir</button>
         </div>
       </div>
     </div>
