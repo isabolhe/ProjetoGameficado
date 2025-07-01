@@ -383,7 +383,7 @@ async function carregarAtividadesRecentes() {
 
     if (!filhos || filhos.length === 0) {
       if (atividadesCard) {
-        atividadesCard.innerHTML = '<div class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>';
+        atividadesCard.innerHTML = '<div class="text-center py-5 text-muted">Nenhuma atividade criada.</div>';
       }
       atualizarResumo([]);
       return;
@@ -398,7 +398,7 @@ async function carregarAtividadesRecentes() {
 
     if (!atividades || atividades.length === 0) {
       if (atividadesCard) {
-        atividadesCard.innerHTML = '<div class="text-center py-5 text-muted">Nenhuma atividade criada ainda.</div>';
+        atividadesCard.innerHTML = '<div class="text-center py-5 text-muted">Nenhuma atividade criada.</div>';
       }
       atualizarResumo([]);
       return;

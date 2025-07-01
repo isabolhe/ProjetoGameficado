@@ -6,7 +6,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
     const senhaFilho = document.getElementById('senhaFilho').value;
     const confirmarSenhaFilho = document.getElementById('confirmarSenhaFilho').value;
     const dataNascimentoFilho = document.getElementById('dataNascimentoFilho').value;
-    const emailResponsavel = document.getElementById('emailResponsavel').value;
+    
   
     if (senhaFilho !== confirmarSenhaFilho) {
       alert('As senhas não coincidem!');

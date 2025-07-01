@@ -16,5 +16,9 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.30.0",
+    "globals": "^16.2.0"
   }
 }
